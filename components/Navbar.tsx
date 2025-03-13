@@ -14,6 +14,11 @@ const Navbar = () => {
                 <>
                     <ul className="flex gap-10 self-start justify-start pr-10 whitespace-nowrap">
                         <li>
+                            <Link href='/admin/dashboard'>  
+                            <p className='text-gray-700 hover:text-gray-900'>Admin Dashboard</p>
+                            </Link>
+                        </li>
+                        <li>
                             <Link href='/quote/new'>
                             <p className='text-gray-700 hover:text-gray-900'>Create New Quote</p>
                             </Link>

@@ -2,6 +2,8 @@ import type {Config} from "tailwindcss";
 import tailwindcssAnimate from "tailwindcss-animate";
 import tailwindcssTypography from "@tailwindcss/typography";
 
+
+
 const config: Config = {
     darkMode: ["class", "[data-mode='dark']"],
     content: [

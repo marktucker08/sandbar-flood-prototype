@@ -1,10 +1,10 @@
-import { QuotesPage } from '@/components/Admin/QuotesPage';
+import { HomePage } from '@/components/Admin/HomePage';
 import React from 'react'
 
 const Page = () => {
   return (
     <>
-      <QuotesPage />
+      <HomePage />
     </>
   );
 };

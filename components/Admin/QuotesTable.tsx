@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { StatusBadge } from "./StatusBadge";
+import { StatusBadge } from "./StatusBadge";    
 
 export const QuotesTable = () => {
   return (
@@ -38,7 +38,7 @@ export const QuotesTable = () => {
               <td className="p-4 text-sm text-gray-500">#09876</td>
               <td className="p-4 text-sm text-gray-500">Theresa Heidenreich</td>
               <td className="p-4">
-                <div className="flex gap-1 items-center px-2 py-0.5 bg-sky-100 rounded-[99px] w-fit">
+                <div className="flex gap-1 justify-center items-center px-2 py-0.5 bg-sky-100 rounded-[99px] w-18">
                   <i className="ti ti-home text-sky-500" />
                   <span className="text-xs font-bold text-sky-500">Home</span>
                 </div>
@@ -52,7 +52,7 @@ export const QuotesTable = () => {
               <td className="p-4">
                 <div className="flex gap-2">
                   <button className="px-2.5 py-1.5 rounded-md border border-solid">
-                    <i className="ti ti-edit" />
+                    <i className="ti ti-pencil" />
                   </button>
                   <button className="px-2.5 py-1.5 rounded-md border border-solid">
                     <i className="ti ti-eye" />
@@ -66,9 +66,9 @@ export const QuotesTable = () => {
                 Elijah Block-Schaden
               </td>
               <td className="p-4">
-                <div className="flex gap-1 items-center px-2 py-0.5 bg-sky-100 rounded-[99px] w-fit">
-                  <i className="ti ti-building text-sky-500" />
-                  <span className="text-xs font-bold text-sky-500">
+                <div className="flex gap-1 items-center px-2 py-0.5 bg-orange-100 rounded-[99px] w-fit">
+                  <i className="ti ti-briefcase text-orange-500" />
+                  <span className="text-xs font-bold text-orange-500">
                     Business
                   </span>
                 </div>
@@ -82,7 +82,7 @@ export const QuotesTable = () => {
               <td className="p-4">
                 <div className="flex gap-2">
                   <button className="px-2.5 py-1.5 rounded-md border border-solid">
-                    <i className="ti ti-edit" />
+                    <i className="ti ti-pencil" />
                   </button>
                   <button className="px-2.5 py-1.5 rounded-md border border-solid">
                     <i className="ti ti-eye" />
@@ -108,7 +108,7 @@ export const QuotesTable = () => {
               <td className="p-4">
                 <div className="flex gap-2">
                   <button className="px-2.5 py-1.5 rounded-md border border-solid">
-                    <i className="ti ti-edit" />
+                    <i className="ti ti-pencil" />
                   </button>
                   <button className="px-2.5 py-1.5 rounded-md border border-solid">
                     <i className="ti ti-eye" />
@@ -134,7 +134,7 @@ export const QuotesTable = () => {
               <td className="p-4">
                 <div className="flex gap-2">
                   <button className="px-2.5 py-1.5 rounded-md border border-solid">
-                    <i className="ti ti-edit" />
+                    <i className="ti ti-pencil" />
                   </button>
                   <button className="px-2.5 py-1.5 rounded-md border border-solid">
                     <i className="ti ti-eye" />
@@ -160,7 +160,7 @@ export const QuotesTable = () => {
               <td className="p-4">
                 <div className="flex gap-2">
                   <button className="px-2.5 py-1.5 rounded-md border border-solid">
-                    <i className="ti ti-edit" />
+                    <i className="ti ti-pencil" />
                   </button>
                   <button className="px-2.5 py-1.5 rounded-md border border-solid">
                     <i className="ti ti-eye" />
@@ -186,7 +186,7 @@ export const QuotesTable = () => {
               <td className="p-4">
                 <div className="flex gap-2">
                   <button className="px-2.5 py-1.5 rounded-md border border-solid">
-                    <i className="ti ti-edit" />
+                    <i className="ti ti-pencil" />
                   </button>
                   <button className="px-2.5 py-1.5 rounded-md border border-solid">
                     <i className="ti ti-eye" />
@@ -212,7 +212,7 @@ export const QuotesTable = () => {
               <td className="p-4">
                 <div className="flex gap-2">
                   <button className="px-2.5 py-1.5 rounded-md border border-solid">
-                    <i className="ti ti-edit" />
+                    <i className="ti ti-pencil" />  
                   </button>
                   <button className="px-2.5 py-1.5 rounded-md border border-solid">
                     <i className="ti ti-eye" />
@@ -224,7 +224,7 @@ export const QuotesTable = () => {
         </table>
         <nav className="flex gap-1 justify-center mt-4">
           <button className="px-3 py-2 text-gray-500 hover:bg-gray-100 rounded">
-            <i className="ti ti-chevron-left" />
+            <i className="ti ti-arrow-left" />
           </button>
           {[6, 7, 8, 9, 10].map((page) => (
             <button
@@ -235,7 +235,7 @@ export const QuotesTable = () => {
             </button>
           ))}
           <button className="px-3 py-2 text-gray-500 hover:bg-gray-100 rounded">
-            <i className="ti ti-chevron-right" />
+            <i className="ti ti-arrow-right" />
           </button>
         </nav>
       </div>
