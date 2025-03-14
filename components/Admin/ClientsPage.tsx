@@ -3,6 +3,7 @@ import React from "react";
 import { DashboardLayout } from "./DashboardLayout";
 import { PageHeader } from "./PageHeader";
 import { StatusBadge } from "./StatusBadge";
+import Link from "next/link";
 
 export const ClientsPage = () => {
   return (
@@ -46,12 +47,7 @@ export const ClientsPage = () => {
                 <tr className="border-b">
                   <td className="p-4 text-sm text-gray-500">#CLT-001</td>
                   <td className="p-4 text-sm text-gray-500">John Smith</td>
-                  <td className="p-4">
-                    <div className="flex gap-1 items-center px-2 py-0.5 bg-sky-100 rounded-[99px] w-fit">
-                      <i className="ti ti-user text-sky-500" />
-                      <span className="text-xs font-bold text-sky-500">Individual</span>
-                    </div>
-                  </td>
+                  <td className="p-4 text-sm text-gray-500">Individual</td>
                   <td className="p-4">
                     <StatusBadge status="active" />
                   </td>
@@ -60,9 +56,80 @@ export const ClientsPage = () => {
                   <td className="p-4 text-sm text-gray-500">2024-03-15</td>
                   <td className="p-4">
                     <div className="flex gap-2">
+                      <Link href="/admin/dashboard/clients/1">
+                        <button className="px-2.5 py-1.5 rounded-md border border-solid">
+                          <i className="ti ti-pencil" />
+                        </button>
+                      </Link>
                       <button className="px-2.5 py-1.5 rounded-md border border-solid">
-                        <i className="ti ti-pencil" />
+                        <i className="ti ti-eye" />
                       </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="p-4 text-sm text-gray-500">#CLT-002</td>
+                  <td className="p-4 text-sm text-gray-500">Sarah Johnson</td>
+                  <td className="p-4 text-sm text-gray-500">Individual</td>
+                  <td className="p-4">
+                    <StatusBadge status="active" />
+                  </td>
+                  <td className="p-4 text-sm text-gray-500">sarah.j@email.com</td>
+                  <td className="p-4 text-sm text-gray-500">(555) 234-5678</td>
+                  <td className="p-4 text-sm text-gray-500">2024-03-14</td>
+                  <td className="p-4">
+                    <div className="flex gap-2">
+                      <Link href="/admin/dashboard/clients/2">
+                        <button className="px-2.5 py-1.5 rounded-md border border-solid">
+                          <i className="ti ti-pencil" />
+                        </button>
+                      </Link>
+                      <button className="px-2.5 py-1.5 rounded-md border border-solid">
+                        <i className="ti ti-eye" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="p-4 text-sm text-gray-500">#CLT-003</td>
+                  <td className="p-4 text-sm text-gray-500">Coastal Properties LLC</td>
+                  <td className="p-4 text-sm text-gray-500">Business</td>
+                  <td className="p-4">
+                    <StatusBadge status="pending" />
+                  </td>
+                  <td className="p-4 text-sm text-gray-500">info@coastalprops.com</td>
+                  <td className="p-4 text-sm text-gray-500">(555) 345-6789</td>
+                  <td className="p-4 text-sm text-gray-500">2024-03-13</td>
+                  <td className="p-4">
+                    <div className="flex gap-2">
+                      <Link href="/admin/dashboard/clients/3">
+                        <button className="px-2.5 py-1.5 rounded-md border border-solid">
+                          <i className="ti ti-pencil" />
+                        </button>
+                      </Link>
+                      <button className="px-2.5 py-1.5 rounded-md border border-solid">
+                        <i className="ti ti-eye" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="p-4 text-sm text-gray-500">#CLT-004</td>
+                  <td className="p-4 text-sm text-gray-500">Beachfront Rentals Inc</td>
+                  <td className="p-4 text-sm text-gray-500">Business</td>
+                  <td className="p-4">
+                    <StatusBadge status="active" />
+                  </td>
+                  <td className="p-4 text-sm text-gray-500">contact@beachfrontrentals.com</td>
+                  <td className="p-4 text-sm text-gray-500">(555) 456-7890</td>
+                  <td className="p-4 text-sm text-gray-500">2024-03-12</td>
+                  <td className="p-4">
+                    <div className="flex gap-2">
+                      <Link href="/admin/dashboard/clients/4">
+                        <button className="px-2.5 py-1.5 rounded-md border border-solid">
+                          <i className="ti ti-pencil" />
+                        </button>
+                      </Link>
                       <button className="px-2.5 py-1.5 rounded-md border border-solid">
                         <i className="ti ti-eye" />
                       </button>

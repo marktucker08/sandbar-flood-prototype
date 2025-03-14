@@ -26,6 +26,14 @@ const DashboardSection: React.FC<DashboardSectionProps> = ({ title, className = 
       premium: '2,100',
       status: 'pending' as const,
     },
+    {
+      id: '3',
+      insuredName: 'Jacob Smith',
+      propertyAddress: '124 Main St, Anytown, USA',
+      dateSubmitted: '2024-03-16',
+      premium: '1,100',
+      status: 'approved' as const,
+    },
   ];
 
   const handleQuoteClick = (quote: Quote) => {

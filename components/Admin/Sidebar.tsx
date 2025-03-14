@@ -14,7 +14,7 @@ export const Sidebar = () => {
     { icon: "ti ti-folder", label: "Policies", href: "/admin/dashboard/policies" },
     { icon: "ti ti-user", label: "Clients", href: "/admin/dashboard/clients" },
     { icon: "ti ti-shield", label: "Inspections", href: "/admin/dashboard/inspections" },
-    { icon: "ti ti-id-badge", label: "Manage Users", href: "/admin/dashboard/users" },
+    { icon: "ti ti-id-badge", label: "Manage Users", href: "/admin/dashboard/settings/users" },
     { icon: "ti ti-settings", label: "System Settings", href: "/admin/dashboard/settings" },
   ];
 

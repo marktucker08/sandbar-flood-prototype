@@ -2,7 +2,7 @@
 import React from "react";
 import { DashboardLayout } from "./DashboardLayout";
 import { PageHeader } from "./PageHeader";
-
+import Link from "next/link";
 const SystemSettingsPage: React.FC = () => {
   return (
     <DashboardLayout>
@@ -70,9 +70,11 @@ const SystemSettingsPage: React.FC = () => {
           <section className="p-6 bg-white rounded-xl border border-solid">
             <header className="flex justify-between items-center mb-6">
               <h2 className="text-xl font-bold text-gray-500">Users & Groups</h2>
-              <button className="px-3 py-1.5 text-sm text-sky-950 hover:bg-sky-50 rounded-lg transition-colors">
-                Manage
-              </button>
+              <Link href="/admin/dashboard/settings/users">
+                <button className="px-3 py-1.5 text-sm text-sky-950 hover:bg-sky-50 rounded-lg transition-colors">
+                  Manage
+                </button>
+              </Link>
             </header>
             <div className="space-y-4">
               <div className="flex justify-between items-center">

@@ -56,10 +56,79 @@ export const QuotesPage = () => {
                   <td className="p-4 text-sm text-gray-500">2024-04-15</td>
                   <td className="p-4">
                     <div className="flex gap-2">
-                        <Link href="/admin/dashboard/quotes/1">
+                      <Link href="/admin/dashboard/quotes/1">
+                        <button className="px-2.5 py-1.5 rounded-md border border-solid">
+                          <i className="ti ti-pencil" />
+                        </button>
+                      </Link>
                       <button className="px-2.5 py-1.5 rounded-md border border-solid">
-                        <i className="ti ti-pencil" />
+                        <i className="ti ti-eye" />
                       </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="p-4 text-sm text-gray-500">#QOT-002</td>
+                  <td className="p-4 text-sm text-gray-500">Sarah Johnson</td>
+                  <td className="p-4 text-sm text-gray-500">456 Oak Ave</td>
+                  <td className="p-4">
+                    <StatusBadge status="approved" />
+                  </td>
+                  <td className="p-4 text-sm text-gray-500">$2,100.00</td>
+                  <td className="p-4 text-sm text-gray-500">2024-03-14</td>
+                  <td className="p-4 text-sm text-gray-500">2024-04-14</td>
+                  <td className="p-4">
+                    <div className="flex gap-2">
+                      <Link href="/admin/dashboard/quotes/2">
+                        <button className="px-2.5 py-1.5 rounded-md border border-solid">
+                          <i className="ti ti-pencil" />
+                        </button>
+                      </Link>
+                      <button className="px-2.5 py-1.5 rounded-md border border-solid">
+                        <i className="ti ti-eye" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="p-4 text-sm text-gray-500">#QOT-003</td>
+                  <td className="p-4 text-sm text-gray-500">Michael Brown</td>
+                  <td className="p-4 text-sm text-gray-500">789 Pine Rd</td>
+                  <td className="p-4">
+                    <StatusBadge status="rejected" />
+                  </td>
+                  <td className="p-4 text-sm text-gray-500">$1,800.00</td>
+                  <td className="p-4 text-sm text-gray-500">2024-03-13</td>
+                  <td className="p-4 text-sm text-gray-500">2024-04-13</td>
+                  <td className="p-4">
+                    <div className="flex gap-2">
+                      <Link href="/admin/dashboard/quotes/3">
+                        <button className="px-2.5 py-1.5 rounded-md border border-solid">
+                          <i className="ti ti-pencil" />
+                        </button>
+                      </Link>
+                      <button className="px-2.5 py-1.5 rounded-md border border-solid">
+                        <i className="ti ti-eye" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="p-4 text-sm text-gray-500">#QOT-004</td>
+                  <td className="p-4 text-sm text-gray-500">Emily Davis</td>
+                  <td className="p-4 text-sm text-gray-500">321 Elm St</td>
+                  <td className="p-4">
+                    <StatusBadge status="expired" />
+                  </td>
+                  <td className="p-4 text-sm text-gray-500">$1,500.00</td>
+                  <td className="p-4 text-sm text-gray-500">2024-02-15</td>
+                  <td className="p-4 text-sm text-gray-500">2024-03-15</td>
+                  <td className="p-4">
+                    <div className="flex gap-2">
+                      <Link href="/admin/dashboard/quotes/4">
+                        <button className="px-2.5 py-1.5 rounded-md border border-solid">
+                          <i className="ti ti-pencil" />
+                        </button>
                       </Link>
                       <button className="px-2.5 py-1.5 rounded-md border border-solid">
                         <i className="ti ti-eye" />

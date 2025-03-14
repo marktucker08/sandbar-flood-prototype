@@ -3,6 +3,7 @@ import React from "react";
 import { DashboardLayout } from "./DashboardLayout";
 import { PageHeader } from "./PageHeader";
 import { StatusBadge } from "./StatusBadge";
+import Link from "next/link";
 
 export const InspectionsPage = () => {
   return (
@@ -55,9 +56,80 @@ export const InspectionsPage = () => {
                   <td className="p-4 text-sm text-gray-500">10:00 AM</td>
                   <td className="p-4">
                     <div className="flex gap-2">
+                      <Link href="/admin/dashboard/inspections/1">
+                        <button className="px-2.5 py-1.5 rounded-md border border-solid">
+                          <i className="ti ti-pencil" />
+                        </button>
+                      </Link>
                       <button className="px-2.5 py-1.5 rounded-md border border-solid">
-                        <i className="ti ti-pencil" />
+                        <i className="ti ti-eye" />
                       </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="p-4 text-sm text-gray-500">#INS-002</td>
+                  <td className="p-4 text-sm text-gray-500">456 Oak Ave</td>
+                  <td className="p-4 text-sm text-gray-500">Sarah Johnson</td>
+                  <td className="p-4">
+                    <StatusBadge status="approved" />
+                  </td>
+                  <td className="p-4 text-sm text-gray-500">Mike Wilson</td>
+                  <td className="p-4 text-sm text-gray-500">2024-03-21</td>
+                  <td className="p-4 text-sm text-gray-500">2:30 PM</td>
+                  <td className="p-4">
+                    <div className="flex gap-2">
+                      <Link href="/admin/dashboard/inspections/2">
+                        <button className="px-2.5 py-1.5 rounded-md border border-solid">
+                          <i className="ti ti-pencil" />
+                        </button>
+                      </Link>
+                      <button className="px-2.5 py-1.5 rounded-md border border-solid">
+                        <i className="ti ti-eye" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="p-4 text-sm text-gray-500">#INS-003</td>
+                  <td className="p-4 text-sm text-gray-500">789 Pine Rd</td>
+                  <td className="p-4 text-sm text-gray-500">Michael Brown</td>
+                  <td className="p-4">
+                    <StatusBadge status="rejected" />
+                  </td>
+                  <td className="p-4 text-sm text-gray-500">Jane Doe</td>
+                  <td className="p-4 text-sm text-gray-500">2024-03-22</td>
+                  <td className="p-4 text-sm text-gray-500">9:15 AM</td>
+                  <td className="p-4">
+                    <div className="flex gap-2">
+                      <Link href="/admin/dashboard/inspections/3">
+                        <button className="px-2.5 py-1.5 rounded-md border border-solid">
+                          <i className="ti ti-pencil" />
+                        </button>
+                      </Link>
+                      <button className="px-2.5 py-1.5 rounded-md border border-solid">
+                        <i className="ti ti-eye" />
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+                <tr className="border-b">
+                  <td className="p-4 text-sm text-gray-500">#INS-004</td>
+                  <td className="p-4 text-sm text-gray-500">321 Elm St</td>
+                  <td className="p-4 text-sm text-gray-500">Emily Davis</td>
+                  <td className="p-4">
+                    <StatusBadge status="approved" />
+                  </td>
+                  <td className="p-4 text-sm text-gray-500">Mike Wilson</td>
+                  <td className="p-4 text-sm text-gray-500">2024-03-23</td>
+                  <td className="p-4 text-sm text-gray-500">1:00 PM</td>
+                  <td className="p-4">
+                    <div className="flex gap-2">
+                      <Link href="/admin/dashboard/inspections/4">
+                        <button className="px-2.5 py-1.5 rounded-md border border-solid">
+                          <i className="ti ti-pencil" />
+                        </button>
+                      </Link>
                       <button className="px-2.5 py-1.5 rounded-md border border-solid">
                         <i className="ti ti-eye" />
                       </button>
