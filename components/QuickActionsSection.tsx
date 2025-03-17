@@ -9,7 +9,7 @@ export default function QuickActionsSection() {
       </header> */}
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-items-center">
         <QuickActionButton
-          icon="https://cdn.builder.io/api/v1/image/assets/1a7e4d913c964d57b4689666b97994d5/48b163ba148175f77aa2f5e74200134a1fcbe151f0ad892f3d985f0db4f28aee?placeholderIfAbsent=true"
+          icon="https://cdn.builder.io/api/v1/image/assets/1a7e4d913c964d57b4689666b97994d5/9caa3de422c0cc2b82bc481c4866723b83be0f038de4a37c5e1d5517a048fb8c?placeholderIfAbsent=true"
           label="Quote 1-4 Family"
           link="/quote/new"
         />

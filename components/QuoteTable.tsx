@@ -1,4 +1,5 @@
 import React from 'react';
+import { Status } from '@/types/admin';
 
 export interface Quote {
   id: string;
@@ -6,7 +7,7 @@ export interface Quote {
   propertyAddress: string;
   dateSubmitted: string;
   premium: string;
-  status: 'pending' | 'approved' | 'rejected';
+  status: Status;
 }
 
 interface QuoteTableProps {

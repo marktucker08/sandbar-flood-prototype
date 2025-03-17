@@ -1,22 +1,31 @@
 import React from "react";
+import { DetailedQuote } from "@/types/admin";
 
-const DatesSection: React.FC = () => {
+interface DatesSectionProps {
+  data: DetailedQuote;
+}
+
+const DatesSection: React.FC<DatesSectionProps> = ({ data }) => {
   return (
-    <section className="flex flex-col gap-4">
-      <h3 className="text-base font-semibold text-gray-900">
-        Expiration and Effective Dates
-      </h3>
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <dt className="mb-1 text-sm text-gray-500">Effective Date:</dt>
-          <dd className="text-sm text-gray-900">2024-10-15</dd>
+    <div className="bg-white rounded-lg border border-solid p-6">
+      <h3 className="text-lg font-semibold text-gray-700 mb-4">Important Dates</h3>
+      <div className="space-y-3">
+        <div className="flex justify-between items-center">
+          <span className="text-gray-600">Created Date</span>
+          <span className="text-gray-700">{data.createdDate}</span>
         </div>
-        <div>
-          <dt className="mb-1 text-sm text-gray-500">Expiration Date:</dt>
-          <dd className="text-sm text-gray-900">2025-10-14</dd>
+        <div className="flex justify-between items-center">
+          <span className="text-gray-600">Expiry Date</span>
+          <span className="text-gray-700">{data.expiryDate}</span>
         </div>
+        {data.lastClaimDate && (
+          <div className="flex justify-between items-center">
+            <span className="text-gray-600">Last Claim Date</span>
+            <span className="text-gray-700">{data.lastClaimDate}</span>
+          </div>
+        )}
       </div>
-    </section>
+    </div>
   );
 };
 

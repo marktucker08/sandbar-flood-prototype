@@ -1,32 +1,39 @@
 import React from "react";
+import { DetailedQuote } from "@/types/admin";
 
-const QuoteBreakdown: React.FC = () => {
+interface QuoteBreakdownProps {
+  data: DetailedQuote;
+}
+
+const QuoteBreakdown: React.FC<QuoteBreakdownProps> = ({ data }) => {
   return (
-    <section className="flex flex-col gap-4">
-      <h3 className="text-base font-semibold text-gray-900">Quote Breakdown</h3>
-      <div className="grid grid-cols-2 gap-4">
-        <div>
-          <dt className="mb-1 text-sm text-gray-500">Premium Amount:</dt>
-          <dd className="text-sm text-gray-900">$120 per month</dd>
+    <div className="bg-white rounded-lg border border-solid p-6">
+      <h3 className="text-lg font-semibold text-gray-700 mb-4">Premium Breakdown</h3>
+      <div className="space-y-3">
+        <div className="flex justify-between items-center">
+          <span className="text-gray-600">Base Rate</span>
+          <span className="text-gray-700">{data.baseRate}</span>
         </div>
-        <div>
-          <dt className="mb-1 text-sm text-gray-500">Annual Premium:</dt>
-          <dd className="text-sm text-gray-900">$1,400</dd>
+        <div className="flex justify-between items-center">
+          <span className="text-gray-600">Flood Zone Factor</span>
+          <span className="text-gray-700">{data.floodZoneFactor}</span>
         </div>
-        <div>
-          <dt className="mb-1 text-sm text-gray-500">Total Charges:</dt>
-          <dd className="text-sm text-gray-900">$1,320</dd>
+        <div className="flex justify-between items-center">
+          <span className="text-gray-600">Elevation Factor</span>
+          <span className="text-gray-700">{data.elevationFactor}</span>
         </div>
-        <div>
-          <dt className="mb-1 text-sm text-gray-500">Tax:</dt>
-          <dd className="text-sm text-gray-900">$20</dd>
+        <div className="flex justify-between items-center">
+          <span className="text-gray-600">Deductible Factor</span>
+          <span className="text-gray-700">{data.deductibleFactor}</span>
         </div>
-        <div>
-          <dt className="mb-1 text-sm text-gray-500">Final Premium:</dt>
-          <dd className="text-sm text-gray-900">$1,340</dd>
+        <div className="border-t pt-3 mt-3">
+          <div className="flex justify-between items-center">
+            <span className="font-semibold text-gray-700">Total Premium</span>
+            <span className="font-semibold text-gray-700">{data.totalPremium}</span>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 

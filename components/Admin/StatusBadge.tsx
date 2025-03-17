@@ -1,7 +1,8 @@
 import React from "react";
+import { Status } from "@/types/admin";
 
 interface StatusBadgeProps {
-  status: "pending" | "approved" | "rejected" | "expired" | "active";
+  status: Status;
 }
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
@@ -11,6 +12,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
     rejected: "bg-red-100 text-red-800",
     expired: "bg-gray-100 text-gray-800",
     active: "bg-blue-100 text-blue-800",
+    completed: "bg-purple-100 text-purple-800",
   };
 
   return (

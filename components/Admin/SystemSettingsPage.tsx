@@ -1,11 +1,10 @@
 "use client";
 import React from "react";
-import { DashboardLayout } from "./DashboardLayout";
 import { PageHeader } from "./PageHeader";
 import Link from "next/link";
 const SystemSettingsPage: React.FC = () => {
   return (
-    <DashboardLayout>
+   
       <main className="flex flex-col flex-1 gap-4 p-5">
         <PageHeader title="System Settings" />
         
@@ -147,7 +146,6 @@ const SystemSettingsPage: React.FC = () => {
           </section>
         </div>
       </main>
-    </DashboardLayout>
   );
 };
 

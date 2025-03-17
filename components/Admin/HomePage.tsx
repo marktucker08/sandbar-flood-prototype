@@ -1,6 +1,5 @@
 "use client";
 import React from "react";
-import { DashboardLayout } from "./DashboardLayout";
 import { PageHeader } from "./PageHeader";
 import { StatsCard } from "./StatsCard";
 
@@ -38,7 +37,7 @@ export const HomePage = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-50">
-      <DashboardLayout>
+
         <main className="flex flex-col flex-1 gap-4 p-5">
           <PageHeader title="Dashboard" />
           <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -64,7 +63,6 @@ export const HomePage = () => {
             </div>
           </section>
         </main>
-      </DashboardLayout>
     </div>
   );
 }; 

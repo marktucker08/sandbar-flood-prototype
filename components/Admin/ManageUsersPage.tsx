@@ -1,12 +1,11 @@
 "use client";
 import React from "react";
-import { DashboardLayout } from "./DashboardLayout";
 import { PageHeader } from "./PageHeader";
 import { StatusBadge } from "./StatusBadge";
 
 const ManageUsersPage: React.FC = () => {
   return (
-    <DashboardLayout>
+
       <main className="flex flex-col flex-1 gap-4 p-5">
         <PageHeader 
           title="Manage Users" 
@@ -170,7 +169,6 @@ const ManageUsersPage: React.FC = () => {
           </section>
         </div>
       </main>
-    </DashboardLayout>
   );
 };
 

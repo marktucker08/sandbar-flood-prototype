@@ -1,6 +1,7 @@
 import React from "react";
 import QuoteTable from './QuoteTable';
 import type { Quote } from './QuoteTable';
+import { Status } from '@/types/admin';
 
 interface DashboardSectionProps {
   title: string;
@@ -16,7 +17,7 @@ const DashboardSection: React.FC<DashboardSectionProps> = ({ title, className = 
       propertyAddress: '123 Main St, Anytown, USA',
       dateSubmitted: '2024-03-15',
       premium: '1,250',
-      status: 'pending' as const,
+      status: 'pending' as Status,
     },
     {
       id: '2',
@@ -24,7 +25,7 @@ const DashboardSection: React.FC<DashboardSectionProps> = ({ title, className = 
       propertyAddress: '456 Oak Ave, Somewhere, USA',
       dateSubmitted: '2024-03-14',
       premium: '2,100',
-      status: 'pending' as const,
+      status: 'pending' as Status,
     },
     {
       id: '3',
@@ -32,7 +33,7 @@ const DashboardSection: React.FC<DashboardSectionProps> = ({ title, className = 
       propertyAddress: '124 Main St, Anytown, USA',
       dateSubmitted: '2024-03-16',
       premium: '1,100',
-      status: 'approved' as const,
+      status: 'approved' as Status,
     },
   ];
 

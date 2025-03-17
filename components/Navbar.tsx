@@ -24,17 +24,17 @@ const Navbar = () => {
                             </Link>
                         </li>
                         <li>
-                            <Link href='#quotes'>
+                            <Link href='/quotes/my'>
                             <p className='text-gray-700 hover:text-gray-900'>My Quotes</p>
                             </Link>
                         </li>
                         <li>
-                        <Link href='#quotes'>
+                        <Link href='/quotes/agency'>
                             <p className='text-gray-700 hover:text-gray-900'>Agency Quotes</p>
                             </Link>
                         </li>
                         <li>
-                        <Link href='#help'>
+                        <Link href='/help'>
                             <p className='text-gray-700 hover:text-gray-900'>Help</p>
                             </Link>
                         </li>

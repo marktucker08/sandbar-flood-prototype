@@ -1,26 +1,33 @@
 import React from "react";
+import { DetailedQuote } from "@/types/admin";
 
-const PersonalDetails: React.FC = () => {
+interface PersonalDetailsProps {
+  data: DetailedQuote;
+}
+
+const PersonalDetails: React.FC<PersonalDetailsProps> = ({ data }) => {
   return (
-    <section className="flex flex-col gap-4">
-      <h3 className="text-base font-semibold text-gray-900">
-        Personal Details
-      </h3>
+    <div className="bg-white rounded-lg border border-solid p-6">
+      <h3 className="text-lg font-semibold text-gray-700 mb-4">Personal Details</h3>
       <div className="grid grid-cols-2 gap-4">
         <div>
-          <dt className="mb-1 text-sm text-gray-500">Client ID:</dt>
-          <dd className="text-sm text-gray-900">CUST-34256</dd>
+          <label className="block text-sm text-gray-500 mb-1">First Name</label>
+          <p className="text-gray-700">{data.firstName}</p>
         </div>
         <div>
-          <dt className="mb-1 text-sm text-gray-500">Full Name:</dt>
-          <dd className="text-sm text-gray-900">Theresa Heidenreich</dd>
+          <label className="block text-sm text-gray-500 mb-1">Last Name</label>
+          <p className="text-gray-700">{data.lastName}</p>
         </div>
         <div>
-          <dt className="mb-1 text-sm text-gray-500">Occupation:</dt>
-          <dd className="text-sm text-gray-900">Marketing Manager</dd>
+          <label className="block text-sm text-gray-500 mb-1">Date of Birth</label>
+          <p className="text-gray-700">{data.dateOfBirth}</p>
+        </div>
+        <div>
+          <label className="block text-sm text-gray-500 mb-1">SSN</label>
+          <p className="text-gray-700">{data.ssn}</p>
         </div>
       </div>
-    </section>
+    </div>
   );
 };
 
