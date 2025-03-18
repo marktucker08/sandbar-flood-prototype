@@ -21,16 +21,16 @@ export default function Layout({
   return (
     <div className="min-h-screen">
       <nav className="bg-white shadow-sm">
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-6 py-3">
           <div className="flex gap-6">
             {tabs.map((tab) => (
               <Link
                 key={tab.href}
                 href={tab.href}
-                className={`text-sm font-medium ${
+                className={`text-sm font-medium py-2 ${
                   pathname === tab.href
                     ? "text-blue-600 border-b-2 border-blue-600"
-                    : "text-gray-500 hover:text-gray-700"
+                    : "text-gray-700 hover:text-gray-900"
                 }`}
               >
                 {tab.label}
