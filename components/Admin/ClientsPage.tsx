@@ -3,7 +3,7 @@ import React from "react";
 import { PageHeader } from "./PageHeader";
 import { StatusBadge } from "./StatusBadge";
 import { DataTable } from "./DataTable";
-import { Client, Status } from "@/types/admin";
+import { Client, Column, Status } from "@/types/admin";
 
 export const ClientsPage = () => {
   const columns = [
@@ -82,7 +82,7 @@ export const ClientsPage = () => {
           </div>
         </header>
         <DataTable<Client>
-          columns={columns}
+          columns={columns as Column<Client>[]}
           data={data}
           editLink="/admin/dashboard/clients"
           viewLink="/admin/dashboard/clients"

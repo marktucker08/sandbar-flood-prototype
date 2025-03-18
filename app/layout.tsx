@@ -1,20 +1,12 @@
 import type { Metadata } from "next";
-// import { Geist, Geist_Mono } from "next/font/google";
+import { Work_Sans } from "next/font/google";
 import "./globals.css";
 import "@icon/themify-icons/themify-icons.css";
 import localFont from "next/font/local";
 
-// const geistSans = Geist({
-//   variable: "--font-geist-sans",
-//   subsets: ["latin"],
-// });
+const workSans = Work_Sans({ subsets: ["latin"], variable: "--font-work-sans" });
 
-// const geistMono = Geist_Mono({
-//   variable: "--font-geist-mono",
-//   subsets: ["latin"],
-// });
-
-const arSans = localFont( {
+const arSans = localFont({
   src: [
     {
       path: "./fonts/AROneSans-VariableFont_ARRR,wght.ttf",
@@ -61,21 +53,22 @@ const arSans = localFont( {
 });
 
 export const metadata: Metadata = {
-  title: "Sandbar Flood",
-  description: "Flood Insurance",
+  title: "SandBar Flood Insurance",
+  description: "Your one stop solution for all things flood insurance",
 };
 
 export default function RootLayout({
   children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+}: {
+  children: React.ReactNode
+}) {
   return (
     <html lang="en">
-      <body
-        className={arSans.variable}
-      >
-        {children}
+      <body className={`${workSans.variable} ${arSans.variable}`}>
+        
+        <main>
+          {children}
+        </main>
       </body>
     </html>
   );

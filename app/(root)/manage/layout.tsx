@@ -1,66 +1,45 @@
-"use client";
-import React from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
+'use client';
 
-const QuotesLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+import React from 'react';
+import { usePathname } from 'next/navigation';
+import Link from 'next/link';
+
+export default function Layout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const pathname = usePathname();
-  const isMyQuotes = pathname === "/manage/quotes/my";
-  const isAgencyQuotes = pathname === "/manage/quotes/agency";
-  const isMyClients = pathname === "/manage/clients/my";
-  const isMyPolicies = pathname === "/manage/policies/my";
-  
+
+  const tabs = [
+    { label: 'My Clients', href: '/manage/clients/my' },
+    { label: 'My Quotes', href: '/manage/quotes/my' },
+    { label: 'My Policies', href: '/manage/policies/my' },
+    { label: 'Agency Quotes', href: '/manage/quotes/agency' },
+  ];
+
   return (
     <div className="min-h-screen">
       <nav className="bg-white shadow-sm">
         <div className="container mx-auto px-6 py-4">
           <div className="flex gap-6">
-            <Link
-              href="/manage/quotes/my"
-              className={`text-sm font-medium ${
-                isMyQuotes
-                  ? "text-blue-600 border-b-2 border-blue-600"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              My Quotes
-            </Link>
-            <Link
-              href="/manage/quotes/agency"
-              className={`text-sm font-medium ${
-                isAgencyQuotes
-                  ? "text-blue-600 border-b-2 border-blue-600"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              Agency Quotes
-            </Link>
-            <Link
-              href="/manage/clients/my"
-              className={`text-sm font-medium ${
-                isMyClients
-                  ? "text-blue-600 border-b-2 border-blue-600"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              My Clients
-            </Link>
-            <Link
-              href="/manage/policies/my"
-              className={`text-sm font-medium ${
-                isMyPolicies
-                  ? "text-blue-600 border-b-2 border-blue-600"
-                  : "text-gray-500 hover:text-gray-700"
-              }`}
-            >
-              My Policies
-            </Link>
+            {tabs.map((tab) => (
+              <Link
+                key={tab.href}
+                href={tab.href}
+                className={`text-sm font-medium ${
+                  pathname === tab.href
+                    ? "text-blue-600 border-b-2 border-blue-600"
+                    : "text-gray-500 hover:text-gray-700"
+                }`}
+              >
+                {tab.label}
+              </Link>
+            ))}
           </div>
         </div>
       </nav>
       {children}
     </div>
   );
-};
-
-export default QuotesLayout; 
+} 
