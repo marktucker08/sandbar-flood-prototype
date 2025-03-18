@@ -64,7 +64,7 @@ export const InspectionsPage = () => {
       <PageHeader 
         title="Inspections" 
         actionButton={{
-          icon: "ti ti-calendar-plus",
+          icon: "ti ti-calendar",
           label: "Schedule Inspection",
           onClick: () => console.log("Schedule Inspection clicked")
         }}

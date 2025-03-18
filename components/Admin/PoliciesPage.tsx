@@ -64,7 +64,7 @@ export const PoliciesPage = () => {
       <PageHeader 
         title="Policies" 
         actionButton={{
-          icon: "ti ti-file-plus",
+          icon: "ti ti-plus",
           label: "Add Policy",
           onClick: () => console.log("Add Policy clicked")
         }}

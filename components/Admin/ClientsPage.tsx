@@ -64,7 +64,7 @@ export const ClientsPage = () => {
       <PageHeader 
         title="Clients" 
         actionButton={{
-          icon: "ti ti-user-plus",
+          icon: "ti ti-plus",
           label: "Add Client",
           onClick: () => console.log("Add Client clicked")
         }}

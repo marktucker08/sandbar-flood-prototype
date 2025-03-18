@@ -10,7 +10,7 @@ const ManageUsersPage: React.FC = () => {
         <PageHeader 
           title="Manage Users" 
           actionButton={{
-            icon: "ti ti-user-plus",
+            icon: "ti ti-plus",
             label: "Add User",
             onClick: () => console.log("Add User clicked")
           }}
@@ -85,7 +85,7 @@ const ManageUsersPage: React.FC = () => {
                 <p className="text-sm text-gray-500 mt-1">Manage partner agencies</p>
               </div>
               <button className="px-3 py-1.5 text-sm bg-sky-950 text-white rounded-lg hover:bg-sky-900 transition-colors">
-                Add Agency
+                <i className="ti ti-plus" /> Add Agency
               </button>
             </header>
             <div className="space-y-4">

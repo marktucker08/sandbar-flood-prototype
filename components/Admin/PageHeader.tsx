@@ -48,7 +48,20 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ title, actionButton }) =
             <span className="text-sm font-medium text-sky-950">Bruce Banner</span>
             <span className="text-xs text-gray-500">Administrator</span>
           </div>
-          <i className="ti ti-arrow-down text-gray-500" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-gray-500"
+          >
+            <path d="M6 9l6 6 6-6" />
+          </svg>
         </div>
       </div>
     </header>
