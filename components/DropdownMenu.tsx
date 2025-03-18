@@ -2,9 +2,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { faChevronDown, faChevronUp } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
 
 
 interface DropdownMenuProps {
@@ -45,7 +42,20 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items }) => {
         aria-haspopup="true"
       >
         {label}
-        <FontAwesomeIcon icon={isOpen ? faChevronUp : faChevronDown} className='text-sm transition-transform duration-200' />
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          className={`w-4 h-4 transition-transform duration-200 ${isOpen ? 'rotate-180' : ''}`}
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 9l-7 7-7-7"
+          />
+        </svg>
       </button>
 
       <div
