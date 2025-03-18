@@ -34,7 +34,7 @@ export const DataTable = <T extends { id: string }>({
                 <td key={column.key.toString()} className="p-4 text-sm text-gray-500">
                   {column.render
                     ? column.render(row[column.key as keyof T], row)
-                    : row[column.key as keyof T]}
+                    : String(row[column.key as keyof T])}
                 </td>
               ))}
               <td className="p-4">
