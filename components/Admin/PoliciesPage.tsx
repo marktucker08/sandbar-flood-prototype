@@ -3,7 +3,7 @@ import React from "react";
 import { PageHeader } from "./PageHeader";
 import { StatusBadge } from "./StatusBadge";
 import { DataTable } from "./DataTable";
-import { Policy, Status } from "@/types/admin";
+import { Column, Policy, Status } from "@/types/admin";
 
 export const PoliciesPage = () => {
   const columns = [
@@ -82,7 +82,7 @@ export const PoliciesPage = () => {
           </div>
         </header>
         <DataTable<Policy>
-          columns={columns}
+          columns={columns as Column<Policy>[]}
           data={data}
           editLink="/admin/dashboard/policies/details"
           viewLink="/admin/dashboard/policies/details"

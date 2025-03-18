@@ -3,7 +3,7 @@ import React from "react";
 import { PageHeader } from "./PageHeader";
 import { StatusBadge } from "./StatusBadge";
 import { DataTable } from "./DataTable";
-import { Quote, Status } from "@/types/admin";
+import { Column, Quote, Status } from "@/types/admin";
 
 export const QuotesPage = () => {
   const columns = [
@@ -82,7 +82,7 @@ export const QuotesPage = () => {
           </div>
         </header>
         <DataTable<Quote>
-          columns={columns}
+          columns={columns as Column<Quote>[]}
           data={data}
           editLink="/admin/dashboard/quotes/details"
           viewLink="/admin/dashboard/quotes/details"

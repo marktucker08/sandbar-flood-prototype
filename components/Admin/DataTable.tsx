@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { DataTableProps, Column } from "@/types/admin";
+import { DataTableProps } from "@/types/admin";
 
 export const DataTable = <T extends { id: string }>({
   columns,
