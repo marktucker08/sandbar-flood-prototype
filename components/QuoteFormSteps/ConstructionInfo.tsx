@@ -29,19 +29,19 @@ const ConstructionInfo: React.FC<ConstructionInfoProps> = ({
       value: "frame",
       label: "Frame",
       description: "Wood frame, steel frame, or other skeletal structure",
-      image: "/images/construction-frame.png"
+      image: "/wood-frame2.jpg"
     },
     {
       value: "masonry",
       label: "Masonry",
       description: "Brick, concrete block, or stone construction",
-      image: "/images/construction-masonry.png"
+      image: "/brick-wall2.jpg"
     },
     {
       value: "superior",
       label: "Superior",
       description: "Reinforced concrete or superior construction methods",
-      image: "/images/construction-superior.png"
+      image: "/concrete-wall2.jpg"
     }
   ];
 
