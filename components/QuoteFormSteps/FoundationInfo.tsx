@@ -2,10 +2,13 @@
 import React from "react";
 import Image from "next/image";
 import FormStepLayout from "./FormStepLayout";
+import { QuoteFormData } from "@/types/quote";
 
 interface FoundationInfoProps {
   onNext: () => void;
   onBack: () => void;
+  formData?: QuoteFormData;
+  updateFormData?: (data: Partial<QuoteFormData>) => void;
 }
 
 const FoundationInfo: React.FC<FoundationInfoProps> = ({
@@ -25,13 +28,13 @@ const FoundationInfo: React.FC<FoundationInfoProps> = ({
   ];
 
   const foundationTypes = [
-    { value: "slab", label: "Slab at Grade", image: "/images/foundation-slab.png" },
-    { value: "raised", label: "Raised Slab on Fill", image: "/images/foundation-raised.png" },
-    { value: "unfinished", label: "Unfinished Basement", image: "/images/foundation-unfinished.png" },
-    { value: "finished", label: "Finished Basement", image: "/images/foundation-finished.png" },
-    { value: "pilings-enclosure", label: "Elevated on Pilings with Enclosure", image: "/images/foundation-pilings-enclosure.png" },
-    { value: "pilings-no-enclosure", label: "Elevated on Pilings with No Enclosure", image: "/images/foundation-pilings-no-enclosure.png" },
-    { value: "full-wall", label: "Elevated on Full Foundation Wall", image: "/images/foundation-full-wall.png" },
+    { value: "slab", label: "Slab at Grade", image: "https://placehold.co/600x400" },
+    { value: "raised", label: "Raised Slab on Fill", image: "https://placehold.co/600x400" },
+    { value: "unfinished", label: "Unfinished Basement", image: "https://placehold.co/600x400" },
+    { value: "finished", label: "Finished Basement", image: "https://placehold.co/600x400" },
+    { value: "pilings-enclosure", label: "Elevated on Pilings with Enclosure", image: "https://placehold.co/600x400" },
+    { value: "pilings-no-enclosure", label: "Elevated on Pilings with No Enclosure", image: "https://placehold.co/600x400" },
+    { value: "full-wall", label: "Elevated on Full Foundation Wall", image: "https://placehold.co/600x400" },
   ];
 
   return (

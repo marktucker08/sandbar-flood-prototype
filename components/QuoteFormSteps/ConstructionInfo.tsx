@@ -2,10 +2,13 @@
 import React from "react";
 import Image from "next/image";
 import FormStepLayout from "./FormStepLayout";
+import { QuoteFormData } from "@/types/quote";
 
 interface ConstructionInfoProps {
   onNext: () => void;
   onBack: () => void;
+  formData?: QuoteFormData;
+  updateFormData?: (data: Partial<QuoteFormData>) => void;
 }
 
 const ConstructionInfo: React.FC<ConstructionInfoProps> = ({

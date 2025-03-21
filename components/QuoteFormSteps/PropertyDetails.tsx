@@ -2,10 +2,13 @@
 import React from "react";
 import FormStepLayout from "./FormStepLayout";
 import FormInput from "../FormInput";
+import { QuoteFormData } from "@/types/quote";
 
 interface PropertyDetailsProps {
   onNext: () => void;
   onBack: () => void;
+  formData?: QuoteFormData;
+  updateFormData?: (data: Partial<QuoteFormData>) => void;
 }
 
 const PropertyDetails: React.FC<PropertyDetailsProps> = ({

@@ -7,54 +7,11 @@ import ElevationCertificate from "./QuoteFormSteps/ElevationCertificate";
 import FoundationInfo from "./QuoteFormSteps/FoundationInfo";
 import ConstructionInfo from "./QuoteFormSteps/ConstructionInfo";
 import CoverageOptions from "./QuoteFormSteps/CoverageOptions";
-
-interface FormData {
-  // Location Verification
-  address?: string;
-  
-  // Insured Information
-  insuredType?: 'individual' | 'business';
-  insuredFirstName?: string;
-  insuredLastName?: string;
-  additionalInsuredFirstName?: string;
-  additionalInsuredLastName?: string;
-  mailingAddress?: string;
-  address2?: string;
-  city?: string;
-  state?: string;
-  zip?: string;
-
-  // Property Details
-  effectiveDate?: string;
-  waitingPeriod?: 'standard' | 'loan';
-  yearBuilt?: string;
-  numberOfStories?: string;
-  numberOfFamilies?: string;
-  squareFootage?: string;
-  occupancy?: 'primary' | 'secondary' | 'seasonal' | 'rental';
-
-  // Foundation Info
-  foundation?: 'slab' | 'raised' | 'unfinished' | 'finished' | 'pilings-enclosure' | 'pilings-no-enclosure' | 'full-wall';
-
-  // Elevation Certificate
-  elevationCertificate?: string;
-
-  // Construction Info
-  constructionType?: string;
-
-  // Coverage Options
-  buildingReplacementCost?: string;
-  contentsReplacementCost?: string;
-  buildingCoverage?: string;
-  contentsCoverage?: string;
-  lossOfUseCoverage?: string;
-  deductible?: string;
-}
+import { QuoteFormData } from "@/types/quote";
 
 export const InsuranceForm = () => {
   const [currentStep, setCurrentStep] = React.useState(0);
-  const [formData, setFormData] = React.useState<FormData>({});
-  // const [isNextDisabled, setIsNextDisabled] = React.useState(false);
+  const [formData, setFormData] = React.useState<QuoteFormData>({});
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
@@ -68,63 +25,63 @@ export const InsuranceForm = () => {
     }
   };
 
-  const steps = [
-    <LocationVerification
-      key="location"
-      onNext={handleNext}
-      onBack={handleBack}
-      // isFirstStep={true}
-      // isNextDisabled={isNextDisabled}
-    />,
-    <InsuredInformation
-      key="insured"
-      onNext={handleNext}
-      onBack={handleBack}
-      // isNextDisabled={isNextDisabled}
-    />,
-    <PropertyDetails
-      key="property"
-      onNext={handleNext}
-      onBack={handleBack}
-      // isNextDisabled={isNextDisabled}
-    />,
-    <FoundationInfo
-      key="foundation"
-      onNext={handleNext}
-      onBack={handleBack}
-      // isNextDisabled={isNextDisabled}
-    />,
-    <ElevationCertificate
-      key="elevation"
-      onNext={handleNext}
-      onBack={handleBack}
-      // isNextDisabled={isNextDisabled}
-    />,
-    <ConstructionInfo
-      key="construction"
-      onNext={handleNext}
-      onBack={handleBack}
-      // isNextDisabled={isNextDisabled}
-    />,
-    <CoverageOptions
-      key="coverage"
-      onNext={() => {
-        console.log("Submitting form data:", formData);
-        // Handle form submission here
-      }}
-      onBack={handleBack}
-      // isLastStep={true}
-      // isNextDisabled={isNextDisabled}
-    />,
-  ];
-
-  // Update form data
-  const updateFormData = (stepData: Partial<FormData>) => {
+  const updateFormData = (stepData: Partial<QuoteFormData>) => {
     setFormData((prev) => ({
       ...prev,
       ...stepData,
     }));
   };
+
+  const steps = [
+    <LocationVerification
+      key="location"
+      onNext={handleNext}
+      onBack={handleBack}
+      formData={formData}
+      updateFormData={updateFormData}
+    />,
+    <InsuredInformation
+      key="insured"
+      onNext={handleNext}
+      onBack={handleBack}
+      formData={formData}
+      updateFormData={updateFormData}
+    />,
+    <PropertyDetails
+      key="property"
+      onNext={handleNext}
+      onBack={handleBack}
+      formData={formData}
+      updateFormData={updateFormData}
+    />,
+    <FoundationInfo
+      key="foundation"
+      onNext={handleNext}
+      onBack={handleBack}
+      formData={formData}
+      updateFormData={updateFormData}
+    />,
+    <ElevationCertificate
+      key="elevation"
+      onNext={handleNext}
+      onBack={handleBack}
+      formData={formData}
+      updateFormData={updateFormData}
+    />,
+    <ConstructionInfo
+      key="construction"
+      onNext={handleNext}
+      onBack={handleBack}
+      formData={formData}
+      updateFormData={updateFormData}
+    />,
+    <CoverageOptions
+      key="coverage"
+      onBack={handleBack}
+      formData={formData}
+      updateFormData={updateFormData}
+    />,
+  ];
 
   return (
     <main className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-300 to-blue-200 py-8 px-4">

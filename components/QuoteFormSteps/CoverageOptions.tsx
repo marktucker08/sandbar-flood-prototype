@@ -2,16 +2,21 @@
 import React from "react";
 import FormStepLayout from "./FormStepLayout";
 import FormInput from "../FormInput";
+import { useRouter } from "next/navigation";
+import { QuoteFormData } from "@/types/quote";
 
 interface CoverageOptionsProps {
-  onNext: () => void;
   onBack: () => void;
+  formData?: QuoteFormData;
+  updateFormData?: (data: Partial<QuoteFormData>) => void;
 }
 
 const CoverageOptions: React.FC<CoverageOptionsProps> = ({
-  onNext,
   onBack,
+  formData,
+  updateFormData,
 }) => {
+  const router = useRouter();
   const [deductible, setDeductible] = React.useState("1000");
 
   const progressSteps = [
@@ -34,11 +39,24 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
     { value: "50000", label: "$50,000" },
   ];
 
+  const handleSubmit = async () => {
+    // Update form data with coverage options
+    if (updateFormData) {
+      updateFormData({
+        deductible,
+        // Add other coverage fields here
+      });
+    }
+
+    // Route to processing page
+    router.push("/quotes/processing");
+  };
+
   return (
     <FormStepLayout
       title="Coverage Options"
       progressSteps={progressSteps}
-      onNext={onNext}
+      onNext={handleSubmit}
       onBack={onBack}
       nextLabel="Submit"
     >
@@ -49,12 +67,16 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
             type="number"
             placeholder="Enter amount"
             prefix="$"
+            value={formData?.buildingReplacementCost || ""}
+            onChange={(e) => updateFormData?.({ buildingReplacementCost: e.target.value })}
           />
           <FormInput
             label="Contents Replacement Cost"
             type="number"
             placeholder="Enter amount"
             prefix="$"
+            value={formData?.contentsReplacementCost || ""}
+            onChange={(e) => updateFormData?.({ contentsReplacementCost: e.target.value })}
           />
         </div>
 
@@ -64,12 +86,16 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
             type="number"
             placeholder="Enter amount"
             prefix="$"
+            value={formData?.buildingCoverage || ""}
+            onChange={(e) => updateFormData?.({ buildingCoverage: e.target.value })}
           />
           <FormInput
             label="Contents Coverage"
             type="number"
             placeholder="Enter amount"
             prefix="$"
+            value={formData?.contentsCoverage || ""}
+            onChange={(e) => updateFormData?.({ contentsCoverage: e.target.value })}
           />
         </div>
 
@@ -78,6 +104,8 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
           type="number"
           placeholder="Enter amount"
           prefix="$"
+          value={formData?.lossOfUseCoverage || ""}
+          onChange={(e) => updateFormData?.({ lossOfUseCoverage: e.target.value })}
         />
 
         <div>

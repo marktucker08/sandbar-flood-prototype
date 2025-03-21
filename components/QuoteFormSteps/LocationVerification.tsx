@@ -1,11 +1,14 @@
 "use client";
-import * as React from "react";
-import FormInput from "./../FormInput";
+import React from "react";
+import FormInput from "../FormInput";
 import FormStepLayout from "./FormStepLayout";
+import { QuoteFormData } from "@/types/quote";
 
 interface LocationVerificationProps {
   onNext: () => void;
   onBack: () => void;
+  formData?: QuoteFormData;
+  updateFormData?: (data: Partial<QuoteFormData>) => void;
 }
 
 const LocationVerification: React.FC<LocationVerificationProps> = ({

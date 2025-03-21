@@ -59,7 +59,7 @@ const DropdownMenu: React.FC<DropdownMenuProps> = ({ label, items }) => {
       </button>
 
       <div
-        className={`absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-lg py-1 transform transition-all duration-200 origin-top ${
+        className={`absolute top-full left-0 mt-1 w-48 bg-white rounded-lg shadow-lg py-1 transform transition-all duration-200 origin-top z-50 ${
           isOpen 
             ? 'opacity-100 translate-y-0 visible' 
             : 'opacity-0 -translate-y-2 invisible'
