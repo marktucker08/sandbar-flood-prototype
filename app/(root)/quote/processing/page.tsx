@@ -33,7 +33,7 @@ const QuoteProcessingPage = () => {
       } else {
         // Redirect to quote results page after processing
         setTimeout(() => {
-          router.push('/quotes/results');
+          router.push('/quote/results');
         }, 1000);
       }
     };

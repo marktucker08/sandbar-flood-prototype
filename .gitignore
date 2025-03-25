@@ -13,6 +13,9 @@
 # project files
 /project-docs
 
+# cursor rules
+.cursor/rules
+
 # testing
 /coverage
 

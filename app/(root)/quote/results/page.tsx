@@ -83,10 +83,22 @@ const QuoteResultsPage = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 mt-8">
               <Link
-                href={`/quotes/${quoteDetails.quoteId}`}
+                href={`/quote/${quoteDetails.quoteId}`}
                 className="flex-1 bg-amber-600 text-white px-6 py-3 rounded-lg text-center font-medium hover:bg-amber-700 transition-colors"
               >
                 View Full Quote Details
+              </Link>
+              <Link
+                href="/"
+                className="flex-1 bg-amber-600 text-white px-6 py-3 rounded-lg text-center font-medium hover:bg-amber-700 transition-colors"
+              >
+                Submit for Approval
+              </Link>
+              <Link
+                href="/"
+                className="flex-1 bg-amber-600 text-white px-6 py-3 rounded-lg text-center font-medium hover:bg-amber-700 transition-colors"
+              >
+                Request to Bind Quote
               </Link>
               <Link
                 href="/"

@@ -49,7 +49,7 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
     }
 
     // Route to processing page
-    router.push("/quotes/processing");
+    router.push("/quote/processing");
   };
 
   return (
