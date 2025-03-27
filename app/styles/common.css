@@ -1,4 +1,3 @@
-
 /* Common Typography */
 .heading-1 {
     @apply text-4xl font-bold text-primary tracking-tight;
@@ -68,7 +67,7 @@
 }
 
 .form-label {
-    @apply block text-sm font-medium text-primary mb-1;
+    @apply flex items-center text-sm font-medium text-primary mb-1;
 }
 
 .form-error {

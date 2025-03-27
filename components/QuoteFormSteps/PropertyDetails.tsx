@@ -89,7 +89,7 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   const occupancyTypeOptions = [
     { value: "primary", label: "Primary Residence" },
     { value: "secondary", label: "Secondary Residence" },
-    { value: "seasonal", label: "Seasonal" },
+    { value: "seasonal", label: "Seasonal Residence" },
     { value: "rental", label: "Building Rented To Others" },
   ];
 
@@ -169,8 +169,7 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
         options={occupancyTypeOptions}
         value={formData?.occupancyType}
         onChange={(value) => updateFormData?.({ occupancyType: value as "primary" | "secondary" | "seasonal" | "rental" })}
-        layout="grid"
-        gridCols={2}
+        layout="horizontal"
         required
       />
     </FormStepLayout>

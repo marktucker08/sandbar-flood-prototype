@@ -85,8 +85,8 @@ const ManageUsersPage: React.FC = () => {
                 <h2 className="text-xl font-bold text-gray-500">Agencies</h2>
                 <p className="text-sm text-gray-500 mt-1">Manage partner agencies</p>
               </div>
-              <button className="px-3 py-1.5 text-sm bg-sky-950 text-white rounded-lg hover:bg-sky-900 transition-colors">
-                <Plus className="w-4 h-4" /> Add Agency
+              <button className="px-4 py-1.5 text-sm bg-sky-950 text-white rounded-lg hover:bg-sky-900 transition-colors flex items-center gap-2">
+                <Plus className="w-4 h-4" /> <span className="text-sm font-medium">Add Agency</span>
               </button>
             </header>
             <div className="space-y-4">

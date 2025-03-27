@@ -44,7 +44,7 @@ const FormRadioGroup: React.FC<FormRadioGroupProps> = ({
           {options.map(({ value: optionValue, label: optionLabel }) => (
             <label
               key={optionValue}
-              className={`relative flex items-center justify-center p-3 rounded-lg border-2 cursor-pointer transition-all duration-300 ${
+              className={`relative flex items-center justify-center p-3 rounded-lg border-2 cursor-pointer transition-all duration-300 text-center ${
                 value === optionValue
                   ? "border-amber-300 bg-amber-50"
                   : "border-gray-200 hover:border-amber-200"

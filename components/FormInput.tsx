@@ -1,10 +1,10 @@
 import React from "react";
 
-interface FormInputProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface FormInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'prefix'> {
   label?: string;
   error?: string;
   rightElement?: React.ReactNode;
-  prefix?: string;
+  prefix?: React.ReactNode;
 }
 
 const FormInput: React.FC<FormInputProps> = ({
@@ -18,7 +18,7 @@ const FormInput: React.FC<FormInputProps> = ({
   return (
     <div className="w-full">
       {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="flex items-center text-sm font-medium text-gray-700 mb-1">
           {label}
         </label>
       )}

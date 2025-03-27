@@ -19,7 +19,7 @@ const FormField: React.FC<FormFieldProps> = ({
   return (
     <div className={cn("w-full", className)}>
       {label && (
-        <label className="block text-sm font-medium text-gray-700 mb-1">
+        <label className="flex items-center text-sm font-medium text-gray-700 mb-1">
           {label}
           {required && <span className="text-red-500 ml-1">*</span>}
         </label>
