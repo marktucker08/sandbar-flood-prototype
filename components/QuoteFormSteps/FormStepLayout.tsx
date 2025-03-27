@@ -1,6 +1,6 @@
 import React from 'react';
 import { ProgressBar } from '../ProgressBar';
-import NavigationButtons from '../NavigationButtons';
+import { NavigationButtons } from "@/components/ui"
 
 interface FormStepLayoutProps {
   children: React.ReactNode;

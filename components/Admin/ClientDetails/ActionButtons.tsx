@@ -1,5 +1,6 @@
 import React from "react";
 import { DetailedClient } from "@/types/admin";
+import { Button } from "@/components/ui";
 
 interface ActionButtonsProps {
   data: DetailedClient;
@@ -11,10 +12,31 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ data }) => {
       case "active":
         return (
           <>
-            <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+            <Button variant="default" className="bg-red-600 hover:bg-red-700 text-white">
               Deactivate Client
-            </button>
+            </Button>
+            <Button variant="default" className="bg-yellow-600 hover:bg-yellow-700 text-white">
+              Suspend Client
+            </Button>
           </>
+        );
+      case "pending":
+        return (
+          <Button variant="default" className="bg-green-600 hover:bg-green-700">
+            Activate Client
+          </Button>
+        );
+      case "rejected":
+        return (
+          <Button variant="default" className="bg-blue-600 hover:bg-blue-700">
+            Create New Client
+          </Button>
+        );
+      case "expired":
+        return (
+          <Button variant="default" className="bg-blue-600 hover:bg-blue-700">
+            Reactivate Client
+          </Button>
         );
       default:
         return null;
@@ -23,15 +45,12 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ data }) => {
 
   return (
     <div className="flex gap-4 justify-end mt-6">
-      <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+      <Button variant="secondary">
         Edit Client
-      </button>
-      <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-        Create New Quote
-      </button>
-      <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
-        Schedule Inspection
-      </button>
+      </Button>
+      <Button variant="secondary">
+        View History
+      </Button>
       {getActionButtons()}
     </div>
   );

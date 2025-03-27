@@ -1,8 +1,10 @@
 "use client";
 import React from "react";
+import { FormInput, FormRadio, FormFileUpload } from "@/components/ui/form";
 import FormStepLayout from "./FormStepLayout";
-import FormInput from "../FormInput";
 import { QuoteFormData } from "@/types/quote";
+import { QUOTE_FORM_STEPS } from "@/constants/formSteps";
+import { z } from "zod";
 
 interface ElevationCertificateProps {
   onNext: () => void;
@@ -11,89 +13,124 @@ interface ElevationCertificateProps {
   updateFormData?: (data: Partial<QuoteFormData>) => void;
 }
 
+const elevationSchema = z.object({
+  hasCertificate: z.boolean({
+    required_error: "Please indicate if you have an elevation certificate",
+  }),
+  certificateNumber: z.string().optional(),
+  elevation: z.string().optional(),
+  stepsToFrontDoor: z.string().optional(),
+});
+
+type ElevationFields = keyof z.infer<typeof elevationSchema>;
+
 const ElevationCertificate: React.FC<ElevationCertificateProps> = ({
   onNext,
   onBack,
+  formData,
+  updateFormData,
 }) => {
-  const [hasCertificate, setHasCertificate] = React.useState<boolean | null>(null);
-  const [certificateNumber, setCertificateNumber] = React.useState("");
+  const [errors, setErrors] = React.useState<Record<string, string>>({});
 
-  const progressSteps = [
-    { label: "Location", sublabel: "Verification", isActive: true },
-    { label: "Insured", sublabel: "Information", isActive: true },
-    { label: "Property", sublabel: "Details", isActive: true },
-    { label: "Foundation", sublabel: "Type", isActive: true },
-    { label: "Elevation", sublabel: "Certificate", isActive: true },
-    { label: "Construction", sublabel: "Type", isActive: false },
-    { label: "Coverage", sublabel: "Options", isActive: false },
-  ];
+  const handleHasCertificateChange = (value: boolean) => {
+    updateFormData?.({ hasCertificate: value });
+    
+    try {
+      elevationSchema.shape.hasCertificate.parse(value);
+      setErrors(prev => ({ ...prev, hasCertificate: "" }));
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setErrors(prev => ({ ...prev, hasCertificate: error.errors[0].message }));
+      }
+    }
+  };
+
+  const handleInputChange = (field: keyof QuoteFormData) => (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newValue = e.target.value;
+    updateFormData?.({ [field]: newValue });
+
+    if (field in elevationSchema.shape) {
+      try {
+        elevationSchema.shape[field as ElevationFields].parse(newValue);
+        setErrors(prev => ({ ...prev, [field]: "" }));
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          setErrors(prev => ({ ...prev, [field]: error.errors[0].message }));
+        }
+      }
+    }
+  };
+
+  const handleFileChange = (file: File | null) => {
+    updateFormData?.({ elevationCertificate: file || undefined });
+  };
+
+  const handleNext = () => {
+    try {
+      elevationSchema.parse({
+        hasCertificate: formData?.hasCertificate,
+        certificateNumber: formData?.certificateNumber,
+        elevation: formData?.elevation,
+        stepsToFrontDoor: formData?.stepsToFrontDoor,
+      });
+      onNext();
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const newErrors: Record<string, string> = {};
+        error.errors.forEach((err) => {
+          newErrors[err.path[0]] = err.message;
+        });
+        setErrors(newErrors);
+      }
+    }
+  };
+
+  const progressSteps = QUOTE_FORM_STEPS.map((step, index) => ({
+    ...step,
+    isActive: index === 4,
+  }));
 
   return (
     <FormStepLayout
       title="Elevation Certificate"
       progressSteps={progressSteps}
-      onNext={onNext}
+      onNext={handleNext}
       onBack={onBack}
     >
       <div className="space-y-8">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-3">
-            Do you have an Elevation Certificate?
-          </label>
-          <div className="flex gap-6">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="hasCertificate"
-                checked={hasCertificate === true}
-                onChange={() => setHasCertificate(true)}
-                className="w-4 h-4 text-amber-200 focus:ring-amber-200 border-gray-300"
-              />
-              <span className="text-sm text-gray-900">Yes</span>
-            </label>
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="hasCertificate"
-                checked={hasCertificate === false}
-                onChange={() => setHasCertificate(false)}
-                className="w-4 h-4 text-amber-200 focus:ring-amber-200 border-gray-300"
-              />
-              <span className="text-sm text-gray-900">No</span>
-            </label>
-          </div>
-        </div>
+        <FormRadio
+          label="Do you have an Elevation Certificate?"
+          name="hasCertificate"
+          value={formData?.hasCertificate}
+          onChange={handleHasCertificateChange}
+          error={errors.hasCertificate}
+          required
+        />
 
-        {hasCertificate && (
+        {formData?.hasCertificate && (
           <div className="space-y-6">
             <FormInput
               label="Certificate Number"
               placeholder="Enter certificate number"
-              value={certificateNumber}
-              onChange={(e) => setCertificateNumber(e.target.value)}
+              value={formData?.certificateNumber || ""}
+              onChange={handleInputChange("certificateNumber")}
+              error={errors.certificateNumber}
             />
             
-            <div className="bg-blue-50 p-6 rounded-lg">
-              <h3 className="text-sm font-medium text-blue-900 mb-2">
-                Upload Elevation Certificate
-              </h3>
-              <p className="text-sm text-blue-700 mb-4">
-                Please upload a copy of your elevation certificate. Accepted formats: PDF, JPG, PNG (max 10MB)
-              </p>
-              <label className="flex justify-center w-full h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-lg appearance-none cursor-pointer hover:border-amber-200 focus:outline-none">
-                <span className="flex items-center space-x-2">
-                  <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                  </svg>
-                  <span className="text-sm text-gray-600">Click to upload or drag and drop</span>
-                </span>
-                <input type="file" name="file_upload" className="hidden" accept=".pdf,.jpg,.jpeg,.png" />
-              </label>
-            </div>
+            <FormFileUpload
+              label="Upload Elevation Certificate"
+              name="elevation_certificate"
+              accept=".pdf,.jpg,.jpeg,.png"
+              onChange={handleFileChange}
+              description="Please upload a copy of your elevation certificate. Accepted formats: PDF, JPG, PNG (max 10MB)"
+              maxSize={10}
+            />
           </div>
         )}
 
-        {hasCertificate === false && (
+        {formData?.hasCertificate === false && (
           <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
             <p className="text-sm text-amber-800">
               An Elevation Certificate may help reduce your premium. You can continue without one, but we recommend obtaining an Elevation Certificate from a licensed surveyor.
@@ -101,24 +138,27 @@ const ElevationCertificate: React.FC<ElevationCertificateProps> = ({
           </div>
         )}
 
-        {hasCertificate === false && (
-          <>
+        {formData?.hasCertificate === false && (
+          <div className="space-y-6">
             <FormInput
               label="Elevation"
               type="number"
               placeholder="Enter elevation"
-        />
+              value={formData?.elevation || ""}
+              onChange={handleInputChange("elevation")}
+              error={errors.elevation}
+            />
 
-        <FormInput
-          label="Number of Steps to Front Door"
-          type="number"
-          placeholder="Enter 0 if unknown"
-        />
-        </>
+            <FormInput
+              label="Number of Steps to Front Door"
+              type="number"
+              placeholder="Enter 0 if unknown"
+              value={formData?.stepsToFrontDoor || ""}
+              onChange={handleInputChange("stepsToFrontDoor")}
+              error={errors.stepsToFrontDoor}
+            />
+          </div>
         )}
-        
-        
-        
       </div>
     </FormStepLayout>
   );

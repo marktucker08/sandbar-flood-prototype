@@ -1,5 +1,6 @@
 import React from "react";
 import { DetailedPolicy } from "@/types/admin";
+import { Button } from "@/components/ui";
 
 interface ActionButtonsProps {
   data: DetailedPolicy;
@@ -11,19 +12,31 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ data }) => {
       case "active":
         return (
           <>
-            <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
+            <Button variant="default" className="bg-red-600 hover:bg-red-700 text-white">
               Cancel Policy
-            </button>
-            <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
-              Renew Policy
-            </button>
+            </Button>
+            <Button variant="default" className="bg-yellow-600 hover:bg-yellow-700 text-white">
+              Suspend Policy
+            </Button>
           </>
+        );
+      case "pending":
+        return (
+          <Button variant="default" className="bg-green-600 hover:bg-green-700">
+            Reactivate Policy
+          </Button>
+        );
+      case "rejected":
+        return (
+          <Button variant="default" className="bg-blue-600 hover:bg-blue-700">
+            Create New Policy
+          </Button>
         );
       case "expired":
         return (
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <Button variant="default" className="bg-blue-600 hover:bg-blue-700">
             Renew Policy
-          </button>
+          </Button>
         );
       default:
         return null;
@@ -32,12 +45,12 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ data }) => {
 
   return (
     <div className="flex gap-4 justify-end mt-6">
-      <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+      <Button variant="secondary">
         Edit Policy
-      </button>
-      <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+      </Button>
+      <Button variant="secondary">
         Print Policy
-      </button>
+      </Button>
       {getActionButtons()}
     </div>
   );

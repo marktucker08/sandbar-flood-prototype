@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { Button } from "@/components/ui";
 
 interface PageHeaderProps {
   title: string;
@@ -28,13 +29,14 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ title, actionButton }) =
 
       <div className="flex gap-4 items-center">
         {actionButton && (
-          <button 
+          <Button 
             onClick={actionButton.onClick}
-            className="flex gap-2 items-center px-4 py-2 bg-sky-950 text-white rounded-lg hover:bg-sky-900 transition-colors"
+            variant="default"
+            className="gap-2"
           >
             <i className={actionButton.icon} />
             <span className="text-sm font-medium">{actionButton.label}</span>
-          </button>
+          </Button>
         )}
         <div className="flex items-center gap-3 px-4 py-2 rounded-lg border border-solid cursor-pointer hover:bg-gray-50 transition-colors">
           <Image

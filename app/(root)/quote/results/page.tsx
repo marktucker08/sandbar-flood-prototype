@@ -90,13 +90,13 @@ const QuoteResultsPage = () => {
               </Link>
               <Link
                 href="/"
-                className="flex-1 bg-amber-600 text-white px-6 py-3 rounded-lg text-center font-medium hover:bg-amber-700 transition-colors"
+                className="flex-1 bg-green-600 text-white px-6 py-3 rounded-lg text-center font-medium hover:bg-amber-700 transition-colors"
               >
                 Submit for Approval
               </Link>
               <Link
                 href="/"
-                className="flex-1 bg-amber-600 text-white px-6 py-3 rounded-lg text-center font-medium hover:bg-amber-700 transition-colors"
+                className="flex-1 bg-blue-400 text-white px-6 py-3 rounded-lg text-center font-medium hover:bg-amber-700 transition-colors"
               >
                 Request to Bind Quote
               </Link>

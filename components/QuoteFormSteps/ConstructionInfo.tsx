@@ -1,8 +1,10 @@
 "use client";
 import React from "react";
-import Image from "next/image";
+import { FormImageRadio, FormFileUpload } from "@/components/ui/form";
 import FormStepLayout from "./FormStepLayout";
 import { QuoteFormData } from "@/types/quote";
+import { QUOTE_FORM_STEPS } from "@/constants/formSteps";
+import { z } from "zod";
 
 interface ConstructionInfoProps {
   onNext: () => void;
@@ -11,21 +13,22 @@ interface ConstructionInfoProps {
   updateFormData?: (data: Partial<QuoteFormData>) => void;
 }
 
+const constructionSchema = z.object({
+  constructionType: z.enum(["frame", "masonry", "superior"], {
+    required_error: "Please select a construction type",
+  }),
+  constructionDocs: z.any().optional(), // File type will be handled separately
+});
+
+type ConstructionFields = keyof z.infer<typeof constructionSchema>;
+
 const ConstructionInfo: React.FC<ConstructionInfoProps> = ({
   onNext,
   onBack,
+  formData,
+  updateFormData,
 }) => {
-  const [constructionType, setConstructionType] = React.useState("");
-
-  const progressSteps = [
-    { label: "Location", sublabel: "Verification", isActive: true },
-    { label: "Insured", sublabel: "Information", isActive: true },
-    { label: "Property", sublabel: "Details", isActive: true },
-    { label: "Foundation", sublabel: "Type", isActive: true },
-    { label: "Elevation", sublabel: "Certificate", isActive: true },
-    { label: "Construction", sublabel: "Type", isActive: true },
-    { label: "Coverage", sublabel: "Options", isActive: false },
-  ];
+  const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   const constructionTypes = [
     {
@@ -48,70 +51,73 @@ const ConstructionInfo: React.FC<ConstructionInfoProps> = ({
     }
   ];
 
+  const handleConstructionChange = (value: string) => {
+    updateFormData?.({ constructionType: value as ConstructionFields });
+    
+    try {
+      constructionSchema.shape.constructionType.parse(value);
+      setErrors(prev => ({ ...prev, constructionType: "" }));
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setErrors(prev => ({ ...prev, constructionType: error.errors[0].message }));
+      }
+    }
+  };
+
+  const handleFileChange = (file: File | null) => {
+    updateFormData?.({ constructionDocs: file });
+  };
+
+  const handleNext = () => {
+    try {
+      constructionSchema.parse({
+        constructionType: formData?.constructionType,
+        constructionDocs: formData?.constructionDocs,
+      });
+      onNext();
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const newErrors: Record<string, string> = {};
+        error.errors.forEach((err) => {
+          newErrors[err.path[0]] = err.message;
+        });
+        setErrors(newErrors);
+      }
+    }
+  };
+
+  const progressSteps = QUOTE_FORM_STEPS.map((step, index) => ({
+    ...step,
+    isActive: index === 5,
+  }));
+
   return (
     <FormStepLayout
       title="Construction Type"
       progressSteps={progressSteps}
-      onNext={onNext}
+      onNext={handleNext}
       onBack={onBack}
     >
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        {constructionTypes.map(({ value, label, description, image }) => (
-          <label
-            key={value}
-            className={`relative flex flex-col p-4 rounded-lg border-2 cursor-pointer transition-all duration-300 ${
-              constructionType === value
-                ? "border-amber-300 bg-amber-50"
-                : "border-gray-200 hover:border-amber-200"
-            }`}
-          >
-            <input
-              type="radio"
-              name="constructionType"
-              value={value}
-              checked={constructionType === value}
-              onChange={(e) => setConstructionType(e.target.value)}
-              className="sr-only"
-            />
-            <div className="w-full aspect-square relative mb-4 rounded-lg overflow-hidden bg-gray-100">
-              <Image
-                src={image}
-                alt={label}
-                fill
-                className="object-contain p-2"
-              />
-            </div>
-            <div className="text-center">
-              <span className="block text-sm font-medium text-gray-900 mb-2">
-                {label}
-              </span>
-              <span className="block text-xs text-gray-600">
-                {description}
-              </span>
-            </div>
-            {constructionType === value && (
-              <div className="absolute top-2 right-2 w-4 h-4 rounded-full bg-amber-300" />
-            )}
-          </label>
-        ))}
-      </div>
+      <div className="space-y-8">
+        <FormImageRadio
+          label="Select Construction Type"
+          name="constructionType"
+          options={constructionTypes}
+          value={formData?.constructionType}
+          onChange={handleConstructionChange}
+          error={errors.constructionType}
+          required
+          columns={3}
+        />
 
-      <div className="mt-8 bg-blue-50 p-6 rounded-lg">
-        <h3 className="text-sm font-medium text-blue-900 mb-2">
-          Construction Type Documentation
-        </h3>
-        <p className="text-sm text-blue-700 mb-4">
-          Please upload any relevant documentation about your building&apos;s construction type (optional)
-        </p>
-        <label className="flex justify-center w-full h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-lg appearance-none cursor-pointer hover:border-amber-200 focus:outline-none">
-          <span className="flex items-center space-x-2">
-            <svg className="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-            </svg>
-            <span className="text-sm text-gray-600">Click to upload or drag and drop</span>
-          </span>
-          <input type="file" name="construction_docs" className="hidden" accept=".pdf,.jpg,.jpeg,.png" />
-        </label>
+        <FormFileUpload
+          label="Construction Type Documentation"
+          name="construction_docs"
+          accept=".pdf,.jpg,.jpeg,.png"
+          onChange={handleFileChange}
+          description="Please upload any relevant documentation about your building's construction type (optional)"
+          maxSize={10}
+        />
       </div>
     </FormStepLayout>
   );

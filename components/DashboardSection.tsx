@@ -2,7 +2,7 @@ import React from "react";
 import QuoteTable from './QuoteTable';
 import type { Quote } from './QuoteTable';
 import { Status } from '@/types/admin';
-
+import { Button } from "@/components/ui/button";
 interface DashboardSectionProps {
   title: string;
   className?: string;
@@ -47,9 +47,9 @@ const DashboardSection: React.FC<DashboardSectionProps> = ({ title, className = 
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
         {title === "Quotes Pending Approval" && (
-          <button className="px-4 py-2 bg-amber-200 text-gray-900 rounded-lg hover:bg-amber-300 transition-colors font-medium">
+          <Button variant="secondary">
             View All
-          </button>
+          </Button>
         )}
       </div>
       <div className="overflow-x-auto">

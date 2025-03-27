@@ -1,4 +1,5 @@
-import * as React from "react";
+import * as React from "react"
+import { Button } from "./button"
 
 interface NavigationButtonsProps {
   onBack: () => void;
@@ -13,25 +14,25 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
 }) => {
   return (
     <div className="flex gap-4 mt-8 justify-end max-sm:flex-col">
-      <button
+      <Button
         onClick={onBack}
-        className="flex gap-2 items-center px-6 py-2.5 text-sm font-medium rounded-lg transition-all duration-300 hover:bg-gray-100 border border-gray-200 text-gray-700"
+        variant="ghost"
+        className="gap-2"
       >
         <i className="ti ti-arrow-left" />
         Back
-      </button>
-      <button
+      </Button>
+      <Button
         onClick={onNext}
-        className= "flex gap-2 items-center px-6 py-2.5 text-sm font-medium bg-amber-200 rounded-lg transition-all duration-300 hover:bg-amber-300 text-gray-900 min-w-[120px] justify-center"
+        className="gap-2 min-w-[120px]"
       >
         <span>{nextLabel}</span>
         {nextLabel === "Next" && (
           <i className="ti ti-arrow-right" />
         )}
-      </button>
+      </Button>
     </div>
   );
 };
 
-export default NavigationButtons;
-
+export default NavigationButtons; 

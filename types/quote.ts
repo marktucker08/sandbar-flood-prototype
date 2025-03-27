@@ -1,36 +1,47 @@
 export interface QuoteFormData {
   // Location Verification
-  address?: string;
+  streetAddress?: string;
+  unitAptSuite?: string;
+  city?: string;
+  state?: string;
+  zipCode?: string;
   
   // Insured Information
   insuredType?: 'individual' | 'business';
-  insuredFirstName?: string;
-  insuredLastName?: string;
-  additionalInsuredFirstName?: string;
-  additionalInsuredLastName?: string;
+  firstName?: string;
+  lastName?: string;
+  businessName?: string;
+  entityType?: string;
+  additionalInsured?: string;
+  sameAsPropertyAddress?: boolean;
   mailingAddress?: string;
-  address2?: string;
-  city?: string;
-  state?: string;
-  zip?: string;
+  mailingAddressLine2?: string;
+  mailingCity?: string;
+  mailingState?: string;
+  mailingZipCode?: string;
 
   // Property Details
   effectiveDate?: string;
   waitingPeriod?: 'standard' | 'loan';
   yearBuilt?: string;
+  squareFootage?: string;
   numberOfStories?: string;
   numberOfFamilies?: string;
-  squareFootage?: string;
-  occupancy?: 'primary' | 'secondary' | 'seasonal' | 'rental';
+  occupancyType?: string;
 
   // Foundation Info
-  foundation?: 'slab' | 'raised' | 'unfinished' | 'finished' | 'pilings-enclosure' | 'pilings-no-enclosure' | 'full-wall';
+  foundationType?: string;
 
   // Elevation Certificate
-  elevationCertificate?: string;
+  hasCertificate?: boolean;
+  certificateNumber?: string;
+  elevation?: string;
+  stepsToFrontDoor?: string;
+  elevationCertificate?: File;
 
   // Construction Info
   constructionType?: string;
+  constructionDocs?: File | null;
 
   // Coverage Options
   buildingReplacementCost?: string;

@@ -1,5 +1,6 @@
 import React from "react";
 import { DetailedInspection } from "@/types/admin";
+import { Button } from "@/components/ui";
 
 interface ActionButtonsProps {
   data: DetailedInspection;
@@ -11,19 +12,31 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ data }) => {
       case "pending":
         return (
           <>
-            <button className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition-colors">
-              Complete Inspection
-            </button>
-            <button className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors">
-              Cancel Inspection
-            </button>
+            <Button variant="default" className="bg-blue-400 hover:bg-blue-500 text-white">
+              Approve Inspection
+            </Button>
+            <Button variant="default" className="bg-red-500 hover:bg-red-600 text-white">
+              Reject Inspection
+            </Button>
           </>
         );
-      case "completed":
+      case "approved":
         return (
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+          <Button variant="default" className="bg-blue-600 hover:bg-blue-700 text-white">
             Schedule Follow-up
-          </button>
+          </Button>
+        );
+      case "rejected":
+        return (
+          <Button variant="default" className="bg-blue-600 hover:bg-blue-700 text-white">
+            Schedule New Inspection
+          </Button>
+        );
+      case "expired":
+        return (
+          <Button variant="default" className="bg-blue-600 hover:bg-blue-700 text-white">
+            Reschedule Inspection
+          </Button>
         );
       default:
         return null;
@@ -32,12 +45,12 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ data }) => {
 
   return (
     <div className="flex gap-4 justify-end mt-6">
-      <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+      <Button variant="secondary">
         Edit Inspection
-      </button>
-      <button className="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 transition-colors">
+      </Button>
+      <Button variant="secondary">
         Print Report
-      </button>
+      </Button>
       {getActionButtons()}
     </div>
   );

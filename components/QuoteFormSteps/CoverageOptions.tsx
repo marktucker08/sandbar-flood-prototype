@@ -1,9 +1,11 @@
 "use client";
 import React from "react";
 import FormStepLayout from "./FormStepLayout";
-import FormInput from "../FormInput";
+import { FormInput, FormRadioGroup } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
 import { QuoteFormData } from "@/types/quote";
+import { QUOTE_FORM_STEPS } from "@/constants/formSteps";
+import { z } from "zod";
 
 interface CoverageOptionsProps {
   onBack: () => void;
@@ -11,23 +13,24 @@ interface CoverageOptionsProps {
   updateFormData?: (data: Partial<QuoteFormData>) => void;
 }
 
+const coverageSchema = z.object({
+  buildingReplacementCost: z.string().min(1, "Building replacement cost is required"),
+  contentsReplacementCost: z.string().min(1, "Contents replacement cost is required"),
+  buildingCoverage: z.string().min(1, "Building coverage is required"),
+  contentsCoverage: z.string().min(1, "Contents coverage is required"),
+  lossOfUseCoverage: z.string().min(1, "Loss of use coverage is required"),
+  deductible: z.string().min(1, "Deductible is required"),
+});
+
+type CoverageFields = keyof z.infer<typeof coverageSchema>;
+
 const CoverageOptions: React.FC<CoverageOptionsProps> = ({
   onBack,
   formData,
   updateFormData,
 }) => {
   const router = useRouter();
-  const [deductible, setDeductible] = React.useState("1000");
-
-  const progressSteps = [
-    { label: "Location", sublabel: "Verification", isActive: true },
-    { label: "Insured", sublabel: "Information", isActive: true },
-    { label: "Property", sublabel: "Details", isActive: true },
-    { label: "Foundation", sublabel: "Type", isActive: true },
-    { label: "Elevation", sublabel: "Certificate", isActive: true },
-    { label: "Construction", sublabel: "Type", isActive: true },
-    { label: "Coverage", sublabel: "Options", isActive: true },
-  ];
+  const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   const deductibleOptions = [
     { value: "1000", label: "$1,000" },
@@ -39,18 +42,63 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
     { value: "50000", label: "$50,000" },
   ];
 
-  const handleSubmit = async () => {
-    // Update form data with coverage options
-    if (updateFormData) {
-      updateFormData({
-        deductible,
-        // Add other coverage fields here
-      });
-    }
+  const handleInputChange = (field: keyof QuoteFormData) => (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newValue = e.target.value;
+    updateFormData?.({ [field]: newValue });
 
-    // Route to processing page
-    router.push("/quote/processing");
+    if (field in coverageSchema.shape) {
+      try {
+        coverageSchema.shape[field as CoverageFields].parse(newValue);
+        setErrors(prev => ({ ...prev, [field]: "" }));
+      } catch (error) {
+        if (error instanceof z.ZodError) {
+          setErrors(prev => ({ ...prev, [field]: error.errors[0].message }));
+        }
+      }
+    }
   };
+
+  const handleDeductibleChange = (value: string) => {
+    updateFormData?.({ deductible: value });
+    
+    try {
+      coverageSchema.shape.deductible.parse(value);
+      setErrors(prev => ({ ...prev, deductible: "" }));
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setErrors(prev => ({ ...prev, deductible: error.errors[0].message }));
+      }
+    }
+  };
+
+  const handleSubmit = async () => {
+    try {
+      coverageSchema.parse({
+        buildingReplacementCost: formData?.buildingReplacementCost,
+        contentsReplacementCost: formData?.contentsReplacementCost,
+        buildingCoverage: formData?.buildingCoverage,
+        contentsCoverage: formData?.contentsCoverage,
+        lossOfUseCoverage: formData?.lossOfUseCoverage,
+        deductible: formData?.deductible,
+      });
+      router.push("/quote/processing");
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const newErrors: Record<string, string> = {};
+        error.errors.forEach((err) => {
+          newErrors[err.path[0]] = err.message;
+        });
+        setErrors(newErrors);
+      }
+    }
+  };
+
+  const progressSteps = QUOTE_FORM_STEPS.map((step, index) => ({
+    ...step,
+    isActive: index === 6,
+  }));
 
   return (
     <FormStepLayout
@@ -68,7 +116,9 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
             placeholder="Enter amount"
             prefix="$"
             value={formData?.buildingReplacementCost || ""}
-            onChange={(e) => updateFormData?.({ buildingReplacementCost: e.target.value })}
+            onChange={handleInputChange("buildingReplacementCost")}
+            error={errors.buildingReplacementCost}
+            required
           />
           <FormInput
             label="Contents Replacement Cost"
@@ -76,7 +126,9 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
             placeholder="Enter amount"
             prefix="$"
             value={formData?.contentsReplacementCost || ""}
-            onChange={(e) => updateFormData?.({ contentsReplacementCost: e.target.value })}
+            onChange={handleInputChange("contentsReplacementCost")}
+            error={errors.contentsReplacementCost}
+            required
           />
         </div>
 
@@ -87,7 +139,9 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
             placeholder="Enter amount"
             prefix="$"
             value={formData?.buildingCoverage || ""}
-            onChange={(e) => updateFormData?.({ buildingCoverage: e.target.value })}
+            onChange={handleInputChange("buildingCoverage")}
+            error={errors.buildingCoverage}
+            required
           />
           <FormInput
             label="Contents Coverage"
@@ -95,7 +149,9 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
             placeholder="Enter amount"
             prefix="$"
             value={formData?.contentsCoverage || ""}
-            onChange={(e) => updateFormData?.({ contentsCoverage: e.target.value })}
+            onChange={handleInputChange("contentsCoverage")}
+            error={errors.contentsCoverage}
+            required
           />
         </div>
 
@@ -105,41 +161,22 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
           placeholder="Enter amount"
           prefix="$"
           value={formData?.lossOfUseCoverage || ""}
-          onChange={(e) => updateFormData?.({ lossOfUseCoverage: e.target.value })}
+          onChange={handleInputChange("lossOfUseCoverage")}
+          error={errors.lossOfUseCoverage}
+          required
         />
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-3">
-            Deductible
-          </label>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-            {deductibleOptions.map(({ value, label }) => (
-              <label
-                key={value}
-                className={`relative flex items-center justify-center p-3 rounded-lg border-2 cursor-pointer transition-all duration-300 ${
-                  deductible === value
-                    ? "border-amber-300 bg-amber-50"
-                    : "border-gray-200 hover:border-amber-200"
-                }`}
-              >
-                <input
-                  type="radio"
-                  name="deductible"
-                  value={value}
-                  checked={deductible === value}
-                  onChange={(e) => setDeductible(e.target.value)}
-                  className="sr-only"
-                />
-                <span className="text-sm font-medium text-gray-900">
-                  {label}
-                </span>
-                {deductible === value && (
-                  <div className="absolute top-2 right-2 w-3 h-3 rounded-full bg-amber-300" />
-                )}
-              </label>
-            ))}
-          </div>
-        </div>
+        <FormRadioGroup
+          label="Deductible"
+          name="deductible"
+          options={deductibleOptions}
+          value={formData?.deductible}
+          onChange={handleDeductibleChange}
+          error={errors.deductible}
+          required
+          gridCols={2}
+          className="max-w-50% grid-flow-row gap-y-2"
+        />
 
         <div className="bg-blue-50 p-6 rounded-lg">
           <h3 className="text-sm font-medium text-blue-900 mb-2">

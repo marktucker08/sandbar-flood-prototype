@@ -1,8 +1,10 @@
 "use client";
 import React from "react";
 import FormStepLayout from "./FormStepLayout";
-import FormInput from "../FormInput";
+import { FormInput, FormRadioGroup } from "@/components/ui/form";
 import { QuoteFormData } from "@/types/quote";
+import { QUOTE_FORM_STEPS } from "@/constants/formSteps";
+import { z } from "zod";
 
 interface PropertyDetailsProps {
   onNext: () => void;
@@ -11,24 +13,80 @@ interface PropertyDetailsProps {
   updateFormData?: (data: Partial<QuoteFormData>) => void;
 }
 
+const basePropertySchema = z.object({
+  effectiveDate: z.string().min(1, "Effective date is required"),
+  waitingPeriod: z.enum(["standard", "loan"]),
+  yearBuilt: z.string().min(1, "Year built is required"),
+  squareFootage: z.string().min(1, "Square footage is required"),
+  numberOfStories: z.string().min(1, "Number of stories is required"),
+  numberOfFamilies: z.string().min(1, "Number of families is required"),
+  occupancyType: z.enum(["primary", "secondary", "seasonal", "rental"]),
+});
+
+type PropertyFields = keyof z.infer<typeof basePropertySchema>;
+
 const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   onNext,
   onBack,
+  formData,
+  updateFormData,
 }) => {
-  const [waitingPeriod, setWaitingPeriod] = React.useState("standard");
-  const [occupancy, setOccupancy] = React.useState("primary");
+  const [errors, setErrors] = React.useState<Record<string, string>>({});
 
-  const progressSteps = [
-    { label: "Location", sublabel: "Verification", isActive: true },
-    { label: "Insured", sublabel: "Information", isActive: true },
-    { label: "Property", sublabel: "Details", isActive: true },
-    { label: "Foundation", sublabel: "Type", isActive: false },
-    { label: "Elevation", sublabel: "Certificate", isActive: false },
-    { label: "Construction", sublabel: "Type", isActive: false },
-    { label: "Coverage", sublabel: "Options", isActive: false },
+  const handleInputChange = (field: keyof QuoteFormData) => (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newValue = e.target.value;
+    updateFormData?.({ [field]: newValue });
+
+    if (field in basePropertySchema.shape) {
+      try {
+        basePropertySchema.shape[field as PropertyFields].parse(newValue);
+        setErrors(prev => ({ ...prev, [field]: "" }));
+      } catch (error) {
+        if (error instanceof Error) {
+          setErrors(prev => ({ ...prev, [field]: error.message }));
+        }
+      }
+    }
+  };
+
+  const handleNext = () => {
+    const propertyFields = {
+      effectiveDate: formData?.effectiveDate,
+      waitingPeriod: formData?.waitingPeriod,
+      yearBuilt: formData?.yearBuilt,
+      squareFootage: formData?.squareFootage,
+      numberOfStories: formData?.numberOfStories,
+      numberOfFamilies: formData?.numberOfFamilies,
+      occupancyType: formData?.occupancyType,
+    };
+
+    try {
+      basePropertySchema.parse(propertyFields);
+      onNext();
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const newErrors: Record<string, string> = {};
+        error.errors.forEach((err) => {
+          newErrors[err.path[0]] = err.message;
+        });
+        setErrors(newErrors);
+      }
+    }
+  };
+
+  const progressSteps = QUOTE_FORM_STEPS.map((step, index) => ({
+    ...step,
+    isActive: index === 2,
+  }));
+
+  const waitingPeriodOptions = [
+    { value: "standard", label: "Standard Wait" },
+    { value: "loan", label: "Loan Closing" },
   ];
 
-  const occupancyTypes = [
+  const occupancyTypeOptions = [
     { value: "primary", label: "Primary Residence" },
     { value: "secondary", label: "Secondary Residence" },
     { value: "seasonal", label: "Seasonal" },
@@ -39,55 +97,48 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
     <FormStepLayout
       title="Property Details"
       progressSteps={progressSteps}
-      onNext={onNext}
+      onNext={handleNext}
       onBack={onBack}
     >
       <FormInput
         label="Effective Date"
         type="date"
         placeholder="Select date"
+        value={formData?.effectiveDate || ""}
+        onChange={handleInputChange("effectiveDate")}
+        error={errors.effectiveDate}
+        required
       />
 
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-3">
-          Waiting Period
-        </label>
-        <div className="flex gap-6">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="radio"
-              name="waitingPeriod"
-              value="standard"
-              checked={waitingPeriod === "standard"}
-              onChange={(e) => setWaitingPeriod(e.target.value)}
-              className="w-4 h-4 text-amber-200 focus:ring-amber-200 border-gray-300"
-            />
-            <span className="text-sm text-gray-900">Standard Wait</span>
-          </label>
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="radio"
-              name="waitingPeriod"
-              value="loan"
-              checked={waitingPeriod === "loan"}
-              onChange={(e) => setWaitingPeriod(e.target.value)}
-              className="w-4 h-4 text-amber-200 focus:ring-amber-200 border-gray-300"
-            />
-            <span className="text-sm text-gray-900">Loan Closing</span>
-          </label>
-        </div>
-      </div>
+      <FormRadioGroup
+        label="Waiting Period"
+        name="waitingPeriod"
+        options={waitingPeriodOptions}
+        value={formData?.waitingPeriod}
+        onChange={(value) => updateFormData?.({ waitingPeriod: value as "standard" | "loan" })}
+        layout="grid"
+        gridCols={2}
+        required
+      />
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <FormInput
           label="Year Built"
           type="number"
           placeholder="Enter year"
+          value={formData?.yearBuilt || ""}
+          onChange={handleInputChange("yearBuilt")}
+          error={errors.yearBuilt}
+          required
         />
         <FormInput
           label="Square Footage"
           type="number"
           placeholder="Enter square feet"
+          value={formData?.squareFootage || ""}
+          onChange={handleInputChange("squareFootage")}
+          error={errors.squareFootage}
+          required
         />
       </div>
 
@@ -96,34 +147,32 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
           label="Number of Stories"
           type="number"
           placeholder="Enter number of stories"
+          value={formData?.numberOfStories || ""}
+          onChange={handleInputChange("numberOfStories")}
+          error={errors.numberOfStories}
+          required
         />
         <FormInput
           label="Number of Families"
           type="number"
           placeholder="Enter number of families"
+          value={formData?.numberOfFamilies || ""}
+          onChange={handleInputChange("numberOfFamilies")}
+          error={errors.numberOfFamilies}
+          required
         />
       </div>
 
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700 mb-3">
-          Occupancy Type
-        </label>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-          {occupancyTypes.map(({ value, label }) => (
-            <label key={value} className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="radio"
-                name="occupancy"
-                value={value}
-                checked={occupancy === value}
-                onChange={(e) => setOccupancy(e.target.value)}
-                className="w-4 h-4 text-amber-200 focus:ring-amber-200 border-gray-300"
-              />
-              <span className="text-sm text-gray-900">{label}</span>
-            </label>
-          ))}
-        </div>
-      </div>
+      <FormRadioGroup
+        label="Occupancy Type"
+        name="occupancyType"
+        options={occupancyTypeOptions}
+        value={formData?.occupancyType}
+        onChange={(value) => updateFormData?.({ occupancyType: value as "primary" | "secondary" | "seasonal" | "rental" })}
+        layout="grid"
+        gridCols={2}
+        required
+      />
     </FormStepLayout>
   );
 };

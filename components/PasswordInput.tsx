@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import AuthFormInput from "./AuthFormInput";
+import { FormInput } from "@/components/ui/form";
 
 interface PasswordInputProps
   extends Omit<React.InputHTMLAttributes<HTMLInputElement>, "type"> {
@@ -28,7 +28,7 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
           </span>
         )}
       </div>
-      <AuthFormInput
+      <FormInput
         type={showPassword ? "text" : "password"}
         rightElement={
           <i
@@ -43,4 +43,5 @@ const PasswordInput: React.FC<PasswordInputProps> = ({
     </div>
   );
 };
+
 export default PasswordInput;
