@@ -13,6 +13,7 @@ import ActionButtons from "./PolicyDetails/ActionButtons";
 import { PageHeader } from "./PageHeader";
 import Link from "next/link";
 import { DetailedPolicy } from "@/types/admin";
+import { ArrowLeft, Copy } from "lucide-react";
 
 // This would typically come from an API call
 const mockPolicyData: DetailedPolicy = {
@@ -83,7 +84,7 @@ const PolicyDetailsPage: React.FC = () => {
         <div className="flex gap-2 items-center mb-6">
           <Link href="/admin/dashboard/policies">
             <button className="flex items-center gap-2 text-gray-500 hover:text-gray-700 transition-colors">
-              <i className="ti ti-arrow-left text-xl" />
+              <ArrowLeft className="w-4 h-4" />
               <span className="text-sm">Back</span>
             </button>
           </Link>
@@ -94,7 +95,7 @@ const PolicyDetailsPage: React.FC = () => {
             Policy Details - {policyId}
           </h2>
           <button className="text-gray-500 hover:text-gray-700 transition-colors">
-            <i className="ti ti-copy text-xl" />
+            <Copy className="w-4 h-4" />
           </button>
         </div>
 

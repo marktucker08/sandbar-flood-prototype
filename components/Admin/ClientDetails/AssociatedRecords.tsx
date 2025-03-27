@@ -2,6 +2,7 @@ import React from "react";
 import { DetailedClient } from "@/types/admin";
 import { StatusBadge } from "../StatusBadge";
 import Link from "next/link";
+import { FileText, ClipboardList, ClipboardCheck, ChevronRight } from "lucide-react";
 
 interface AssociatedRecordsProps {
   data: DetailedClient;
@@ -15,10 +16,14 @@ const AssociatedRecords: React.FC<AssociatedRecordsProps> = ({ data }) => {
       {/* Policies Section */}
       <div className="mb-6">
         <div className="flex justify-between items-center mb-3">
-          <h4 className="text-md font-medium text-gray-700">Policies</h4>
+          <h4 className="text-md font-medium text-gray-700 flex items-center gap-2">
+            <FileText className="w-4 h-4" />
+            Policies
+          </h4>
           <Link href={`/admin/dashboard/clients/${data.id}/policies`}>
-            <button className="text-sm text-blue-600 hover:text-blue-800">
+            <button className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1">
               View All
+              <ChevronRight className="w-4 h-4" />
             </button>
           </Link>
         </div>
@@ -44,10 +49,14 @@ const AssociatedRecords: React.FC<AssociatedRecordsProps> = ({ data }) => {
       {/* Quotes Section */}
       <div className="mb-6">
         <div className="flex justify-between items-center mb-3">
-          <h4 className="text-md font-medium text-gray-700">Quotes</h4>
+          <h4 className="text-md font-medium text-gray-700 flex items-center gap-2">
+            <ClipboardList className="w-4 h-4" />
+            Quotes
+          </h4>
           <Link href={`/admin/dashboard/clients/${data.id}/quotes`}>
-            <button className="text-sm text-blue-600 hover:text-blue-800">
+            <button className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1">
               View All
+              <ChevronRight className="w-4 h-4" />
             </button>
           </Link>
         </div>
@@ -73,10 +82,14 @@ const AssociatedRecords: React.FC<AssociatedRecordsProps> = ({ data }) => {
       {/* Inspections Section */}
       <div>
         <div className="flex justify-between items-center mb-3">
-          <h4 className="text-md font-medium text-gray-700">Inspections</h4>
+          <h4 className="text-md font-medium text-gray-700 flex items-center gap-2">
+            <ClipboardCheck className="w-4 h-4" />
+            Inspections
+          </h4>
           <Link href={`/admin/dashboard/clients/${data.id}/inspections`}>
-            <button className="text-sm text-blue-600 hover:text-blue-800">
+            <button className="text-sm text-blue-600 hover:text-blue-800 flex items-center gap-1">
               View All
+              <ChevronRight className="w-4 h-4" />
             </button>
           </Link>
         </div>

@@ -1,43 +1,44 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import { Rocket, FileText, CreditCard, Settings, Search } from "lucide-react";
 
 const HelpPage: React.FC = () => {
   const helpTopics = [
     {
       title: "Getting Started",
       description: "Learn the basics of using our flood insurance platform",
-      icon: "ti ti-rocket",
+      icon: Rocket,
       link: "/help/getting-started",
     },
     {
       title: "Creating Quotes",
-      description: "Step-by-step guide to creating and managing quotes",
-      icon: "ti ti-file-invoice",
+      description: "Step-by-step guide to creating and managing quotes", 
+      icon: FileText,
       link: "/help/creating-quotes",
     },
     // {
     //   title: "Managing Policies",
     //   description: "How to manage and update existing policies",
-    //   icon: "ti ti-file-check",
+    //   icon: FileCheck,
     //   link: "/help/managing-policies",
     // },
     // {
-    //   title: "Inspections",
+    //   title: "Inspections", 
     //   description: "Understanding the inspection process and requirements",
-    //   icon: "ti ti-clipboard-check",
+    //   icon: ClipboardCheck,
     //   link: "/help/inspections",
     // },
     {
       title: "Billing & Payments",
       description: "Information about billing, payments, and premium calculations",
-      icon: "ti ti-credit-card",
+      icon: CreditCard,
       link: "/help/billing",
     },
     {
       title: "Account Settings",
       description: "Manage your account preferences and profile settings",
-      icon: "ti ti-settings",
+      icon: Settings,
       link: "/help/account-settings",
     },
   ];
@@ -63,7 +64,7 @@ const HelpPage: React.FC = () => {
               className="w-full px-6 py-4 rounded-lg bg-white/90 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-              <i className="ti ti-search text-xl" />
+              <Search className="w-5 h-5" />
             </button>
           </div>
         </div>
@@ -78,7 +79,7 @@ const HelpPage: React.FC = () => {
             >
               <div className="flex items-start gap-4">
                 <div className="p-3 bg-blue-100 rounded-lg">
-                  <i className={`${topic.icon} text-2xl text-blue-600`} />
+                  <topic.icon className="w-6 h-6 text-blue-600" />
                 </div>
                 <div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">

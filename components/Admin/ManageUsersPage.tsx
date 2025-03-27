@@ -2,6 +2,7 @@
 import React from "react";
 import { PageHeader } from "./PageHeader";
 import { StatusBadge } from "./StatusBadge";
+import { Plus, Download, Filter, User, Pencil, Trash } from "lucide-react";
 
 const ManageUsersPage: React.FC = () => {
   return (
@@ -10,7 +11,7 @@ const ManageUsersPage: React.FC = () => {
         <PageHeader 
           title="Manage Users" 
           actionButton={{
-            icon: "ti ti-plus",
+            icon: Plus,
             label: "Add User",
             onClick: () => console.log("Add User clicked")
           }}
@@ -26,10 +27,10 @@ const ManageUsersPage: React.FC = () => {
               </div>
               <div className="flex gap-2">
                 <button className="px-2.5 py-1.5 rounded-md border border-solid">
-                  <i className="ti ti-filter" />
+                  <Filter className="w-4 h-4" />
                 </button>
                 <button className="px-2.5 py-1.5 rounded-md border border-solid">
-                  <i className="ti ti-download" />
+                  <Download className="w-4 h-4" />
                 </button>
               </div>
             </header>
@@ -52,7 +53,7 @@ const ManageUsersPage: React.FC = () => {
                     <td className="p-4 text-sm text-gray-500">john.smith@agency.com</td>
                     <td className="p-4">
                       <div className="flex gap-1 items-center px-2 py-0.5 bg-sky-100 rounded-[99px] w-fit">
-                        <i className="ti ti-user text-sky-500" />
+                        <User className="w-4 h-4 text-sky-500" />
                         <span className="text-xs font-bold text-sky-500">Agent</span>
                       </div>
                     </td>
@@ -64,10 +65,10 @@ const ManageUsersPage: React.FC = () => {
                     <td className="p-4">
                       <div className="flex gap-2">
                         <button className="px-2.5 py-1.5 rounded-md border border-solid">
-                          <i className="ti ti-pencil" />
+                          <Pencil className="w-4 h-4" />
                         </button>
                         <button className="px-2.5 py-1.5 rounded-md border border-solid text-red-500 hover:bg-red-50">
-                          <i className="ti ti-trash" />
+                          <Trash className="w-4 h-4" />
                         </button>
                       </div>
                     </td>
@@ -85,7 +86,7 @@ const ManageUsersPage: React.FC = () => {
                 <p className="text-sm text-gray-500 mt-1">Manage partner agencies</p>
               </div>
               <button className="px-3 py-1.5 text-sm bg-sky-950 text-white rounded-lg hover:bg-sky-900 transition-colors">
-                <i className="ti ti-plus" /> Add Agency
+                <Plus className="w-4 h-4" /> Add Agency
               </button>
             </header>
             <div className="space-y-4">

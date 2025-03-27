@@ -4,18 +4,28 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NavigationItem } from "./NavigationItem";
 import Image from "next/image";
+import { 
+  Home, 
+  FileText, 
+  FolderOpen, 
+  Users, 
+  Shield, 
+  BadgeCheck, 
+  Settings, 
+  Search 
+} from "lucide-react";
 
 export const Sidebar = () => {
   const pathname = usePathname();
 
   const navItems = [
-    { icon: "ti ti-home", label: "Dashboard", href: "/admin/dashboard" },
-    { icon: "ti ti-file", label: "Quotes", href: "/admin/dashboard/quotes" },
-    { icon: "ti ti-folder", label: "Policies", href: "/admin/dashboard/policies" },
-    { icon: "ti ti-user", label: "Clients", href: "/admin/dashboard/clients" },
-    { icon: "ti ti-shield", label: "Inspections", href: "/admin/dashboard/inspections" },
-    { icon: "ti ti-id-badge", label: "Manage Users", href: "/admin/dashboard/settings/users" },
-    { icon: "ti ti-settings", label: "System Settings", href: "/admin/dashboard/settings" },
+    { icon: Home, label: "Dashboard", href: "/admin/dashboard" },
+    { icon: FileText, label: "Quotes", href: "/admin/dashboard/quotes" },
+    { icon: FolderOpen, label: "Policies", href: "/admin/dashboard/policies" },
+    { icon: Users, label: "Clients", href: "/admin/dashboard/clients" },
+    { icon: Shield, label: "Inspections", href: "/admin/dashboard/inspections" },
+    { icon: BadgeCheck, label: "Manage Users", href: "/admin/dashboard/settings/users" },
+    { icon: Settings, label: "System Settings", href: "/admin/dashboard/settings" },
   ];
 
   return (
@@ -32,7 +42,7 @@ export const Sidebar = () => {
         </Link>
         <hr className="mx-0 my-3 h-px bg-gray-200" />
         <div className="flex gap-2 items-center p-4 rounded-lg border border-solid">
-          <i className="ti ti-search" />
+          <Search className="w-4 h-4 text-gray-400" />
           <input
             type="text"
             placeholder="Search"
@@ -53,7 +63,7 @@ export const Sidebar = () => {
                   : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
               }`}
             >
-              <i className={`${item.icon} text-base`} />
+              <item.icon className="w-4 h-4" />
               <span>{item.label}</span>
             </Link>
           );
@@ -62,7 +72,7 @@ export const Sidebar = () => {
       <hr className="mx-0 my-3 h-px bg-gray-200" />
       <div className="mt-auto">
         <Link href="/" className="block">
-          <NavigationItem icon="ti ti-home" label="Sandbar Homepage" />
+          <NavigationItem icon={Home} label="Sandbar Homepage" />
         </Link>
         <hr className="mx-0 my-3 h-px bg-gray-200" />
       </div>

@@ -1,11 +1,12 @@
 import React from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui";
+import { LucideIcon, ChevronDown } from "lucide-react";
 
 interface PageHeaderProps {
   title: string;
   actionButton?: {
-    icon: string;
+    icon: LucideIcon;
     label: string;
     onClick: () => void;
   };
@@ -34,7 +35,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ title, actionButton }) =
             variant="default"
             className="gap-2"
           >
-            <i className={actionButton.icon} />
+            <actionButton.icon className="w-4 h-4" />
             <span className="text-sm font-medium">{actionButton.label}</span>
           </Button>
         )}
@@ -50,20 +51,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ title, actionButton }) =
             <span className="text-sm font-medium text-sky-950">Bruce Banner</span>
             <span className="text-xs text-gray-500">Administrator</span>
           </div>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            className="text-gray-500"
-          >
-            <path d="M6 9l6 6 6-6" />
-          </svg>
+          <ChevronDown className="w-4 h-4 text-gray-500" />
         </div>
       </div>
     </header>

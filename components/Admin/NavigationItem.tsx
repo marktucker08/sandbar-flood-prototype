@@ -1,13 +1,14 @@
 import React from "react";
+import { LucideIcon } from "lucide-react";
 
 interface NavigationItemProps {
-  icon: string;
+  icon: LucideIcon;
   label: string;
   isActive?: boolean;
 }
 
 export const NavigationItem = ({
-  icon,
+  icon: Icon,
   label,
   isActive = false,
 }: NavigationItemProps) => {
@@ -20,7 +21,7 @@ export const NavigationItem = ({
             : "text-gray-500 hover:bg-gray-100 hover:text-sky-950"
         }`}
     >
-      <i className={`${icon} text-base`} />
+      <Icon className="w-4 h-4" />
       <span className="font-medium">{label}</span>
     </button>
   );

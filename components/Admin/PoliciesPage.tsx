@@ -4,6 +4,7 @@ import { PageHeader } from "./PageHeader";
 import { StatusBadge } from "./StatusBadge";
 import { DataTable } from "./DataTable";
 import { Column, Policy, Status } from "@/types/admin";
+import { Plus, Filter, Download } from "lucide-react";
 
 export const PoliciesPage = () => {
   const columns = [
@@ -64,7 +65,7 @@ export const PoliciesPage = () => {
       <PageHeader 
         title="Policies" 
         actionButton={{
-          icon: "ti ti-plus",
+          icon: Plus,
           label: "Add Policy",
           onClick: () => console.log("Add Policy clicked")
         }}
@@ -74,10 +75,10 @@ export const PoliciesPage = () => {
           <h2 className="text-xl font-bold text-gray-500">All Policies</h2>
           <div className="flex gap-2">
             <button className="px-2.5 py-1.5 rounded-md border border-solid">
-              <i className="ti ti-filter" />
+              <Filter className="w-4 h-4" />
             </button>
             <button className="px-2.5 py-1.5 rounded-md border border-solid">
-              <i className="ti ti-download" />
+              <Download className="w-4 h-4" />
             </button>
           </div>
         </header>

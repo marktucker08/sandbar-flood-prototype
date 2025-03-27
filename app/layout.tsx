@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
-import "./globals.css";
 import "@icon/themify-icons/themify-icons.css";
+import "./globals.css";
 import localFont from "next/font/local";
 
 const workSans = Work_Sans({ subsets: ["latin"], variable: "--font-work-sans" });

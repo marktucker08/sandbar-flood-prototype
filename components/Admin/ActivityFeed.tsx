@@ -2,6 +2,7 @@
 
 import Image from 'next/image';
 import React from 'react';
+import { FileText, ClipboardCheck, ClipboardList, UserPlus, Activity } from 'lucide-react';
 
 interface Activity {
   id: string;
@@ -76,45 +77,48 @@ const sampleActivities: Activity[] = [
 const getActivityIcon = (type: Activity['type']) => {
   switch (type) {
     case 'quote':
-      return 'ti ti-file-dollar';
+      return FileText;
     case 'policy':
-      return 'ti ti-clipboard-check';
+      return ClipboardCheck;
     case 'inspection':
-      return 'ti ti-clipboard-list';
+      return ClipboardList;
     case 'client':
-      return 'ti ti-user-plus';
+      return UserPlus;
     default:
-      return 'ti ti-activity';
+      return Activity;
   }
 };
 
 const ActivityFeed: React.FC = () => {
   return (
     <div className="space-y-4">
-      {sampleActivities.map((activity) => (
-        <div key={activity.id} className="flex items-start gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-          <div className="flex-shrink-0">
-            <div className="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center">
-              <i className={`${getActivityIcon(activity.type)} text-sky-600`} />
+      {sampleActivities.map((activity) => {
+        const Icon = getActivityIcon(activity.type);
+        return (
+          <div key={activity.id} className="flex items-start gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+            <div className="flex-shrink-0">
+              <div className="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center">
+                <Icon className="w-4 h-4 text-sky-600" />
+              </div>
+            </div>
+            <div className="flex-grow min-w-0">
+              <div className="flex items-center gap-2">
+                <Image
+                  src={activity.user.avatar}
+                  alt={activity.user.name}
+                  className="w-6 h-6 rounded-full"
+                  width={24}
+                  height={24}
+                />
+                <span className="text-sm font-medium text-gray-900">{activity.user.name}</span>
+                <span className="text-sm text-gray-500">{activity.action}</span>
+              </div>
+              <p className="text-sm text-gray-600 mt-1">{activity.description}</p>
+              <span className="text-xs text-gray-400 mt-1 block">{activity.timestamp}</span>
             </div>
           </div>
-          <div className="flex-grow min-w-0">
-            <div className="flex items-center gap-2">
-              <Image
-                src={activity.user.avatar}
-                alt={activity.user.name}
-                className="w-6 h-6 rounded-full"
-                width={24}
-                height={24}
-              />
-              <span className="text-sm font-medium text-gray-900">{activity.user.name}</span>
-              <span className="text-sm text-gray-500">{activity.action}</span>
-            </div>
-            <p className="text-sm text-gray-600 mt-1">{activity.description}</p>
-            <span className="text-xs text-gray-400 mt-1 block">{activity.timestamp}</span>
-          </div>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 };

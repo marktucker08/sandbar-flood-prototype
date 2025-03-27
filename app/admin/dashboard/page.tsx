@@ -5,6 +5,7 @@ import StatsCard, { sampleStats } from '@/components/Admin/StatsCard';
 import ActivityFeed from '@/components/Admin/ActivityFeed';
 import UpcomingInspections from '@/components/Admin/UpcomingInspections';
 import { PageHeader } from '@/components/Admin/PageHeader';
+import { Download } from 'lucide-react';
 
 const AdminDashboard = () => {
   return (
@@ -12,7 +13,7 @@ const AdminDashboard = () => {
       <PageHeader 
         title="Admin Dashboard"
         actionButton={{
-          icon: "ti ti-export",
+          icon: Download,
           label: "Generate Report", 
           onClick: () => console.log("Generate Report clicked")
         }}

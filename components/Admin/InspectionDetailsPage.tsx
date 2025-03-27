@@ -11,6 +11,7 @@ import ActionButtons from "./InspectionDetails/ActionButtons";
 import { PageHeader } from "./PageHeader";
 import Link from "next/link";
 import { DetailedInspection } from "@/types/admin";
+import { ArrowLeft, Copy } from "lucide-react";
 
 // This would typically come from an API call
 const mockInspectionData: DetailedInspection = {
@@ -80,7 +81,7 @@ const InspectionDetailsPage: React.FC = () => {
         <div className="flex gap-2 items-center mb-6">
           <Link href="/admin/dashboard/inspections">
             <button className="flex items-center gap-2 text-gray-500 hover:text-gray-700 transition-colors">
-              <i className="ti ti-arrow-left text-xl" />
+              <ArrowLeft className="w-5 h-5" />
               <span className="text-sm">Back</span>
             </button>
           </Link>
@@ -91,7 +92,7 @@ const InspectionDetailsPage: React.FC = () => {
             Inspection Details - {inspectionId}
           </h2>
           <button className="text-gray-500 hover:text-gray-700 transition-colors">
-            <i className="ti ti-copy text-xl" />
+            <Copy className="w-5 h-5" />
           </button>
         </div>
 

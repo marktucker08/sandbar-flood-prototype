@@ -35,9 +35,11 @@ export default function SignInPage() {
             <div>
               <PasswordInput placeholder="Enter your password" showForgotPassword={true} />
             </div>
-            <Button type="submit" className="bg-amber-500 hover:bg-amber-600 text-white">
-              Log In
-            </Button>
+            <div className="flex justify-center">
+              <Button type="submit" className="bg-amber-500 hover:bg-amber-600 text-white w-full py-6 text-lg">
+                Log In
+              </Button>
+            </div>
           </form>
           <footer className="mt-8 text-sm text-center text-gray-600">
             <span>Don&apos;t have an account?</span>

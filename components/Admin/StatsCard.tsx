@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
+import { FileText, ShieldCheck, DollarSign, ClipboardCheck, TrendingUp, TrendingDown } from 'lucide-react';
 
 interface HistoricalData {
   date: string;
@@ -22,15 +23,15 @@ interface StatsCardProps {
 const getIcon = (type: StatsCardProps['type']) => {
   switch (type) {
     case 'quotes':
-      return 'ti ti-file-text';
+      return FileText;
     case 'policies':
-      return 'ti ti-shield-check';
+      return ShieldCheck;
     case 'revenue':
-      return 'ti ti-currency-dollar';
+      return DollarSign;
     case 'inspections':
-      return 'ti ti-clipboard-check';
+      return ClipboardCheck;
     default:
-      return 'ti ti-chart-bar';
+      return FileText;
   }
 };
 
@@ -65,6 +66,8 @@ const getChartColor = (type: StatsCardProps['type']) => {
 };
 
 const StatsCard: React.FC<StatsCardProps> = ({ title, value, change, type, historicalData }) => {
+  const Icon = getIcon(type);
+  
   return (
     <div className="p-6 bg-white rounded-xl shadow-sm">
       <div className="flex items-center justify-between mb-4">
@@ -74,8 +77,8 @@ const StatsCard: React.FC<StatsCardProps> = ({ title, value, change, type, histo
             {typeof value === 'number' && type === 'revenue' ? `$${value.toLocaleString()}` : value}
           </p>
         </div>
-        <div className={`p-3 rounded-lg ${getIconColor(type)}`}>
-          <i className={`${getIcon(type)} text-xl`} />
+        <div className={`flex items-center justify-center w-12 h-12 rounded-lg ${getIconColor(type)}`}>
+          <Icon className="w-5 h-5" />
         </div>
       </div>
 
@@ -103,11 +106,11 @@ const StatsCard: React.FC<StatsCardProps> = ({ title, value, change, type, histo
 
       {change && (
         <div className="mt-4 flex items-center">
-          <i
-            className={`ti ${
-              change.type === 'increase' ? 'ti-trending-up text-green-500' : 'ti-trending-down text-red-500'
-            } text-sm mr-1`}
-          />
+          {change.type === 'increase' ? (
+            <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
+          ) : (
+            <TrendingDown className="w-4 h-4 text-red-500 mr-1" />
+          )}
           <span
             className={`text-sm font-medium ${
               change.type === 'increase' ? 'text-green-600' : 'text-red-600'

@@ -1,5 +1,6 @@
 import React from "react";
 import { Status } from "@/types/admin";
+import { Clock, CheckCircle2, XCircle, Calendar, CheckCircle, CircleDot } from "lucide-react";
 
 interface StatusBadgeProps {
   status: Status;
@@ -15,8 +16,20 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status }) => {
     completed: "bg-purple-100 text-purple-800",
   };
 
+  const statusIcons = {
+    pending: Clock,
+    approved: CheckCircle2,
+    rejected: XCircle,
+    expired: Calendar,
+    active: CircleDot,
+    completed: CheckCircle,
+  };
+
+  const Icon = statusIcons[status];
+
   return (
-    <span className={`px-2 py-1 text-xs font-medium rounded-full ${statusStyles[status]}`}>
+    <span className={`px-2 py-1 text-xs font-medium rounded-full flex items-center gap-1 ${statusStyles[status]}`}>
+      <Icon className="w-3 h-3" />
       {status.charAt(0).toUpperCase() + status.slice(1)}
     </span>
   );
