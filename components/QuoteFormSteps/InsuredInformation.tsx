@@ -25,7 +25,8 @@ const baseInsuredSchema = z.object({
   mailingAddressLine2: z.string().optional(),
   mailingCity: z.string().min(1, "Mailing city is required"),
   mailingState: z.string().min(1, "Mailing state is required"),
-  mailingZipCode: z.string().regex(/^\d{5}(-\d{4})?$/, "Invalid ZIP code format"),
+  mailingZipCode: z.string().min(1, "Mailing ZIP code is required")
+  // .regex(/^\d{5}(-\d{4})?$/, "Invalid ZIP code format"),
 });
 
 const insuredSchema = baseInsuredSchema.refine((data) => {
@@ -52,6 +53,13 @@ const InsuredInformation: React.FC<InsuredInformationProps> = ({
   }));
 
   const [errors, setErrors] = React.useState<Record<string, string>>({});
+
+  // Set default insured type to individual when component mounts
+  React.useEffect(() => {
+    if (!formData?.insuredType && updateFormData) {
+      updateFormData({ insuredType: "individual" });
+    }
+  }, [formData?.insuredType, updateFormData]);
 
   const handleInputChange = (field: keyof QuoteFormData) => (
     e: React.ChangeEvent<HTMLInputElement>

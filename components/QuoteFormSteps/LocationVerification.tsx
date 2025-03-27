@@ -20,8 +20,7 @@ const locationSchema = z.object({
   state: z.string().min(1, "State is required"),
   zipCode: z.string()
     .min(1, "ZIP code is required")
-    .max(5, "ZIP code must be 5 digits")
-    .regex(/^\d{5}$/, "ZIP code must contain only numbers"),
+    // .regex(/^\d{5}$/, "ZIP code must contain only numbers"),
 });
 
 type LocationFields = keyof z.infer<typeof locationSchema>;
