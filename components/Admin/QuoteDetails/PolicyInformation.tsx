@@ -7,28 +7,28 @@ interface PolicyInformationProps {
 
 const PolicyInformation: React.FC<PolicyInformationProps> = ({ data }) => {
   return (
-    <div className="bg-white rounded-lg border border-solid p-6">
-      <h3 className="text-lg font-semibold text-gray-700 mb-4">Policy Information</h3>
-      <div className="grid grid-cols-2 gap-4">
+    <div className="admin-card">
+      <h3 className="admin-section-header">Policy Information</h3>
+      <div className="form-group">
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Property Type</label>
-          <p className="text-gray-700">{data.propertyType}</p>
+          <label className="form-label">Property Type</label>
+          <p className="form-value">{data.propertyType}</p>
         </div>
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Flood Zone</label>
-          <p className="text-gray-700">{data.floodZone}</p>
+          <label className="form-label">Flood Zone</label>
+          <p className="form-value">{data.floodZone}</p>
         </div>
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Elevation</label>
-          <p className="text-gray-700">{data.elevation}</p>
+          <label className="form-label">Elevation</label>
+          <p className="form-value">{data.elevation}</p>
         </div>
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Square Footage</label>
-          <p className="text-gray-700">{data.squareFootage.toLocaleString()} sq ft</p>
+          <label className="form-label">Square Footage</label>
+          <p className="form-value">{data.squareFootage.toLocaleString()} sq ft</p>
         </div>
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Year Built</label>
-          <p className="text-gray-700">{data.yearBuilt}</p>
+          <label className="form-label">Year Built</label>
+          <p className="form-value">{data.yearBuilt}</p>
         </div>
       </div>
     </div>

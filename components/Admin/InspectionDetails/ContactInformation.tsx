@@ -8,36 +8,36 @@ interface ContactInformationProps {
 
 const ContactInformation: React.FC<ContactInformationProps> = ({ data }) => {
   return (
-    <div className="bg-white rounded-lg border border-solid p-6">
-      <h3 className="text-lg font-semibold text-gray-700 mb-4">Contact Information</h3>
-      <div className="grid grid-cols-2 gap-4">
+    <div className="admin-card">
+      <h3 className="admin-section-header">Contact Information</h3>
+      <div className="form-group">
         <div>
-          <label className="text-sm text-gray-500 mb-1 flex items-center gap-1">
-            <User className="w-4 h-4" />
+          <label className="form-label">
+            <User className="icon-sm" />
             Client Name
           </label>
-          <p className="text-gray-700">{data.client}</p>
+          <p className="form-value">{data.client}</p>
         </div>
         <div>
-          <label className="text-sm text-gray-500 mb-1 flex items-center gap-1">
-            <Mail className="w-4 h-4" />
+          <label className="form-label">
+            <Mail className="icon-sm" />
             Client Email
           </label>
-          <p className="text-gray-700">{data.clientEmail}</p>
+          <p className="form-value">{data.clientEmail}</p>
         </div>
         <div>
-          <label className="text-sm text-gray-500 mb-1 flex items-center gap-1">
-            <Phone className="w-4 h-4" />
+          <label className="form-label">
+            <Phone className="icon-sm" />
             Client Phone
           </label>
-          <p className="text-gray-700">{data.clientPhone}</p>
+          <p className="form-value">{data.clientPhone}</p>
         </div>
         <div>
-          <label className="text-sm text-gray-500 mb-1 flex items-center gap-1">
-            <ClipboardCheck className="w-4 h-4" />
+          <label className="form-label">
+            <ClipboardCheck className="icon-sm" />
             Inspector
           </label>
-          <p className="text-gray-700">{data.inspector}</p>
+          <p className="form-value">{data.inspector}</p>
         </div>
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import React from 'react';
 import Image from 'next/image';
+import { Calendar, Clock, User, Building2 } from 'lucide-react';
 
 interface Inspection {
   id: string;
@@ -72,36 +73,36 @@ const UpcomingInspections: React.FC = () => {
   return (
     <div className="space-y-4">
       {sampleInspections.map((inspection) => (
-        <div key={inspection.id} className="flex items-start gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-          <div className="flex-shrink-0">
-            <Image
-              src={inspection.inspector.avatar}
-              alt={inspection.inspector.name}
-              className="w-10 h-10 rounded-full"
-              width={40}
-              height={40}
-            />
-          </div>
-          <div className="flex-grow min-w-0">
-            <div className="flex items-center justify-between">
-              <span className="text-sm font-medium text-gray-900">{inspection.propertyAddress}</span>
-              <span className={`text-xs px-2 py-1 rounded-full ${getStatusColor(inspection.status)}`}>
-                {inspection.status}
-              </span>
+        <div key={inspection.id} className="admin-card p-3">
+          <div className="flex items-start gap-4">
+            <div className="flex-shrink-0">
+              <Image
+                src={inspection.inspector.avatar}
+                alt={inspection.inspector.name}
+                className="w-10 h-10 rounded-full"
+                width={40}
+                height={40}
+              />
             </div>
-            <div className="mt-1 text-sm text-gray-600">
-              <div className="flex items-center gap-2">
-                <i className="ti ti-calendar text-gray-400" />
-                <span>{new Date(inspection.date).toLocaleDateString()}</span>
-                <i className="ti ti-clock text-gray-400 ml-2" />
-                <span>{inspection.time}</span>
+            <div className="flex-grow min-w-0">
+              <div className="flex items-center justify-between">
+                <span className="form-value font-medium">{inspection.propertyAddress}</span>
+                <span className={`text-xs px-2 py-1 rounded-full ${getStatusColor(inspection.status)}`}>
+                  {inspection.status}
+                </span>
               </div>
-            </div>
-            <div className="mt-1 flex items-center gap-2">
-              <span className="text-sm text-gray-500">Inspector:</span>
-              <span className="text-sm font-medium text-gray-900">{inspection.inspector.name}</span>
-              <span className="text-sm text-gray-500 ml-2">Client:</span>
-              <span className="text-sm font-medium text-gray-900">{inspection.client}</span>
+              <div className="mt-1 flex items-center gap-2">
+                <Calendar className="icon-sm text-gray-400" />
+                <span className="form-value">{new Date(inspection.date).toLocaleDateString()}</span>
+                <Clock className="icon-sm text-gray-400 ml-2" />
+                <span className="form-value">{inspection.time}</span>
+              </div>
+              <div className="mt-1 flex items-center gap-2">
+                <User className="icon-sm text-gray-400" />
+                <span className="form-value">{inspection.inspector.name}</span>
+                <Building2 className="icon-sm text-gray-400 ml-2" />
+                <span className="form-value">{inspection.client}</span>
+              </div>
             </div>
           </div>
         </div>

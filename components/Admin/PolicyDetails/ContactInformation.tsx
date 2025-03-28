@@ -7,20 +7,20 @@ interface ContactInformationProps {
 
 const ContactInformation: React.FC<ContactInformationProps> = ({ data }) => {
   return (
-    <div className="bg-white rounded-lg border border-solid p-6">
-      <h3 className="text-lg font-semibold text-gray-700 mb-4">Contact Information</h3>
-      <div className="grid grid-cols-2 gap-4">
+    <div className="admin-card">
+      <h3 className="admin-section-header">Contact Information</h3>
+      <div className="form-group">
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Email</label>
-          <p className="text-gray-700">{data.email}</p>
+          <label className="form-label">Email</label>
+          <p className="form-value">{data.email}</p>
         </div>
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Phone</label>
-          <p className="text-gray-700">{data.phone}</p>
+          <label className="form-label">Phone</label>
+          <p className="form-value">{data.phone}</p>
         </div>
-        <div className="col-span-2">
-          <label className="block text-sm text-gray-500 mb-1">Address</label>
-          <p className="text-gray-700">
+        <div className="form-group-full">
+          <label className="form-label">Address</label>
+          <p className="form-value">
             {data.address}, {data.city}, {data.state} {data.zipCode}
           </p>
         </div>

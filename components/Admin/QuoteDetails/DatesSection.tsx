@@ -7,21 +7,21 @@ interface DatesSectionProps {
 
 const DatesSection: React.FC<DatesSectionProps> = ({ data }) => {
   return (
-    <div className="bg-white rounded-lg border border-solid p-6">
-      <h3 className="text-lg font-semibold text-gray-700 mb-4">Important Dates</h3>
+    <div className="admin-card">
+      <h3 className="admin-section-header">Important Dates</h3>
       <div className="space-y-3">
         <div className="flex justify-between items-center">
-          <span className="text-gray-600">Created Date</span>
-          <span className="text-gray-700">{data.createdDate}</span>
+          <span className="form-label">Created Date</span>
+          <span className="form-value">{data.createdDate}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-gray-600">Expiry Date</span>
-          <span className="text-gray-700">{data.expiryDate}</span>
+          <span className="form-label">Expiry Date</span>
+          <span className="form-value">{data.expiryDate}</span>
         </div>
         {data.lastClaimDate && (
           <div className="flex justify-between items-center">
-            <span className="text-gray-600">Last Claim Date</span>
-            <span className="text-gray-700">{data.lastClaimDate}</span>
+            <span className="form-label">Last Claim Date</span>
+            <span className="form-value">{data.lastClaimDate}</span>
           </div>
         )}
       </div>

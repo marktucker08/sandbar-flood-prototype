@@ -7,24 +7,24 @@ interface CoverageDetailsProps {
 
 const CoverageDetails: React.FC<CoverageDetailsProps> = ({ data }) => {
   return (
-    <div className="bg-white rounded-lg border border-solid p-6">
-      <h3 className="text-lg font-semibold text-gray-700 mb-4">Coverage Details</h3>
-      <div className="grid grid-cols-2 gap-4">
+    <div className="admin-card">
+      <h3 className="admin-section-header">Coverage Details</h3>
+      <div className="form-group">
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Coverage Amount</label>
-          <p className="text-gray-700">{data.coverageAmount}</p>
+          <label className="form-label">Coverage Amount</label>
+          <p className="form-value">{data.coverageAmount}</p>
         </div>
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Deductible</label>
-          <p className="text-gray-700">{data.deductible}</p>
+          <label className="form-label">Deductible</label>
+          <p className="form-value">{data.deductible}</p>
         </div>
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Contents Coverage</label>
-          <p className="text-gray-700">{data.contentsCoverage}</p>
+          <label className="form-label">Contents Coverage</label>
+          <p className="form-value">{data.contentsCoverage}</p>
         </div>
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Building Coverage</label>
-          <p className="text-gray-700">{data.buildingCoverage}</p>
+          <label className="form-label">Building Coverage</label>
+          <p className="form-value">{data.buildingCoverage}</p>
         </div>
       </div>
     </div>

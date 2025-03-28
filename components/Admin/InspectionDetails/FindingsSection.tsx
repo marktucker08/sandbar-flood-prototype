@@ -23,19 +23,19 @@ const FindingsSection: React.FC<FindingsSectionProps> = ({ data }) => {
   const getSeverityIcon = (severity: string) => {
     switch (severity) {
       case "High":
-        return <AlertCircle className="w-4 h-4" />;
+        return <AlertCircle className="icon-sm" />;
       case "Medium":
-        return <AlertTriangle className="w-4 h-4" />;
+        return <AlertTriangle className="icon-sm" />;
       case "Low":
-        return <CheckCircle2 className="w-4 h-4" />;
+        return <CheckCircle2 className="icon-sm" />;
       default:
         return null;
     }
   };
 
   return (
-    <div className="bg-white rounded-lg border border-solid p-6">
-      <h3 className="text-lg font-semibold text-gray-700 mb-4">Inspection Findings</h3>
+    <div className="admin-card">
+      <h3 className="admin-section-header">Inspection Findings</h3>
       <div className="space-y-4">
         {data.findings.map((finding) => (
           <div key={finding.id} className="p-4 bg-gray-50 rounded-lg">
@@ -46,11 +46,11 @@ const FindingsSection: React.FC<FindingsSectionProps> = ({ data }) => {
                 {finding.severity} Severity
               </span>
             </div>
-            <p className="text-gray-600">{finding.description}</p>
+            <p className="form-value">{finding.description}</p>
           </div>
         ))}
         {data.findings.length === 0 && (
-          <p className="text-gray-500 text-center py-4">No findings reported</p>
+          <p className="form-value text-center py-4">No findings reported</p>
         )}
       </div>
     </div>

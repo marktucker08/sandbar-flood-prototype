@@ -8,50 +8,50 @@ interface PropertyDetailsProps {
 
 const PropertyDetails: React.FC<PropertyDetailsProps> = ({ data }) => {
   return (
-    <div className="bg-white rounded-lg border border-solid p-6">
-      <h3 className="text-lg font-semibold text-gray-700 mb-4">Property Details</h3>
-      <div className="grid grid-cols-2 gap-4">
+    <div className="admin-card">
+      <h3 className="admin-section-header">Property Details</h3>
+      <div className="form-group">
         <div>
-          <label className="text-sm text-gray-500 mb-1 flex items-center gap-1">
-            <Home className="w-4 h-4" />
+          <label className="form-label">
+            <Home className="icon-sm" />
             Property Type
           </label>
-          <p className="text-gray-700">{data.propertyType}</p>
+          <p className="form-value">{data.propertyType}</p>
         </div>
         <div>
-          <label className="text-sm text-gray-500 mb-1 flex items-center gap-1">
-            <MapPin className="w-4 h-4" />
+          <label className="form-label">
+            <MapPin className="icon-sm" />
             Flood Zone
           </label>
-          <p className="text-gray-700">{data.floodZone}</p>
+          <p className="form-value">{data.floodZone}</p>
         </div>
         <div>
-          <label className="text-sm text-gray-500 mb-1 flex items-center gap-1">
-            <Ruler className="w-4 h-4" />
+          <label className="form-label">
+            <Ruler className="icon-sm" />
             Elevation
           </label>
-          <p className="text-gray-700">{data.elevation}</p>
+          <p className="form-value">{data.elevation}</p>
         </div>
         <div>
-          <label className="text-sm text-gray-500 mb-1 flex items-center gap-1">
-            <Square className="w-4 h-4" />
+          <label className="form-label">
+            <Square className="icon-sm" />
             Square Footage
           </label>
-          <p className="text-gray-700">{data.squareFootage.toLocaleString()} sq ft</p>
+          <p className="form-value">{data.squareFootage.toLocaleString()} sq ft</p>
         </div>
         <div>
-          <label className="text-sm text-gray-500 mb-1 flex items-center gap-1">
-            <Calendar className="w-4 h-4" />
+          <label className="form-label">
+            <Calendar className="icon-sm" />
             Year Built
           </label>
-          <p className="text-gray-700">{data.yearBuilt}</p>
+          <p className="form-value">{data.yearBuilt}</p>
         </div>
-        <div className="col-span-2">
-          <label className="text-sm text-gray-500 mb-1 flex items-center gap-1">
-            <Building2 className="w-4 h-4" />
+        <div className="form-group-full">
+          <label className="form-label">
+            <Building2 className="icon-sm" />
             Address
           </label>
-          <p className="text-gray-700">{data.propertyAddress}</p>
+          <p className="form-value">{data.propertyAddress}</p>
         </div>
       </div>
     </div>

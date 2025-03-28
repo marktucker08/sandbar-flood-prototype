@@ -61,7 +61,7 @@ const mockData: Client[] = [
 
 export const ClientsPage = () => {
   return (
-    <main className="flex flex-col flex-1 gap-4 p-5">
+    <main className="admin-page-main">
       <PageHeader 
         title="Clients" 
         actionButton={{
@@ -70,14 +70,14 @@ export const ClientsPage = () => {
           onClick: () => console.log("Add Client clicked")
         }}
       />
-      <section className="p-6 bg-white rounded-xl border border-solid">
-        <header className="flex justify-between items-center mb-3">
-          <h2 className="text-xl font-bold text-gray-500">All Clients</h2>
-          <div className="flex gap-2">
-            <button className="px-2.5 py-1.5 rounded-md border border-solid">
+      <section className="admin-content-section">
+        <header className="admin-section-header">
+          <h2 className="admin-section-title">All Clients</h2>
+          <div className="admin-action-buttons">
+            <button className="admin-action-button">
               <Filter className="icon-sm" />
             </button>
-            <button className="px-2.5 py-1.5 rounded-md border border-solid">
+            <button className="admin-action-button">
               <Download className="icon-sm" />
             </button>
           </div>

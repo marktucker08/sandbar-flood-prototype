@@ -8,36 +8,36 @@ interface PersonalDetailsProps {
 
 const PersonalDetails: React.FC<PersonalDetailsProps> = ({ data }) => {
   return (
-    <div className="bg-white rounded-xl border border-solid p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Personal Details</h3>
-      <div className="grid grid-cols-2 gap-4">
+    <div className="admin-card">
+      <h3 className="admin-section-header">Personal Details</h3>
+      <div className="form-group">
         <div>
-          <label className="text-sm font-medium text-gray-500 flex items-center gap-1">
-            <User className="w-4 h-4" />
+          <label className="form-label">
+            <User className="icon-sm" />
             Full Name
           </label>
-          <p className="mt-1 text-sm text-gray-900">{data.name}</p>
+          <p className="form-value">{data.name}</p>
         </div>
         <div>
-          <label className="text-sm font-medium text-gray-500 flex items-center gap-1">
-            <Building2 className="w-4 h-4" />
+          <label className="form-label">
+            <Building2 className="icon-sm" />
             Client Type
           </label>
-          <p className="mt-1 text-sm text-gray-900">{data.type}</p>
+          <p className="form-value">{data.type}</p>
         </div>
         <div>
-          <label className="text-sm font-medium text-gray-500 flex items-center gap-1">
-            <Calendar className="w-4 h-4" />
+          <label className="form-label">
+            <Calendar className="icon-sm" />
             Date of Birth
           </label>
-          <p className="mt-1 text-sm text-gray-900">{data.dateOfBirth}</p>
+          <p className="form-value">{data.dateOfBirth}</p>
         </div>
         <div>
-          <label className="text-sm font-medium text-gray-500 flex items-center gap-1">
-            <CreditCard className="w-4 h-4" />
+          <label className="form-label">
+            <CreditCard className="icon-sm" />
             SSN
           </label>
-          <p className="mt-1 text-sm text-gray-900">{data.ssn}</p>
+          <p className="form-value">{data.ssn}</p>
         </div>
       </div>
     </div>

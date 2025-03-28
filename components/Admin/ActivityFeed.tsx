@@ -91,34 +91,37 @@ const getActivityIcon = (type: Activity['type']) => {
 
 const ActivityFeed: React.FC = () => {
   return (
-    <div className="space-y-4">
-      {sampleActivities.map((activity) => {
-        const Icon = getActivityIcon(activity.type);
-        return (
-          <div key={activity.id} className="flex items-start gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
-            <div className="flex-shrink-0">
-              <div className="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center">
-                <Icon className="w-4 h-4 text-sky-600" />
+    <div className="admin-card">
+      <h3 className="admin-section-header">Activity Feed</h3>
+      <div className="space-y-4">
+        {sampleActivities.map((activity) => {
+          const Icon = getActivityIcon(activity.type);
+          return (
+            <div key={activity.id} className="flex items-start gap-4 p-3 rounded-lg hover:bg-gray-50 transition-colors">
+              <div className="flex-shrink-0">
+                <div className="w-8 h-8 rounded-full bg-sky-50 flex items-center justify-center">
+                  <Icon className="icon-sm text-sky-600" />
+                </div>
+              </div>
+              <div className="flex-grow min-w-0">
+                <div className="flex items-center gap-2">
+                  <Image
+                    src={activity.user.avatar}
+                    alt={activity.user.name}
+                    className="w-6 h-6 rounded-full"
+                    width={24}
+                    height={24}
+                  />
+                  <span className="form-value font-medium">{activity.user.name}</span>
+                  <span className="form-value text-gray-500">{activity.action}</span>
+                </div>
+                <p className="form-value text-gray-600 mt-1">{activity.description}</p>
+                <span className="text-xs text-gray-400 mt-1 block">{activity.timestamp}</span>
               </div>
             </div>
-            <div className="flex-grow min-w-0">
-              <div className="flex items-center gap-2">
-                <Image
-                  src={activity.user.avatar}
-                  alt={activity.user.name}
-                  className="w-6 h-6 rounded-full"
-                  width={24}
-                  height={24}
-                />
-                <span className="text-sm font-medium text-gray-900">{activity.user.name}</span>
-                <span className="text-sm text-gray-500">{activity.action}</span>
-              </div>
-              <p className="text-sm text-gray-600 mt-1">{activity.description}</p>
-              <span className="text-xs text-gray-400 mt-1 block">{activity.timestamp}</span>
-            </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 };

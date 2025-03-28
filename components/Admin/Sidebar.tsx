@@ -29,7 +29,7 @@ export const Sidebar = () => {
   ];
 
   return (
-    <aside className="flex flex-col gap-3 p-4 border-r border-solid w-[220px] max-md:w-full max-md:border-b max-md:border-solid max-md:border-r-[none] bg-white">
+    <aside className="admin-sidebar">
       <div className="flex flex-col gap-3">
         <Link href="/" className="flex items-center">
           <Image
@@ -40,13 +40,13 @@ export const Sidebar = () => {
             height={56}
           />
         </Link>
-        <hr className="mx-0 my-3 h-px bg-gray-200" />
-        <div className="flex gap-2 items-center p-4 rounded-lg border border-solid">
-          <Search className="w-4 h-4 text-gray-400" />
+        <hr className="admin-divider" />
+        <div className="admin-search-container">
+          <Search className="icon-sm text-gray-400" />
           <input
             type="text"
             placeholder="Search"
-            className="w-full text-xs text-gray-400 border-none focus:outline-none bg-transparent"
+            className="admin-search-input"
           />
         </div>
       </div>
@@ -57,24 +57,20 @@ export const Sidebar = () => {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
-                isActive
-                  ? "bg-sky-50 text-sky-950"
-                  : "text-gray-700 hover:text-gray-900 hover:bg-gray-50"
-              }`}
+              className={`admin-nav-link ${isActive ? 'admin-nav-link-active' : ''}`}
             >
-              <item.icon className="w-4 h-4" />
+              <item.icon className="icon-sm" />
               <span>{item.label}</span>
             </Link>
           );
         })}
       </nav>
-      <hr className="mx-0 my-3 h-px bg-gray-200" />
+      <hr className="admin-divider" />
       <div className="mt-auto">
         <Link href="/" className="block">
           <NavigationItem icon={Home} label="Sandbar Homepage" />
         </Link>
-        <hr className="mx-0 my-3 h-px bg-gray-200" />
+        <hr className="admin-divider" />
       </div>
     </aside>
   );

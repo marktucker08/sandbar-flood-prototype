@@ -8,24 +8,24 @@ interface QuoteStatusProps {
 
 const QuoteStatus: React.FC<QuoteStatusProps> = ({ data }) => {
   return (
-    <div className="bg-white rounded-lg border border-solid p-6">
-      <h3 className="text-lg font-semibold text-gray-700 mb-4">Quote Status</h3>
-      <div className="grid grid-cols-2 gap-4">
+    <div className="admin-card">
+      <h3 className="admin-section-header">Quote Status</h3>
+      <div className="form-group">
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Status</label>
+          <label className="form-label">Status</label>
           <StatusBadge status={data.status} />
         </div>
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Premium</label>
-          <p className="text-gray-700">{data.premium}</p>
+          <label className="form-label">Premium</label>
+          <p className="form-value">{data.premium}</p>
         </div>
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Created Date</label>
-          <p className="text-gray-700">{data.createdDate}</p>
+          <label className="form-label">Created Date</label>
+          <p className="form-value">{data.createdDate}</p>
         </div>
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Expiry Date</label>
-          <p className="text-gray-700">{data.expiryDate}</p>
+          <label className="form-label">Expiry Date</label>
+          <p className="form-value">{data.expiryDate}</p>
         </div>
       </div>
     </div>

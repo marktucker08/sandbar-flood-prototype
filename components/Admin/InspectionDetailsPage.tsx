@@ -75,35 +75,35 @@ const InspectionDetailsPage: React.FC = () => {
   const inspectionData = mockInspectionData;
 
   return (
-    <main className="flex flex-col flex-1 gap-4 p-5">
+    <main className="admin-page-main">
       <PageHeader title="Inspection Details" />
-      <section className="p-6 bg-white rounded-xl border border-solid">
+      <section className="admin-content-section">
         <div className="flex gap-2 items-center mb-6">
           <Link href="/admin/dashboard/inspections">
-            <button className="flex items-center gap-2 text-gray-500 hover:text-gray-700 transition-colors">
-              <ArrowLeft className="w-5 h-5" />
+            <button className="admin-back-button">
+              <ArrowLeft className="icon-md" />
               <span className="text-sm">Back</span>
             </button>
           </Link>
         </div>
 
-        <div className="flex gap-3 items-center mb-8">
-          <h2 className="text-xl font-bold text-gray-500">
+        <div className="admin-quote-header">
+          <h2 className="admin-quote-title">
             Inspection Details - {inspectionId}
           </h2>
           <button className="text-gray-500 hover:text-gray-700 transition-colors">
-            <Copy className="w-5 h-5" />
+            <Copy className="icon-md" />
           </button>
         </div>
 
-        <div className="grid grid-cols-2 gap-8 max-sm:grid-cols-1">
-          <div className="flex flex-col gap-6">
+        <div className="admin-quote-grid">
+          <div className="admin-quote-column">
             <PropertyDetails data={inspectionData} />
             <ContactInformation data={inspectionData} />
             <InspectionDetails data={inspectionData} />
             <FindingsSection data={inspectionData} />
           </div>
-          <div className="flex flex-col gap-6">
+          <div className="admin-quote-column">
             <InspectionStatus data={inspectionData} />
             <DocumentsSection data={inspectionData} />
           </div>

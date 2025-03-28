@@ -8,43 +8,43 @@ interface InspectionDetailsProps {
 
 const InspectionDetails: React.FC<InspectionDetailsProps> = ({ data }) => {
   return (
-    <div className="bg-white rounded-lg border border-solid p-6">
-      <h3 className="text-lg font-semibold text-gray-700 mb-4">Inspection Details</h3>
-      <div className="grid grid-cols-2 gap-4">
+    <div className="admin-card">
+      <h3 className="admin-section-header">Inspection Details</h3>
+      <div className="form-group">
         <div>
-          <label className="text-sm text-gray-500 mb-1 flex items-center gap-1">
-            <ClipboardCheck className="w-4 h-4" />
+          <label className="form-label">
+            <ClipboardCheck className="icon-sm" />
             Inspection Type
           </label>
-          <p className="text-gray-700">{data.inspectionType}</p>
+          <p className="form-value">{data.inspectionType}</p>
         </div>
         <div>
-          <label className="text-sm text-gray-500 mb-1 flex items-center gap-1">
-            <User className="w-4 h-4" />
+          <label className="form-label">
+            <User className="icon-sm" />
             Inspector
           </label>
-          <p className="text-gray-700">{data.inspector}</p>
+          <p className="form-value">{data.inspector}</p>
         </div>
         <div>
-          <label className="text-sm text-gray-500 mb-1 flex items-center gap-1">
-            <Calendar className="w-4 h-4" />
+          <label className="form-label">
+            <Calendar className="icon-sm" />
             Date
           </label>
-          <p className="text-gray-700">{data.date}</p>
+          <p className="form-value">{data.date}</p>
         </div>
         <div>
-          <label className="text-sm text-gray-500 mb-1 flex items-center gap-1">
-            <Clock className="w-4 h-4" />
+          <label className="form-label">
+            <Clock className="icon-sm" />
             Time
           </label>
-          <p className="text-gray-700">{data.time}</p>
+          <p className="form-value">{data.time}</p>
         </div>
-        <div className="col-span-2">
-          <label className="text-sm text-gray-500 mb-1 flex items-center gap-1">
-            <StickyNote className="w-4 h-4" />
+        <div className="form-group-full">
+          <label className="form-label">
+            <StickyNote className="icon-sm" />
             Notes
           </label>
-          <p className="text-gray-700">{data.notes}</p>
+          <p className="form-value">{data.notes}</p>
         </div>
       </div>
     </div>

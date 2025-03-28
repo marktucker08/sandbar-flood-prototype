@@ -14,11 +14,11 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ data }) => {
         return (
           <>
             <Button variant="default" className="bg-red-600 hover:bg-red-700 text-white">
-              <Power className="w-4 h-4 mr-2" />
+              <Power className="icon-sm mr-2" />
               Deactivate Client
             </Button>
             <Button variant="default" className="bg-yellow-600 hover:bg-yellow-700 text-white">
-              <PauseCircle className="w-4 h-4 mr-2" />
+              <PauseCircle className="icon-sm mr-2" />
               Suspend Client
             </Button>
           </>
@@ -26,21 +26,21 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ data }) => {
       case "pending":
         return (
           <Button variant="default" className="bg-green-600 hover:bg-green-700">
-            <CheckCircle2 className="w-4 h-4 mr-2" />
+            <CheckCircle2 className="icon-sm mr-2" />
             Activate Client
           </Button>
         );
       case "rejected":
         return (
           <Button variant="default" className="bg-blue-600 hover:bg-blue-700">
-            <UserPlus className="w-4 h-4 mr-2" />
+            <UserPlus className="icon-sm mr-2" />
             Create New Client
           </Button>
         );
       case "expired":
         return (
           <Button variant="default" className="bg-blue-600 hover:bg-blue-700">
-            <RefreshCw className="w-4 h-4 mr-2" />
+            <RefreshCw className="icon-sm mr-2" />
             Reactivate Client
           </Button>
         );
@@ -50,13 +50,13 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ data }) => {
   };
 
   return (
-    <div className="flex gap-4 justify-end mt-6">
+    <div className="admin-action-buttons mt-6">
       <Button variant="secondary">
-        <Edit className="w-4 h-4 mr-2" />
+        <Edit className="icon-sm mr-2" />
         Edit Client
       </Button>
       <Button variant="secondary">
-        <History className="w-4 h-4 mr-2" />
+        <History className="icon-sm mr-2" />
         View History
       </Button>
       {getActionButtons()}

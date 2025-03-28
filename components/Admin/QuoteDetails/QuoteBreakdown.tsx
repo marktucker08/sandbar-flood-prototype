@@ -7,29 +7,29 @@ interface QuoteBreakdownProps {
 
 const QuoteBreakdown: React.FC<QuoteBreakdownProps> = ({ data }) => {
   return (
-    <div className="bg-white rounded-lg border border-solid p-6">
-      <h3 className="text-lg font-semibold text-gray-700 mb-4">Premium Breakdown</h3>
+    <div className="admin-card">
+      <h3 className="admin-section-header">Premium Breakdown</h3>
       <div className="space-y-3">
         <div className="flex justify-between items-center">
-          <span className="text-gray-600">Base Rate</span>
-          <span className="text-gray-700">{data.baseRate}</span>
+          <span className="form-label">Base Rate</span>
+          <span className="form-value">{data.baseRate}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-gray-600">Flood Zone Factor</span>
-          <span className="text-gray-700">{data.floodZoneFactor}</span>
+          <span className="form-label">Flood Zone Factor</span>
+          <span className="form-value">{data.floodZoneFactor}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-gray-600">Elevation Factor</span>
-          <span className="text-gray-700">{data.elevationFactor}</span>
+          <span className="form-label">Elevation Factor</span>
+          <span className="form-value">{data.elevationFactor}</span>
         </div>
         <div className="flex justify-between items-center">
-          <span className="text-gray-600">Deductible Factor</span>
-          <span className="text-gray-700">{data.deductibleFactor}</span>
+          <span className="form-label">Deductible Factor</span>
+          <span className="form-value">{data.deductibleFactor}</span>
         </div>
         <div className="border-t pt-3 mt-3">
           <div className="flex justify-between items-center">
-            <span className="font-semibold text-gray-700">Total Premium</span>
-            <span className="font-semibold text-gray-700">{data.totalPremium}</span>
+            <span className="form-value font-semibold">Total Premium</span>
+            <span className="form-value font-semibold">{data.totalPremium}</span>
           </div>
         </div>
       </div>

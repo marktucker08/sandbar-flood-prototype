@@ -1,7 +1,6 @@
 import React from "react";
 import { DetailedClient } from "@/types/admin";
 import { Mail, Phone, MapPin, Clock } from "lucide-react";
-import { Label } from "@/components/ui/Label";
 
 interface ContactInformationProps {
   data: DetailedClient;
@@ -9,26 +8,38 @@ interface ContactInformationProps {
 
 const ContactInformation: React.FC<ContactInformationProps> = ({ data }) => {
   return (
-    <div className="bg-white rounded-xl border border-solid p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Contact Information</h3>
-      <div className="grid grid-cols-2 gap-4">
+    <div className="admin-card">
+      <h3 className="admin-section-header">Contact Information</h3>
+      <div className="form-group">
         <div>
-          <Label icon={Mail}>Email</Label>
-          <p className="mt-1 text-sm text-gray-900">{data.email}</p>
+          <label className="form-label">
+            <Mail className="icon-sm" />
+            Email
+          </label>
+          <p className="form-value">{data.email}</p>
         </div>
         <div>
-          <Label icon={Phone}>Phone</Label>
-          <p className="mt-1 text-sm text-gray-900">{data.phone}</p>
+          <label className="form-label">
+            <Phone className="icon-sm" />
+            Phone
+          </label>
+          <p className="form-value">{data.phone}</p>
         </div>
-        <div className="col-span-2">
-          <Label icon={MapPin}>Address</Label>
-          <p className="mt-1 text-sm text-gray-900">
+        <div className="form-group-full">
+          <label className="form-label">
+            <MapPin className="icon-sm" />
+            Address
+          </label>
+          <p className="form-value">
             {data.address}, {data.city}, {data.state} {data.zipCode}
           </p>
         </div>
         <div>
-          <Label icon={Clock}>Last Contact</Label>
-          <p className="mt-1 text-sm text-gray-900">{data.lastContact}</p>
+          <label className="form-label">
+            <Clock className="icon-sm" />
+            Last Contact
+          </label>
+          <p className="form-value">{data.lastContact}</p>
         </div>
       </div>
     </div>

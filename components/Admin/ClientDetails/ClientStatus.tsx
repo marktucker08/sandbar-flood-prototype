@@ -2,7 +2,6 @@ import React, { useMemo } from "react";
 import { DetailedClient } from "@/types/admin";
 import { StatusBadge } from "../StatusBadge";
 import { Activity, FileText, ClipboardList, ClipboardCheck } from "lucide-react";
-import { Label } from "@/components/ui/Label";
 
 interface ClientStatusProps {
   data: DetailedClient;
@@ -16,30 +15,42 @@ const ClientStatus: React.FC<ClientStatusProps> = ({ data }) => {
   }), [data.policies, data.quotes, data.inspections]);
 
   return (
-    <div className="bg-white rounded-xl border border-solid p-6">
-      <h3 className="text-lg font-semibold text-gray-900 mb-4">Client Status</h3>
-      <div className="grid grid-cols-2 gap-4">
+    <div className="admin-card">
+      <h3 className="admin-section-header">Client Status</h3>
+      <div className="form-group">
         <div>
-          <Label icon={Activity}>Status</Label>
+          <label className="form-label">
+            <Activity className="icon-sm" />
+            Status
+          </label>
           <div className="mt-1">
             <StatusBadge status={data.status} />
           </div>
         </div>
         <div>
-          <Label icon={FileText}>Active Policies</Label>
-          <p className="mt-1 text-sm text-gray-900">
+          <label className="form-label">
+            <FileText className="icon-sm" />
+            Active Policies
+          </label>
+          <p className="form-value">
             {stats.activePolicies}
           </p>
         </div>
         <div>
-          <Label icon={ClipboardList}>Pending Quotes</Label>
-          <p className="mt-1 text-sm text-gray-900">
+          <label className="form-label">
+            <ClipboardList className="icon-sm" />
+            Pending Quotes
+          </label>
+          <p className="form-value">
             {stats.pendingQuotes}
           </p>
         </div>
         <div>
-          <Label icon={ClipboardCheck}>Pending Inspections</Label>
-          <p className="mt-1 text-sm text-gray-900">
+          <label className="form-label">
+            <ClipboardCheck className="icon-sm" />
+            Pending Inspections
+          </label>
+          <p className="form-value">
             {stats.pendingInspections}
           </p>
         </div>

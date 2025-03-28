@@ -44,7 +44,7 @@ const ActionButtons: React.FC<ActionButtonsProps> = ({ data }) => {
   };
 
   return (
-    <div className="flex gap-4 justify-end mt-6">
+    <div className="admin-action-buttons mt-6">
       <Button variant="secondary">
         Edit Policy
       </Button>

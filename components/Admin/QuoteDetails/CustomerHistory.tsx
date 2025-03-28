@@ -7,20 +7,20 @@ interface CustomerHistoryProps {
 
 const CustomerHistory: React.FC<CustomerHistoryProps> = ({ data }) => {
   return (
-    <div className="bg-white rounded-lg border border-solid p-6">
-      <h3 className="text-lg font-semibold text-gray-700 mb-4">Customer History</h3>
-      <div className="grid grid-cols-2 gap-4">
+    <div className="admin-card">
+      <h3 className="admin-section-header">Customer History</h3>
+      <div className="form-group">
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Previous Claims</label>
-          <p className="text-gray-700">{data.previousClaims}</p>
+          <label className="form-label">Previous Claims</label>
+          <p className="form-value">{data.previousClaims}</p>
         </div>
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Last Claim Date</label>
-          <p className="text-gray-700">{data.lastClaimDate || "No previous claims"}</p>
+          <label className="form-label">Last Claim Date</label>
+          <p className="form-value">{data.lastClaimDate || "No previous claims"}</p>
         </div>
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Last Claim Amount</label>
-          <p className="text-gray-700">{data.lastClaimAmount || "N/A"}</p>
+          <label className="form-label">Last Claim Amount</label>
+          <p className="form-value">{data.lastClaimAmount || "N/A"}</p>
         </div>
       </div>
     </div>

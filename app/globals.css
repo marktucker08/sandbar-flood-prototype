@@ -264,11 +264,11 @@ body {
 }
 
 .admin-action-buttons {
-  @apply flex gap-2;
+  @apply flex gap-4 justify-end mt-6;
 }
 
 .admin-action-button {
-  @apply px-2.5 py-1.5 rounded-md border border-solid;
+  @apply px-2.5 py-1.5 rounded-md border border-solid text-sm hover:text-blue-800 flex items-center gap-1;
 }
 
 .admin-back-button {
@@ -334,5 +334,30 @@ body {
 
 .admin-table-pagination-button-active {
   @apply bg-gray-100;
+}
+
+/* Admin Sidebar Styles */
+.admin-sidebar {
+  @apply flex flex-col gap-3 p-4 border-r border-solid w-[220px] max-md:w-full max-md:border-b max-md:border-solid max-md:border-r-[none] bg-white;
+}
+
+.admin-divider {
+  @apply mx-0 my-3 h-px bg-gray-200;
+}
+
+.admin-search-container {
+  @apply flex gap-2 items-center p-4 rounded-lg border border-solid;
+}
+
+.admin-search-input {
+  @apply w-full text-xs text-gray-400 border-none focus:outline-none bg-transparent;
+}
+
+.admin-nav-link {
+  @apply flex items-center gap-3 px-4 py-2 text-sm font-medium rounded-lg transition-colors text-gray-700 hover:text-gray-900 hover:bg-gray-50;
+}
+
+.admin-nav-link-active {
+  @apply bg-sky-50 text-sky-950;
 }
 

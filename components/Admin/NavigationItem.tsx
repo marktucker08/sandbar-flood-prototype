@@ -21,7 +21,7 @@ export const NavigationItem = ({
             : "text-gray-500 hover:bg-gray-100 hover:text-sky-950"
         }`}
     >
-      <Icon className="w-4 h-4" />
+      <Icon className="icon-sm" />
       <span className="font-medium">{label}</span>
     </button>
   );

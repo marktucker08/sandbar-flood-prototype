@@ -7,24 +7,24 @@ interface PersonalDetailsProps {
 
 const PersonalDetails: React.FC<PersonalDetailsProps> = ({ data }) => {
   return (
-    <div className="bg-white rounded-lg border border-solid p-6">
-      <h3 className="text-lg font-semibold text-gray-700 mb-4">Personal Details</h3>
-      <div className="grid grid-cols-2 gap-4">
+    <div className="admin-card">
+      <h3 className="admin-section-header">Personal Details</h3>
+      <div className="form-group">
         <div>
-          <label className="block text-sm text-gray-500 mb-1">First Name</label>
-          <p className="text-gray-700">{data.firstName}</p>
+          <label className="form-label">First Name</label>
+          <p className="form-value">{data.firstName}</p>
         </div>
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Last Name</label>
-          <p className="text-gray-700">{data.lastName}</p>
+          <label className="form-label">Last Name</label>
+          <p className="form-value">{data.lastName}</p>
         </div>
         <div>
-          <label className="block text-sm text-gray-500 mb-1">Date of Birth</label>
-          <p className="text-gray-700">{data.dateOfBirth}</p>
+          <label className="form-label">Date of Birth</label>
+          <p className="form-value">{data.dateOfBirth}</p>
         </div>
         <div>
-          <label className="block text-sm text-gray-500 mb-1">SSN</label>
-          <p className="text-gray-700">{data.ssn}</p>
+          <label className="form-label">SSN</label>
+          <p className="form-value">{data.ssn}</p>
         </div>
       </div>
     </div>
