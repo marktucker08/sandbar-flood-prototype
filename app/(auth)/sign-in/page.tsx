@@ -8,8 +8,8 @@ import Image from "next/image";
 
 export default function SignInPage() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-300 to-blue-200 flex justify-center items-center p-5">
-      <section className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-8 w-full max-w-md">
+    <main className="background-gradient min-h-screen flex justify-center items-center p-5">
+      <section className="card p-8 w-full max-w-md">
         <div className="flex flex-col items-center">
           <Image
             src="/SandBar.png"
@@ -18,7 +18,7 @@ export default function SignInPage() {
             width={182}
             height={71}
           />
-          <h1 className="text-2xl font-semibold text-gray-900 mb-3 text-center">
+          <h1 className="card-header text-center mb-3">
             Log In to Sandbar Flood
           </h1>
           <p className="text-sm text-gray-600 mb-8 text-center">
@@ -36,7 +36,7 @@ export default function SignInPage() {
               <PasswordInput placeholder="Enter your password" showForgotPassword={true} />
             </div>
             <div className="flex justify-center">
-              <Button type="submit" className="bg-amber-500 hover:bg-amber-600 text-white w-full py-6 text-lg">
+              <Button type="submit" className="btn-primary w-full py-6 text-lg">
                 Log In
               </Button>
             </div>

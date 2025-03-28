@@ -1,5 +1,6 @@
 import * as React from "react"
 import { Button } from "./button"
+import { ArrowLeft, ArrowRight } from "lucide-react"
 
 interface NavigationButtonsProps {
   onBack: () => void;
@@ -19,7 +20,7 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
         variant="ghost"
         className="gap-2"
       >
-        <i className="ti ti-arrow-left" />
+        <ArrowLeft className="icon-md" />
         Back
       </Button>
       <Button
@@ -28,7 +29,7 @@ const NavigationButtons: React.FC<NavigationButtonsProps> = ({
       >
         <span>{nextLabel}</span>
         {nextLabel === "Next" && (
-          <i className="ti ti-arrow-right" />
+          <ArrowRight className="icon-md" />
         )}
       </Button>
     </div>

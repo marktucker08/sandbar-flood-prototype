@@ -12,7 +12,7 @@ interface ProgressBarProps {
 
 export const ProgressBar: React.FC<ProgressBarProps> = ({ steps }) => {
   return (
-    <section className="flex gap-4 items-start p-6 w-full bg-white/90 backdrop-blur-sm rounded-xl border border-gray-200 shadow-lg">
+    <section className="card flex gap-4 items-start p-6 w-full">
       {steps.map((step, index) => (
         <div key={index} className="flex flex-col flex-1 gap-3 relative">
           {/* Connector Line */}

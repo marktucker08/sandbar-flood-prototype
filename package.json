@@ -9,7 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@icon/themify-icons": "^1.0.1-alpha.3",
     "@radix-ui/react-dialog": "^1.1.6",
     "@radix-ui/react-slot": "^1.1.2",
     "@tailwindcss/typography": "^0.5.16",
@@ -27,13 +26,15 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
+    "@tailwindcss/postcss": "^4.0.17",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.21",
     "eslint": "^9",
     "eslint-config-next": "15.2.1",
-    "tailwindcss": "^4",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.0.17",
     "typescript": "^5"
   }
 }

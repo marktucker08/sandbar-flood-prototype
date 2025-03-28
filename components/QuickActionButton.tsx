@@ -20,7 +20,7 @@ export default function QuickActionButton({
         className="flex flex-col items-center gap-2 w-full transition-transform duration-300 hover:scale-105"
       >
         <div className="flex justify-center items-center w-14 h-14 bg-amber-200 border border-solid border-zinc-400 rounded-full">
-          <Icon className="w-6 h-6 text-gray-900" />
+          <Icon className="icon-lg text-gray-900" />
         </div>
         <span className="text-center text-sm font-medium text-gray-900">
           {label}

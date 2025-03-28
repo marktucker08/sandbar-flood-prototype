@@ -84,7 +84,7 @@ export const InsuranceForm = () => {
   ];
 
   return (
-    <main className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-300 to-blue-200 py-8 px-4">
+    <main className="background-gradient min-h-screen py-8 px-4">
       <div className="max-w-4xl mx-auto">
         {React.cloneElement(steps[currentStep], {
           formData,

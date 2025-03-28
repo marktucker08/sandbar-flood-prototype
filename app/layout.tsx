@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
-import "@icon/themify-icons/themify-icons.css";
 import "./globals.css";
 import localFont from "next/font/local";
 

@@ -44,13 +44,13 @@ const HelpPage: React.FC = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-400 via-blue-300 to-blue-200">
+    <div className="background-gradient min-h-screen">
       <section className="container mx-auto px-6 py-8 max-w-[1920px]">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-bold text-white mb-4 drop-shadow-sm">
+        <div className="flex flex-col items-center justify-center mb-12">
+          <h1 className="heading text-white drop-shadow-sm">
             How can we help you?
           </h1>
-          <p className="text-lg text-white/90 max-w-2xl mx-auto drop-shadow-sm">
+          <p className="sub-heading text-white/90 max-w-2xl mx-auto drop-shadow-sm">
             Find answers to common questions and learn how to use our platform effectively
           </p>
         </div>
@@ -64,7 +64,7 @@ const HelpPage: React.FC = () => {
               className="w-full px-6 py-4 rounded-lg bg-white/90 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
             <button className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
-              <Search className="w-5 h-5" />
+              <Search className="icon-lg" />
             </button>
           </div>
         </div>
@@ -75,17 +75,17 @@ const HelpPage: React.FC = () => {
             <Link
               key={index}
               href={topic.link}
-              className="bg-white/90 rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-300"
+              className="card hover:shadow-xl transition-shadow duration-300"
             >
               <div className="flex items-start gap-4">
                 <div className="p-3 bg-blue-100 rounded-lg">
-                  <topic.icon className="w-6 h-6 text-blue-600" />
+                  <topic.icon className="icon-lg text-blue-600" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  <h3 className="card-header text-gray-900">
                     {topic.title}
                   </h3>
-                  <p className="text-gray-600">{topic.description}</p>
+                  <p className="form-value text-gray-600">{topic.description}</p>
                 </div>
               </div>
             </Link>
@@ -97,7 +97,7 @@ const HelpPage: React.FC = () => {
           <p className="text-white mb-4">
             Still need help? Our support team is here for you
           </p>
-          <button className="px-6 py-3 bg-white text-blue-600 rounded-lg font-medium hover:bg-blue-50 transition-colors">
+          <button className="btn-secondary">
             Contact Support
           </button>
         </div>

@@ -4,7 +4,7 @@ import { Home, Building2, Building, CreditCard } from "lucide-react";
 
 export default function QuickActionsSection() {
   return (
-    <section className="bg-white rounded-3xl p-6 max-w-4xl mx-auto">
+    <section className="card rounded-3xl max-w-4xl mx-auto">
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-items-center">
         <QuickActionButton
           icon={Home}

@@ -27,9 +27,9 @@ const FormStepLayout: React.FC<FormStepLayoutProps> = ({
     <div className="flex flex-col gap-6">
       <ProgressBar steps={progressSteps} />
       
-      <div className="bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-8">
+      <div className="card">
         <div className="max-w-2xl mx-auto">
-          <h1 className="text-2xl font-semibold text-gray-900 mb-8 text-center">
+          <h1 className="card-header text-center">
             {title}
           </h1>
           

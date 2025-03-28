@@ -3,6 +3,7 @@ import QuoteTable from './QuoteTable';
 import type { Quote } from './QuoteTable';
 import { Status } from '@/types/admin';
 import { Button } from "@/components/ui/button";
+
 interface DashboardSectionProps {
   title: string;
   className?: string;
@@ -43,11 +44,11 @@ const DashboardSection: React.FC<DashboardSectionProps> = ({ title, className = 
   };
 
   return (
-    <div className={`bg-white/90 backdrop-blur-sm rounded-xl shadow-lg p-6 ${className}`}>
+    <div className={`card backdrop-blur-sm ${className}`}>
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold text-gray-800">{title}</h2>
+        <h2 className="card-header">{title}</h2>
         {title === "Quotes Pending Approval" && (
-          <Button variant="secondary">
+          <Button className="btn-secondary">
             View All
           </Button>
         )}
