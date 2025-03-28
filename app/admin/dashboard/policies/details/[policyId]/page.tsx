@@ -1,5 +1,10 @@
-import PolicyDetailsPage from "@/components/Admin/PolicyDetailsPage";
+import PolicyDetailsPage from '@/components/Admin/PolicyDetailsPage'
+import React from 'react'
 
-export default function Page() {
-  return <PolicyDetailsPage />;
-} 
+const Page = () => {
+  return (
+    <PolicyDetailsPage />
+  )
+}
+
+export default Page 

@@ -14,44 +14,44 @@ interface PageHeaderProps {
 
 export const PageHeader: React.FC<PageHeaderProps> = ({ title, actionButton }) => {
   return (
-    <header className="flex justify-between items-start max-sm:flex-col max-sm:gap-4">
+    <header className="admin-header">
       <div className="flex flex-col gap-0.5">
-        <h1 className="text-5xl font-bold tracking-tighter text-sky-950 max-sm:text-3xl">
+        <h1 className="admin-header-title">
           {title}
         </h1>
         <nav aria-label="Breadcrumb">
-          <ol className="flex items-center text-base text-gray-500">
+          <ol className="admin-breadcrumb">
             <li>Sandbar Flood</li>
-            <li className="mx-1">&gt;</li>
+            <li className="admin-breadcrumb-separator">&gt;</li>
             <li aria-current="page">{title}</li>
           </ol>
         </nav>
       </div>
 
-      <div className="flex gap-4 items-center">
+      <div className="admin-header-actions">
         {actionButton && (
           <Button 
             onClick={actionButton.onClick}
             variant="default"
             className="gap-2"
           >
-            <actionButton.icon className="w-4 h-4" />
+            <actionButton.icon className="icon-sm" />
             <span className="text-sm font-medium">{actionButton.label}</span>
           </Button>
         )}
-        <div className="flex items-center gap-3 px-4 py-2 rounded-lg border border-solid cursor-pointer hover:bg-gray-50 transition-colors">
+        <div className="admin-profile-button">
           <Image
             src="https://ui-avatars.com/api/?name=Bruce+Banner"
             alt="Profile"
-            className="w-8 h-8 rounded-full"
+            className="admin-profile-image"
             width={32}
             height={32}
           />
           <div className="flex flex-col">
-            <span className="text-sm font-medium text-sky-950">Bruce Banner</span>
-            <span className="text-xs text-gray-500">Administrator</span>
+            <span className="admin-profile-name">Bruce Banner</span>
+            <span className="admin-profile-role">Administrator</span>
           </div>
-          <ChevronDown className="w-4 h-4 text-gray-500" />
+          <ChevronDown className="icon-sm text-gray-500" />
         </div>
       </div>
     </header>

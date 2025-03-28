@@ -69,21 +69,21 @@ const StatsCard: React.FC<StatsCardProps> = ({ title, value, change, type, histo
   const Icon = getIcon(type);
   
   return (
-    <div className="p-6 bg-white rounded-xl shadow-sm">
-      <div className="flex items-center justify-between mb-4">
+    <div className="admin-stats-card">
+      <div className="admin-stats-header">
         <div>
-          <p className="text-sm font-medium text-gray-600">{title}</p>
-          <p className="mt-2 text-3xl font-semibold text-gray-900">
+          <p className="admin-stats-title">{title}</p>
+          <p className="admin-stats-value">
             {typeof value === 'number' && type === 'revenue' ? `$${value.toLocaleString()}` : value}
           </p>
         </div>
-        <div className={`flex items-center justify-center w-12 h-12 rounded-lg ${getIconColor(type)}`}>
-          <Icon className="w-5 h-5" />
+        <div className={`admin-stats-icon-container ${getIconColor(type)}`}>
+          <Icon className="admin-stats-icon" />
         </div>
       </div>
 
       {historicalData && (
-        <div className="h-16 -mx-2">
+        <div className="admin-stats-chart">
           <ResponsiveContainer width="100%" height="100%">
             <AreaChart data={historicalData}>
               <defs>
@@ -105,20 +105,13 @@ const StatsCard: React.FC<StatsCardProps> = ({ title, value, change, type, histo
       )}
 
       {change && (
-        <div className="mt-4 flex items-center">
+        <div className={`admin-stats-change ${change.type === 'increase' ? 'admin-stats-change-positive' : 'admin-stats-change-negative'}`}>
           {change.type === 'increase' ? (
-            <TrendingUp className="w-4 h-4 text-green-500 mr-1" />
+            <TrendingUp className="w-4 h-4" />
           ) : (
-            <TrendingDown className="w-4 h-4 text-red-500 mr-1" />
+            <TrendingDown className="w-4 h-4" />
           )}
-          <span
-            className={`text-sm font-medium ${
-              change.type === 'increase' ? 'text-green-600' : 'text-red-600'
-            }`}
-          >
-            {change.value}%
-          </span>
-          <span className="text-sm text-gray-500 ml-2">from last month</span>
+          <span>{Math.abs(change.value)}% from last month</span>
         </div>
       )}
     </div>

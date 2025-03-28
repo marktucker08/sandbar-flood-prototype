@@ -5,6 +5,7 @@ import { StatusBadge } from "./StatusBadge";
 import { DataTable } from "./DataTable";
 import { Column, Quote, Status } from "@/types/admin";
 import { Plus, Filter, Download } from "lucide-react";
+
 export const QuotesPage = () => {
   const columns = [
     { key: "id", label: "Quote ID" },
@@ -60,7 +61,7 @@ export const QuotesPage = () => {
   ];
 
   return (
-    <main className="flex flex-col flex-1 gap-4 p-5">
+    <main className="admin-page-main">
       <PageHeader 
         title="Quotes" 
         actionButton={{
@@ -69,15 +70,15 @@ export const QuotesPage = () => {
           onClick: () => console.log("New Quote clicked")
         }}
       />
-      <section className="p-6 bg-white rounded-xl border border-solid">
-        <header className="flex justify-between items-center mb-3">
-          <h2 className="text-xl font-bold text-gray-500">All Quotes</h2>
-          <div className="flex gap-2">
-            <button className="px-2.5 py-1.5 rounded-md border border-solid">
-              <Filter className="w-4 h-4" />
+      <section className="admin-content-section">
+        <header className="admin-section-header">
+          <h2 className="admin-section-title">All Quotes</h2>
+          <div className="admin-action-buttons">
+            <button className="admin-action-button">
+              <Filter className="icon-sm" />
             </button>
-            <button className="px-2.5 py-1.5 rounded-md border border-solid">
-              <Download className="w-4 h-4" />
+            <button className="admin-action-button">
+              <Download className="icon-sm" />
             </button>
           </div>
         </header>

@@ -9,7 +9,7 @@ import { Download } from 'lucide-react';
 
 const AdminDashboard = () => {
   return (
-    <div className="p-6 space-y-6">
+    <div className="admin-page-container">
       <PageHeader 
         title="Admin Dashboard"
         actionButton={{
@@ -19,19 +19,19 @@ const AdminDashboard = () => {
         }}
       />
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="admin-stats-grid">
         {sampleStats.map((stat) => (
           <StatsCard key={stat.title} {...stat} />
         ))}
       </div>
 
-      <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <h2 className="text-lg font-medium text-gray-900 mb-4">Recent Activity</h2>
+      <div className="admin-content-grid">
+        <div className="admin-card">
+          <h2 className="admin-section-header">Recent Activity</h2>
           <ActivityFeed />
         </div>
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <h2 className="text-lg font-medium text-gray-900 mb-4">Upcoming Inspections</h2>
+        <div className="admin-card">
+          <h2 className="admin-section-header">Upcoming Inspections</h2>
           <UpcomingInspections />
         </div>
       </div>

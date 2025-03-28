@@ -5,7 +5,6 @@ import { StatusBadge } from "./StatusBadge";
 import { DataTable } from "./DataTable";
 import { Client, Column, Status } from "@/types/admin";
 import { Plus, Filter, Download } from "lucide-react";
-import { IconWrapper } from "@/components/ui/IconWrapper";
 
 const columns: Column<Client>[] = [
   { key: "id", label: "Client ID" },
@@ -76,10 +75,10 @@ export const ClientsPage = () => {
           <h2 className="text-xl font-bold text-gray-500">All Clients</h2>
           <div className="flex gap-2">
             <button className="px-2.5 py-1.5 rounded-md border border-solid">
-              <IconWrapper icon={Filter} size="sm" />
+              <Filter className="icon-sm" />
             </button>
             <button className="px-2.5 py-1.5 rounded-md border border-solid">
-              <IconWrapper icon={Download} size="sm" />
+              <Download className="icon-sm" />
             </button>
           </div>
         </header>

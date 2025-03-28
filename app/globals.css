@@ -147,3 +147,192 @@ body {
   @apply w-6 h-6;
 }
 
+/* Admin Dashboard Styles */
+.admin-page-container {
+  @apply p-6 space-y-6;
+}
+
+.admin-stats-grid {
+  @apply grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4;
+}
+
+.admin-content-grid {
+  @apply grid grid-cols-1 gap-6 lg:grid-cols-2;
+}
+
+.admin-card {
+  @apply bg-white rounded-xl shadow-sm p-6;
+}
+
+.admin-section-header {
+  @apply text-lg font-medium text-gray-900 mb-4;
+}
+
+/* Admin Header Styles */
+.admin-header {
+  @apply flex justify-between items-start max-sm:flex-col max-sm:gap-4;
+}
+
+.admin-header-title {
+  @apply text-5xl font-bold tracking-tighter text-sky-950 max-sm:text-3xl;
+}
+
+.admin-breadcrumb {
+  @apply flex items-center text-base text-gray-500;
+}
+
+.admin-breadcrumb-separator {
+  @apply mx-1;
+}
+
+.admin-header-actions {
+  @apply flex gap-4 items-center;
+}
+
+.admin-profile-button {
+  @apply flex items-center gap-3 px-4 py-2 rounded-lg border border-solid cursor-pointer hover:bg-gray-50 transition-colors;
+}
+
+.admin-profile-image {
+  @apply w-8 h-8 rounded-full;
+}
+
+.admin-profile-name {
+  @apply text-sm font-medium text-sky-950;
+}
+
+.admin-profile-role {
+  @apply text-xs text-gray-500;
+}
+
+/* Admin Stats Card Styles */
+.admin-stats-card {
+  @apply p-6 bg-white rounded-xl shadow-sm;
+}
+
+.admin-stats-header {
+  @apply flex items-center justify-between mb-4;
+}
+
+.admin-stats-title {
+  @apply text-sm font-medium text-gray-600;
+}
+
+.admin-stats-value {
+  @apply mt-2 text-3xl font-semibold text-gray-900;
+}
+
+.admin-stats-icon-container {
+  @apply flex items-center justify-center w-12 h-12 rounded-lg;
+}
+
+.admin-stats-icon {
+  @apply w-5 h-5;
+}
+
+.admin-stats-chart {
+  @apply h-16 -mx-2;
+}
+
+.admin-stats-change {
+  @apply flex items-center gap-1 mt-2 text-sm;
+}
+
+.admin-stats-change-positive {
+  @apply text-green-600;
+}
+
+.admin-stats-change-negative {
+  @apply text-red-600;
+}
+
+/* Admin Quotes Page Styles */
+.admin-page-main {
+  @apply flex flex-col flex-1 gap-4 p-5;
+}
+
+.admin-content-section {
+  @apply p-6 bg-white rounded-xl border border-solid;
+}
+
+.admin-section-header {
+  @apply flex justify-between items-center mb-3;
+}
+
+.admin-section-title {
+  @apply text-xl font-bold text-gray-500;
+}
+
+.admin-action-buttons {
+  @apply flex gap-2;
+}
+
+.admin-action-button {
+  @apply px-2.5 py-1.5 rounded-md border border-solid;
+}
+
+.admin-back-button {
+  @apply flex items-center gap-2 text-gray-500 hover:text-gray-700 transition-colors;
+}
+
+.admin-quote-header {
+  @apply flex gap-3 items-center mb-8;
+}
+
+.admin-quote-title {
+  @apply text-xl font-bold text-gray-500;
+}
+
+.admin-quote-grid {
+  @apply grid grid-cols-2 gap-8 max-sm:grid-cols-1;
+}
+
+.admin-quote-column {
+  @apply flex flex-col gap-6;
+}
+
+/* Data Table Styles */
+.admin-table-container {
+  @apply overflow-x-auto;
+}
+
+.admin-table {
+  @apply w-full min-w-[900px];
+}
+
+.admin-table-header {
+  @apply bg-gray-200 rounded-lg;
+}
+
+.admin-table-header-cell {
+  @apply p-4 text-sm text-left text-sky-950;
+}
+
+.admin-table-row {
+  @apply border-b;
+}
+
+.admin-table-cell {
+  @apply p-4 text-sm text-gray-500;
+}
+
+.admin-table-actions {
+  @apply flex gap-2;
+}
+
+.admin-table-action-button {
+  @apply px-2.5 py-1.5 rounded-md border border-solid;
+}
+
+.admin-table-pagination {
+  @apply flex gap-1 justify-center mt-4;
+}
+
+.admin-table-pagination-button {
+  @apply px-3 py-2 text-gray-500 hover:bg-gray-100 rounded disabled:opacity-50;
+}
+
+.admin-table-pagination-button-active {
+  @apply bg-gray-100;
+}
+

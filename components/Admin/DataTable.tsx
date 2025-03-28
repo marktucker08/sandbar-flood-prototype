@@ -2,6 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import { DataTableProps } from "@/types/admin";
+import { ArrowLeft, ArrowRight, Pencil, Eye } from "lucide-react";
 
 export const DataTable = <T extends { id: string }>({
   columns,
@@ -15,58 +16,58 @@ export const DataTable = <T extends { id: string }>({
   onPageChange,
 }: DataTableProps<T>) => {
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full min-w-[900px]">
+    <div className="admin-table-container">
+      <table className="admin-table">
         <thead>
-          <tr className="bg-gray-200 rounded-lg">
+          <tr className="admin-table-header">
             {columns.map((column) => (
-              <th key={column.key.toString()} className="p-4 text-sm text-left text-sky-950">
+              <th key={column.key.toString()} className="admin-table-header-cell">
                 {column.label}
               </th>
             ))}
-            <th className="p-4 text-sm text-left text-sky-950">Actions</th>
+            <th className="admin-table-header-cell">Actions</th>
           </tr>
         </thead>
         <tbody>
           {data.map((row, index) => (
-            <tr key={index} className="border-b">
+            <tr key={index} className="admin-table-row">
               {columns.map((column) => (
-                <td key={column.key.toString()} className="p-4 text-sm text-gray-500">
+                <td key={column.key.toString()} className="admin-table-cell">
                   {column.render
                     ? column.render(row[column.key as keyof T], row)
                     : String(row[column.key as keyof T])}
                 </td>
               ))}
-              <td className="p-4">
-                <div className="flex gap-2">
+              <td className="admin-table-cell">
+                <div className="admin-table-actions">
                   {editLink && (
                     <Link href={`${editLink}/${row.id}`}>
-                      <button className="px-2.5 py-1.5 rounded-md border border-solid">
-                        <i className="ti ti-pencil" />
+                      <button className="admin-table-action-button">
+                        <Pencil className="icon-sm" />
                       </button>
                     </Link>
                   )}
                   {onEdit && (
                     <button
                       onClick={() => onEdit(row.id)}
-                      className="px-2.5 py-1.5 rounded-md border border-solid"
+                      className="admin-table-action-button"
                     >
-                      <i className="ti ti-pencil" />
+                      <Pencil className="icon-sm" />
                     </button>
                   )}
                   {viewLink && (
                     <Link href={`${viewLink}/${row.id}`}>
-                      <button className="px-2.5 py-1.5 rounded-md border border-solid">
-                        <i className="ti ti-eye" />
+                      <button className="admin-table-action-button">
+                        <Eye className="icon-sm" />
                       </button>
                     </Link>
                   )}
                   {onView && (
                     <button
                       onClick={() => onView(row.id)}
-                      className="px-2.5 py-1.5 rounded-md border border-solid"
+                      className="admin-table-action-button"
                     >
-                      <i className="ti ti-eye" />
+                      <Eye className="icon-sm" />
                     </button>
                   )}
                 </div>
@@ -75,20 +76,20 @@ export const DataTable = <T extends { id: string }>({
           ))}
         </tbody>
       </table>
-      <nav className="flex gap-1 justify-center mt-4">
+      <nav className="admin-table-pagination">
         <button
           onClick={() => onPageChange?.(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-3 py-2 text-gray-500 hover:bg-gray-100 rounded disabled:opacity-50"
+          className="admin-table-pagination-button"
         >
-          <i className="ti ti-arrow-left" />
+          <ArrowLeft className="icon-sm" />
         </button>
         {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
           <button
             key={page}
             onClick={() => onPageChange?.(page)}
-            className={`px-3 py-2 text-gray-500 hover:bg-gray-100 rounded ${
-              currentPage === page ? "bg-gray-100" : ""
+            className={`admin-table-pagination-button ${
+              currentPage === page ? "admin-table-pagination-button-active" : ""
             }`}
           >
             {page}
@@ -97,9 +98,9 @@ export const DataTable = <T extends { id: string }>({
         <button
           onClick={() => onPageChange?.(currentPage + 1)}
           disabled={currentPage === totalPages}
-          className="px-3 py-2 text-gray-500 hover:bg-gray-100 rounded disabled:opacity-50"
+          className="admin-table-pagination-button"
         >
-          <i className="ti ti-arrow-right" />
+          <ArrowRight className="icon-sm" />
         </button>
       </nav>
     </div>
