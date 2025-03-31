@@ -1,17 +1,16 @@
 "use client";
-import * as React from "react";
+import React from "react";
 import { useParams } from "next/navigation";
-import PropertyDetails from "./InspectionDetails/PropertyDetails";
-import InspectionDetails from "./InspectionDetails/InspectionDetails";
-import ContactInformation from "./InspectionDetails/ContactInformation";
-import InspectionStatus from "./InspectionDetails/InspectionStatus";
-import FindingsSection from "./InspectionDetails/FindingsSection";
-import DocumentsSection from "./InspectionDetails/DocumentsSection";
-import ActionButtons from "./InspectionDetails/ActionButtons";
-import { PageHeader } from "./PageHeader";
-import Link from "next/link";
+import { PageHeader } from "@/components/Admin/PageHeader";
+import DetailPageLayout from "@/components/Admin/layouts/DetailPageLayout";
+import InspectionActionButtons from "@/components/Admin/InspectionDetails/ActionButtons";
+import PropertyDetails from "@/components/Admin/InspectionDetails/PropertyDetails";
+import ContactInformation from "@/components/Admin/InspectionDetails/ContactInformation";
+import InspectionDetails from "@/components/Admin/InspectionDetails/InspectionDetails";
+import FindingsSection from "@/components/Admin/InspectionDetails/FindingsSection";
+import InspectionStatus from "@/components/Admin/InspectionDetails/InspectionStatus";
+import DocumentsSection from "@/components/Admin/InspectionDetails/DocumentsSection";
 import { DetailedInspection } from "@/types/admin";
-import { ArrowLeft, Copy } from "lucide-react";
 
 // This would typically come from an API call
 const mockInspectionData: DetailedInspection = {
@@ -23,26 +22,27 @@ const mockInspectionData: DetailedInspection = {
   date: "2024-03-20",
   time: "10:00 AM",
   // Property Details
-  propertyType: "Single Family",
+  propertyType: "Single Family" as const,
   floodZone: "AE",
   elevation: "8.5 ft",
   squareFootage: 2500,
   yearBuilt: 2015,
   // Inspection Details
   inspectionType: "Initial",
-  notes: "Property appears to be in good condition overall. Some minor issues noted in the findings.",
+  notes: "Please ensure all flood protection measures are in place.",
+  // Findings
   findings: [
     {
       id: "find-001",
-      category: "Foundation",
-      description: "Minor cracks in foundation wall",
+      category: "Flood Protection",
+      description: "All flood vents are properly installed and functioning.",
       severity: "Low",
     },
     {
       id: "find-002",
-      category: "Roof",
-      description: "Missing shingles in corner",
-      severity: "Medium",
+      category: "Elevation",
+      description: "Property meets minimum elevation requirements.",
+      severity: "Low",
     },
   ],
   // Contact Information
@@ -53,15 +53,15 @@ const mockInspectionData: DetailedInspection = {
   documents: [
     {
       id: "doc-001",
-      name: "Inspection Report",
+      name: "Property Survey",
       type: "PDF",
-      uploadedDate: "2024-03-20",
+      uploadedDate: "2024-03-15",
     },
     {
       id: "doc-002",
-      name: "Property Photos",
-      type: "ZIP",
-      uploadedDate: "2024-03-20",
+      name: "Elevation Certificate",
+      type: "PDF",
+      uploadedDate: "2024-03-15",
     },
   ],
 };
@@ -74,42 +74,56 @@ const InspectionDetailsPage: React.FC = () => {
   // For now, we'll use the mock data
   const inspectionData = mockInspectionData;
 
+  const handleStatusAction = (actionLabel: string) => {
+    // Handle status-specific actions
+    switch (actionLabel) {
+      case "Approve Inspection":
+        console.log("Approving inspection:", inspectionId);
+        break;
+      case "Reject Inspection":
+        console.log("Rejecting inspection:", inspectionId);
+        break;
+      case "Schedule Follow-up":
+        console.log("Scheduling follow-up for inspection:", inspectionId);
+        break;
+      case "Schedule New Inspection":
+        console.log("Scheduling new inspection:", inspectionId);
+        break;
+      case "Reschedule Inspection":
+        console.log("Rescheduling inspection:", inspectionId);
+        break;
+      default:
+        console.log("Unknown action:", actionLabel);
+    }
+  };
+
+  const leftColumn = (
+    <>
+      <PropertyDetails data={inspectionData} />
+      <ContactInformation data={inspectionData} />
+      <InspectionDetails data={inspectionData} />
+      <FindingsSection data={inspectionData} />
+    </>
+  );
+
+  const rightColumn = (
+    <>
+      <InspectionStatus data={inspectionData} onStatusAction={handleStatusAction} />
+      <DocumentsSection data={inspectionData} />
+    </>
+  );
+
   return (
     <main className="admin-page-main">
       <PageHeader title="Inspection Details" />
-      <section className="admin-content-section">
-        <div className="flex gap-2 items-center mb-6">
-          <Link href="/admin/dashboard/inspections">
-            <button className="admin-back-button">
-              <ArrowLeft className="icon-md" />
-              <span className="text-sm">Back</span>
-            </button>
-          </Link>
-        </div>
-
-        <div className="admin-quote-header">
-          <h2 className="admin-quote-title">
-            Inspection Details - {inspectionId}
-          </h2>
-          <button className="text-gray-500 hover:text-gray-700 transition-colors">
-            <Copy className="icon-md" />
-          </button>
-        </div>
-
-        <div className="admin-quote-grid">
-          <div className="admin-quote-column">
-            <PropertyDetails data={inspectionData} />
-            <ContactInformation data={inspectionData} />
-            <InspectionDetails data={inspectionData} />
-            <FindingsSection data={inspectionData} />
-          </div>
-          <div className="admin-quote-column">
-            <InspectionStatus data={inspectionData} />
-            <DocumentsSection data={inspectionData} />
-          </div>
-        </div>
-        <ActionButtons data={inspectionData} />
-      </section>
+      <DetailPageLayout
+        title="Inspection Details"
+        id={inspectionId}
+        backLink="/admin/dashboard/inspections"
+        leftColumn={leftColumn}
+        rightColumn={rightColumn}
+        actionButtons={<InspectionActionButtons data={inspectionData} onStatusAction={handleStatusAction} />}
+      />
     </main>
   );
 };

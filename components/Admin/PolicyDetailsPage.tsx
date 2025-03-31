@@ -1,19 +1,18 @@
 "use client";
-import * as React from "react";
+import React from "react";
 import { useParams } from "next/navigation";
-import PersonalDetails from "./PolicyDetails/PersonalDetails";
-import ContactInformation from "./PolicyDetails/ContactInformation";
-import PolicyInformation from "./PolicyDetails/PolicyInformation";
-import CoverageDetails from "./PolicyDetails/CoverageDetails";
-import PaymentInformation from "./PolicyDetails/PaymentInformation";
-import PolicyStatus from "./PolicyDetails/PolicyStatus";
-import DatesSection from "./PolicyDetails/DatesSection";
-import DocumentsSection from "./PolicyDetails/DocumentsSection";
-import ActionButtons from "./PolicyDetails/ActionButtons";
-import { PageHeader } from "./PageHeader";
-import Link from "next/link";
+import { PageHeader } from "@/components/Admin/PageHeader";
+import DetailPageLayout from "@/components/Admin/layouts/DetailPageLayout";
+import PolicyActionButtons from "@/components/Admin/PolicyDetails/ActionButtons";
+import PersonalDetails from "@/components/Admin/PolicyDetails/PersonalDetails";
+import ContactInformation from "@/components/Admin/PolicyDetails/ContactInformation";
+import PolicyInformation from "@/components/Admin/PolicyDetails/PolicyInformation";
+import CoverageDetails from "@/components/Admin/PolicyDetails/CoverageDetails";
+import PolicyStatus from "@/components/Admin/PolicyDetails/PolicyStatus";
+import PaymentInformation from "@/components/Admin/PolicyDetails/PaymentInformation";
+import DatesSection from "@/components/Admin/PolicyDetails/DatesSection";
+import DocumentsSection from "@/components/Admin/PolicyDetails/DocumentsSection";
 import { DetailedPolicy } from "@/types/admin";
-import { ArrowLeft, Copy } from "lucide-react";
 
 // This would typically come from an API call
 const mockPolicyData: DetailedPolicy = {
@@ -37,16 +36,16 @@ const mockPolicyData: DetailedPolicy = {
   state: "FL",
   zipCode: "33139",
   // Policy Information
-  propertyType: "Single Family",
+  propertyType: "Single Family" as const,
   floodZone: "AE",
   elevation: "8.5 ft",
   squareFootage: 2500,
   yearBuilt: 2015,
   // Coverage Details
   coverageAmount: "$250,000",
-  deductible: "$1,000",
-  contentsCoverage: "$100,000",
   buildingCoverage: "$150,000",
+  contentsCoverage: "$100,000",
+  deductible: "$1,000",
   // Payment Information
   paymentFrequency: "Monthly",
   nextPaymentDate: "2024-04-15",
@@ -56,13 +55,13 @@ const mockPolicyData: DetailedPolicy = {
   documents: [
     {
       id: "doc-001",
-      name: "Policy Declaration",
+      name: "Property Survey",
       type: "PDF",
       uploadedDate: "2024-03-15",
     },
     {
       id: "doc-002",
-      name: "Property Survey",
+      name: "Elevation Certificate",
       type: "PDF",
       uploadedDate: "2024-03-15",
     },
@@ -77,44 +76,52 @@ const PolicyDetailsPage: React.FC = () => {
   // For now, we'll use the mock data
   const policyData = mockPolicyData;
 
+  const handleStatusAction = (actionLabel: string) => {
+    // Handle status-specific actions
+    switch (actionLabel) {
+      case "Cancel Policy":
+        console.log("Cancelling policy:", policyId);
+        break;
+      case "Renew Policy":
+        console.log("Renewing policy:", policyId);
+        break;
+      case "Update Coverage":
+        console.log("Updating coverage for policy:", policyId);
+        break;
+      default:
+        console.log("Unknown action:", actionLabel);
+    }
+  };
+
+  const leftColumn = (
+    <>
+      <PersonalDetails data={policyData} />
+      <ContactInformation data={policyData} />
+      <PolicyInformation data={policyData} />
+      <CoverageDetails data={policyData} />
+    </>
+  );
+
+  const rightColumn = (
+    <>
+      <PolicyStatus data={policyData} onStatusAction={handleStatusAction} />
+      <PaymentInformation data={policyData} />
+      <DatesSection data={policyData} />
+      <DocumentsSection data={policyData} />
+    </>
+  );
+
   return (
     <main className="admin-page-main">
       <PageHeader title="Policy Details" />
-      <section className="admin-content-section">
-        <div className="flex gap-2 items-center mb-6">
-          <Link href="/admin/dashboard/policies">
-            <button className="admin-back-button">
-              <ArrowLeft className="icon-sm" />
-              <span className="text-sm">Back</span>
-            </button>
-          </Link>
-        </div>
-
-        <div className="admin-quote-header">
-          <h2 className="admin-quote-title">
-            Policy Details - {policyId}
-          </h2>
-          <button className="text-gray-500 hover:text-gray-700 transition-colors">
-            <Copy className="icon-md" />
-          </button>
-        </div>
-
-        <div className="admin-quote-grid">
-          <div className="admin-quote-column">
-            <PersonalDetails data={policyData} />
-            <ContactInformation data={policyData} />
-            <PolicyInformation data={policyData} />
-            <CoverageDetails data={policyData} />
-          </div>
-          <div className="admin-quote-column">
-            <PolicyStatus data={policyData} />
-            <PaymentInformation data={policyData} />
-            <DatesSection data={policyData} />
-            <DocumentsSection data={policyData} />
-          </div>
-        </div>
-        <ActionButtons data={policyData} />
-      </section>
+      <DetailPageLayout
+        title="Policy Details"
+        id={policyId}
+        backLink="/admin/dashboard/policies"
+        leftColumn={leftColumn}
+        rightColumn={rightColumn}
+        actionButtons={<PolicyActionButtons data={policyData} onStatusAction={handleStatusAction} />}
+      />
     </main>
   );
 };

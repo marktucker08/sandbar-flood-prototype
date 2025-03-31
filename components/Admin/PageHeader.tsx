@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui";
 import { LucideIcon, ChevronDown } from "lucide-react";
 
@@ -39,7 +40,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ title, actionButton }) =
             <span className="text-sm font-medium">{actionButton.label}</span>
           </Button>
         )}
-        <div className="admin-profile-button">
+        <Link href="/admin/dashboard/profile" className="admin-profile-button">
           <Image
             src="https://ui-avatars.com/api/?name=Bruce+Banner"
             alt="Profile"
@@ -52,7 +53,7 @@ export const PageHeader: React.FC<PageHeaderProps> = ({ title, actionButton }) =
             <span className="admin-profile-role">Administrator</span>
           </div>
           <ChevronDown className="icon-sm text-gray-500" />
-        </div>
+        </Link>
       </div>
     </header>
   );

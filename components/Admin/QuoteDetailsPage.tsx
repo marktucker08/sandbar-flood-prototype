@@ -1,19 +1,18 @@
 "use client";
-import * as React from "react";
+import React from "react";
 import { useParams } from "next/navigation";
-import PersonalDetails from "./QuoteDetails/PersonalDetails";
-import ContactInformation from "./QuoteDetails/ContactInformation";
-import PolicyInformation from "./QuoteDetails/PolicyInformation";
-import CustomerHistory from "./QuoteDetails/CustomerHistory";
-import QuoteStatus from "./QuoteDetails/QuoteStatus";
-import QuoteBreakdown from "./QuoteDetails/QuoteBreakdown";
-import DatesSection from "./QuoteDetails/DatesSection";
-import DocumentsSection from "./QuoteDetails/DocumentsSection";
-import ActionButtons from "./QuoteDetails/ActionButtons";
-import { PageHeader } from "./PageHeader";
-import Link from "next/link";
+import { PageHeader } from "@/components/Admin/PageHeader";
+import DetailPageLayout from "@/components/Admin/layouts/DetailPageLayout";
+import QuoteActionButtons from "@/components/Admin/QuoteDetails/ActionButtons";
+import PersonalDetails from "@/components/Admin/QuoteDetails/PersonalDetails";
+import ContactInformation from "@/components/Admin/QuoteDetails/ContactInformation";
+import PolicyInformation from "@/components/Admin/QuoteDetails/PolicyInformation";
+import CustomerHistory from "@/components/Admin/QuoteDetails/CustomerHistory";
+import QuoteStatus from "@/components/Admin/QuoteDetails/QuoteStatus";
+import QuoteBreakdown from "@/components/Admin/QuoteDetails/QuoteBreakdown";
+import DatesSection from "@/components/Admin/QuoteDetails/DatesSection";
+import DocumentsSection from "@/components/Admin/QuoteDetails/DocumentsSection";
 import { DetailedQuote } from "@/types/admin";
-import { ArrowLeft, Copy } from "lucide-react";
 
 // This would typically come from an API call
 const mockQuoteData: DetailedQuote = {
@@ -37,7 +36,7 @@ const mockQuoteData: DetailedQuote = {
   state: "FL",
   zipCode: "33139",
   // Policy Information
-  propertyType: "Single Family",
+  propertyType: "Single Family" as const,
   floodZone: "AE",
   elevation: "8.5 ft",
   squareFootage: 2500,
@@ -77,44 +76,52 @@ const QuoteDetailsPage: React.FC = () => {
   // For now, we'll use the mock data
   const quoteData = mockQuoteData;
 
+  const handleStatusAction = (actionLabel: string) => {
+    // Handle status-specific actions
+    switch (actionLabel) {
+      case "Approve Quote":
+        console.log("Approving quote:", quoteId);
+        break;
+      case "Reject Quote":
+        console.log("Rejecting quote:", quoteId);
+        break;
+      case "Request Changes":
+        console.log("Requesting changes for quote:", quoteId);
+        break;
+      default:
+        console.log("Unknown action:", actionLabel);
+    }
+  };
+
+  const leftColumn = (
+    <>
+      <PersonalDetails data={quoteData} />
+      <ContactInformation data={quoteData} />
+      <PolicyInformation data={quoteData} />
+      <CustomerHistory data={quoteData} />
+    </>
+  );
+
+  const rightColumn = (
+    <>
+      <QuoteStatus data={quoteData} onStatusAction={handleStatusAction} />
+      <QuoteBreakdown data={quoteData} />
+      <DatesSection data={quoteData} />
+      <DocumentsSection data={quoteData} />
+    </>
+  );
+
   return (
     <main className="admin-page-main">
       <PageHeader title="Quote Details" />
-      <section className="admin-content-section">
-        <div className="flex gap-2 items-center mb-6">
-          <Link href="/admin/dashboard/quotes">
-            <button className="admin-back-button">
-              <ArrowLeft className="icon-md" />
-              <span className="text-sm">Back</span>
-            </button>
-          </Link>
-        </div>
-
-        <div className="admin-quote-header">
-          <h2 className="admin-quote-title">
-            Quote Details - {quoteId}
-          </h2>
-          <button className="text-gray-500 hover:text-gray-700 transition-colors">
-            <Copy className="icon-md" />
-          </button>
-        </div>
-
-        <div className="admin-quote-grid">
-          <div className="admin-quote-column">
-            <PersonalDetails data={quoteData} />
-            <ContactInformation data={quoteData} />
-            <PolicyInformation data={quoteData} />
-            <CustomerHistory data={quoteData} />
-          </div>
-          <div className="admin-quote-column">
-            <QuoteStatus data={quoteData} />
-            <QuoteBreakdown data={quoteData} />
-            <DatesSection data={quoteData} />
-            <DocumentsSection data={quoteData} />
-          </div>
-        </div>
-        <ActionButtons data={quoteData} />
-      </section>
+      <DetailPageLayout
+        title="Quote Details"
+        id={quoteId}
+        backLink="/admin/dashboard/quotes"
+        leftColumn={leftColumn}
+        rightColumn={rightColumn}
+        actionButtons={<QuoteActionButtons data={quoteData} onStatusAction={handleStatusAction} />}
+      />
     </main>
   );
 };

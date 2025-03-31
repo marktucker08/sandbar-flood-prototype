@@ -1,5 +1,6 @@
 import React from "react";
 import { DetailedQuote } from "@/types/admin";
+import { User, Calendar, CreditCard } from "lucide-react";
 
 interface PersonalDetailsProps {
   data: DetailedQuote;
@@ -8,22 +9,36 @@ interface PersonalDetailsProps {
 const PersonalDetails: React.FC<PersonalDetailsProps> = ({ data }) => {
   return (
     <div className="admin-card">
-      <h3 className="admin-section-header">Personal Details</h3>
+      <h3 className="admin-section-header flex items-center gap-2">
+        
+        Personal Details
+      </h3>
       <div className="form-group">
         <div>
-          <label className="form-label">First Name</label>
+          <label className="form-label flex items-center gap-2">
+            <User className="icon-sm" />
+            First Name
+          </label>
           <p className="form-value">{data.firstName}</p>
         </div>
         <div>
-          <label className="form-label">Last Name</label>
+          <label className="form-label flex items-center gap-2">
+            Last Name
+          </label>
           <p className="form-value">{data.lastName}</p>
         </div>
         <div>
-          <label className="form-label">Date of Birth</label>
+          <label className="form-label flex items-center gap-2">
+            <Calendar className="icon-sm" />
+            Date of Birth
+          </label>
           <p className="form-value">{data.dateOfBirth}</p>
         </div>
         <div>
-          <label className="form-label">SSN</label>
+          <label className="form-label flex items-center gap-2">
+            <CreditCard className="icon-sm" />
+            SSN
+          </label>
           <p className="form-value">{data.ssn}</p>
         </div>
       </div>

@@ -1,96 +1,36 @@
-import React, { useState } from "react";
+import React from "react";
 import { DetailedQuote } from "@/types/admin";
-import { Button } from "@/components/ui";
-import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
+import { ActionButtons } from "@/components/ui/action-buttons";
+import { Edit, Printer } from "lucide-react";
 
 interface ActionButtonsProps {
   data: DetailedQuote;
+  onStatusAction?: (actionLabel: string) => void;
 }
 
-const ActionButtons: React.FC<ActionButtonsProps> = ({ data }) => {
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [dialogConfig, setDialogConfig] = useState<{
-    title: string;
-    description: string;
-    onConfirm: () => void;
-  } | null>(null);
-
-  const handleRejectQuote = () => {
-    setDialogConfig({
-      title: "Reject Quote",
-      description: "Are you sure you want to reject this quote? This action cannot be undone.",
-      onConfirm: () => {
-        // Handle reject quote action
-        console.log("Rejecting quote:", data.id);
-      },
-    });
-    setDialogOpen(true);
-  };
-
-  const getActionButtons = () => {
-    switch (data.status) {
-      case "pending":
-        return (
-          <>
-            <Button variant="default" className="bg-blue-400 hover:bg-blue-500 text-white">
-              Approve Quote
-            </Button>
-            <Button 
-              variant="default" 
-              className="bg-red-500 hover:bg-red-600 text-white"
-              onClick={handleRejectQuote}
-            >
-              Reject Quote
-            </Button>
-          </>
-        );
-      case "approved":
-        return (
-          <Button variant="default" className="bg-[#0066CC] hover:bg-[#003366]">
-            Convert to Policy
-          </Button>
-        );
-      case "rejected":
-        return (
-          <Button variant="default" className="bg-[#FF9900] hover:bg-[#E68A00]">
-            Create New Quote
-          </Button>
-        );
-      case "expired":
-        return (
-          <Button variant="default" className="bg-[#0066CC] hover:bg-[#003366]">
-            Renew Quote
-          </Button>
-        );
-      default:
-        return null;
-    }
-  };
+const QuoteActionButtons: React.FC<ActionButtonsProps> = ({ data, onStatusAction }) => {
+  const commonActions = [
+    {
+      label: "Edit Quote",
+      icon: Edit,
+      variant: "secondary" as const,
+      className: "border-[#003366] text-[#003366] hover:bg-[#E6F2FF]",
+    },
+    {
+      label: "Print Quote",
+      icon: Printer,
+      variant: "secondary" as const,
+      className: "border-[#003366] text-[#003366] hover:bg-[#E6F2FF]",
+    },
+  ];
 
   return (
-    <>
-      <div className="admin-action-buttons mt-6">
-        <Button variant="secondary" className="border-[#003366] text-[#003366] hover:bg-[#E6F2FF]">
-          Edit Quote
-        </Button>
-        <Button variant="secondary" className="border-[#003366] text-[#003366] hover:bg-[#E6F2FF]">
-          Print Quote
-        </Button>
-        {getActionButtons()}
-      </div>
-
-      {dialogConfig && (
-        <ConfirmationDialog
-          open={dialogOpen}
-          onOpenChange={setDialogOpen}
-          title={dialogConfig.title}
-          description={dialogConfig.description}
-          onConfirm={dialogConfig.onConfirm}
-          variant="destructive"
-        />
-      )}
-    </>
+    <ActionButtons
+      status={data.status}
+      commonActions={commonActions}
+      onStatusAction={onStatusAction}
+    />
   );
 };
 
-export default ActionButtons;
+export default QuoteActionButtons;

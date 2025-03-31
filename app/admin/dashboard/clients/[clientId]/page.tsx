@@ -2,14 +2,13 @@
 import * as React from "react";
 import { useParams } from "next/navigation";
 import { PageHeader } from "@/components/Admin/PageHeader";
-import Link from "next/link";
+import DetailPageLayout from "@/components/Admin/layouts/DetailPageLayout";
 import { DetailedClient } from "@/types/admin";
 import PersonalDetails from "@/components/Admin/ClientDetails/PersonalDetails";
 import ContactInformation from "@/components/Admin/ClientDetails/ContactInformation";
 import ClientStatus from "@/components/Admin/ClientDetails/ClientStatus";
 import AssociatedRecords from "@/components/Admin/ClientDetails/AssociatedRecords";
 import ActionButtons from "@/components/Admin/ClientDetails/ActionButtons";
-import { ArrowLeft, Copy } from "lucide-react";
 
 // This would typically come from an API call
 const mockClientData: DetailedClient = {
@@ -98,40 +97,31 @@ const ClientDetailsPage: React.FC = () => {
   // For now, we'll use the mock data
   const clientData = mockClientData;
 
+  const leftColumn = (
+    <>
+      <PersonalDetails data={clientData} />
+      <ContactInformation data={clientData} />
+    </>
+  );
+
+  const rightColumn = (
+    <>
+      <ClientStatus data={clientData} />
+      <AssociatedRecords data={clientData} />
+    </>
+  );
+
   return (
-    <main className="flex flex-col flex-1 gap-4 p-5">
+    <main className="admin-page-main">
       <PageHeader title="Client Details" />
-      <section className="p-6 bg-white rounded-xl border border-solid">
-        <div className="flex gap-2 items-center mb-6">
-          <Link href="/admin/dashboard/clients">
-            <button className="flex items-center gap-2 text-gray-500 hover:text-gray-700 transition-colors">
-              <ArrowLeft className="w-4 h-4" />
-              <span className="text-sm">Back</span>
-            </button>
-          </Link>
-        </div>
-
-        <div className="flex gap-3 items-center mb-8">
-          <h2 className="text-xl font-bold text-gray-500">
-            Client Details - {clientId}
-          </h2>
-          <button className="text-gray-500 hover:text-gray-700 transition-colors">
-            <Copy className="w-4 h-4" />
-          </button>
-        </div>
-
-        <div className="grid grid-cols-2 gap-8 max-sm:grid-cols-1">
-          <div className="flex flex-col gap-6">
-            <PersonalDetails data={clientData} />
-            <ContactInformation data={clientData} />
-          </div>
-          <div className="flex flex-col gap-6">
-            <ClientStatus data={clientData} />
-            <AssociatedRecords data={clientData} />
-          </div>
-        </div>
-        <ActionButtons data={clientData} />
-      </section>
+      <DetailPageLayout
+        title="Client Details"
+        id={clientId}
+        backLink="/admin/dashboard/clients"
+        leftColumn={leftColumn}
+        rightColumn={rightColumn}
+        actionButtons={<ActionButtons data={clientData} />}
+      />
     </main>
   );
 };
