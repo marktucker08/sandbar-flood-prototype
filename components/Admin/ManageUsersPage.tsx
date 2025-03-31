@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { PageHeader } from "./PageHeader";
-import { StatusBadge } from "./StatusBadge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { Plus, Download, Filter, User, Pencil, Trash } from "lucide-react";
 
 const ManageUsersPage: React.FC = () => {

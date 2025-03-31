@@ -7,11 +7,9 @@ import tailwindcssTypography from "@tailwindcss/typography";
 const config: Config = {
     darkMode: ["class", "[data-mode='dark']"],
     content: [
-        "./pages/**/*.{js,ts,jsx,tsx,mdx}",
         "./components/**/*.{js,ts,jsx,tsx,mdx}",
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
         "./app/styles/**/*.{css}",
-        "./app/styles/common.css",  
     ],
     theme: {
         extend: {
@@ -68,6 +66,7 @@ const config: Config = {
             },
             fontFamily: {
                 "work-sans": ["var(--font-work-sans)"],
+                "ar-sans": ["var(--font-ar-sans)"],
             },
             borderRadius: {
                 lg: "var(--radius)",

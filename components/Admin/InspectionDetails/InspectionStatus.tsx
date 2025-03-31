@@ -1,19 +1,23 @@
 import React from "react";
 import { DetailedInspection } from "@/types/admin";
-import { StatusBadge } from "../StatusBadge";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { StatusActions } from "@/components/ui/status-actions";
 
 interface InspectionStatusProps {
   data: DetailedInspection;
+  onStatusAction?: (actionLabel: string) => void;
 }
 
-const InspectionStatus: React.FC<InspectionStatusProps> = ({ data }) => {
+const InspectionStatus: React.FC<InspectionStatusProps> = ({ data, onStatusAction }) => {
   return (
     <div className="admin-card">
       <h3 className="admin-section-header">Inspection Status</h3>
       <div className="form-group">
         <div>
           <label className="form-label">Status</label>
-          <StatusBadge status={data.status} />
+          <div className="mt-1">
+            <StatusBadge status={data.status} />
+          </div>
         </div>
         <div>
           <label className="form-label">Type</label>
@@ -27,6 +31,13 @@ const InspectionStatus: React.FC<InspectionStatusProps> = ({ data }) => {
           <label className="form-label">Time</label>
           <p className="form-value">{data.time}</p>
         </div>
+      </div>
+      <div className="mt-4">
+        <StatusActions 
+          status={data.status} 
+          onActionClick={onStatusAction}
+          className="mt-4"
+        />
       </div>
     </div>
   );

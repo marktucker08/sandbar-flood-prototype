@@ -1,6 +1,6 @@
 import React from "react";
 import { DetailedClient } from "@/types/admin";
-import { StatusBadge } from "../StatusBadge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import Link from "next/link";
 import { FileText, ClipboardList, ClipboardCheck, ChevronRight } from "lucide-react";
 

@@ -1,13 +1,15 @@
 import React, { useMemo } from "react";
 import { DetailedClient } from "@/types/admin";
-import { StatusBadge } from "../StatusBadge";
+import { StatusBadge } from "@/components/ui/status-badge";
+import { StatusActions } from "@/components/ui/status-actions";
 import { Activity, FileText, ClipboardList, ClipboardCheck } from "lucide-react";
 
 interface ClientStatusProps {
   data: DetailedClient;
+  onStatusAction?: (actionLabel: string) => void;
 }
 
-const ClientStatus: React.FC<ClientStatusProps> = ({ data }) => {
+const ClientStatus: React.FC<ClientStatusProps> = ({ data, onStatusAction }) => {
   const stats = useMemo(() => ({
     activePolicies: data.policies.filter(p => p.status === "active").length,
     pendingQuotes: data.quotes.filter(q => q.status === "pending").length,
@@ -54,6 +56,13 @@ const ClientStatus: React.FC<ClientStatusProps> = ({ data }) => {
             {stats.pendingInspections}
           </p>
         </div>
+      </div>
+      <div className="mt-4">
+        <StatusActions 
+          status={data.status} 
+          onActionClick={onStatusAction}
+          className="mt-4"
+        />
       </div>
     </div>
   );

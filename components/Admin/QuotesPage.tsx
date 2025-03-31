@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { PageHeader } from "./PageHeader";
-import { StatusBadge } from "./StatusBadge";
+import { StatusBadge } from "@/components/ui/status-badge";
 import { DataTable } from "./DataTable";
 import { Column, Quote, Status } from "@/types/admin";
 import { Plus, Filter, Download } from "lucide-react";
