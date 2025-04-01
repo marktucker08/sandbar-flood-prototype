@@ -10,3 +10,12 @@ alwaysApply: true
 - Prioritize readability and maintainability in all code.
 - Ensure function and variable names are clear and descriptive.
 - Use concise, meaningful comments for complex logic.
+- The app directory should only contain:
+    Page components (page.tsx files)
+    Layout components (layout.tsx files)
+    Loading states (loading.tsx)
+    Error boundaries (error.tsx)
+    Route handlers (route.ts files)
+
+- All other components should live in the root components directory. This organization makes the codebase more maintainable and follows Next.js conventions for the App Router.
+

@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
 import "./globals.css";
 import localFont from "next/font/local";
-import { Providers } from "./components/providers";
+import { Providers } from "@/components/providers";
 
 const workSans = Work_Sans({ 
   subsets: ["latin"], 

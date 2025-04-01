@@ -59,12 +59,12 @@ export default function SignInPage() {
           <p className="text-sm text-gray-600 mb-8 text-center">
             Enter your email and password below
           </p>
-          <p className="text-sm text-red-600 mb-8 text-center">
+          <p className="text-sm text-gray-600 mb-8 text-center">
             <span className="font-bold">Note:</span>
             <br />
-            Sample email: test@example.com
+            Sample email: <span className="font-bold text-red-600">test@example.com</span>
             <br />
-            Sample password: password123
+            Sample password: <span className="font-bold text-red-600">password123</span>
           </p>
           <form onSubmit={handleSubmit} className="w-full space-y-6">
             <div>
