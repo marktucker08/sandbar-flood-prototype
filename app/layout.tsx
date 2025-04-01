@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
 import "./globals.css";
 import localFont from "next/font/local";
+import { Providers } from "./components/providers";
 
 const workSans = Work_Sans({ 
   subsets: ["latin"], 
@@ -28,9 +29,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${workSans.variable} ${arSans.variable}`}>
-        <main>
-          {children}
-        </main>
+        <Providers>
+          <main>
+            {children}
+          </main>
+        </Providers>
       </body>
     </html>
   );

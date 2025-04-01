@@ -34,6 +34,16 @@ const mockProfileData: ProfileData = {
 const ProfilePage: React.FC = () => {
   const profileData = mockProfileData;
 
+  const handlePasswordChange = () => {
+    // Implement password change functionality here
+    console.log("Password change requested...");
+  };
+
+  const handleCheckboxChange = (field: keyof ProfileData["notifications"]) => {
+    // Implement checkbox change functionality here
+    console.log(`Checkbox for ${field} changed...`);
+  };
+
   return (
     <main className="admin-page-main">
       <PageHeader title="Profile Settings" />
@@ -108,6 +118,7 @@ const ProfilePage: React.FC = () => {
                     type="checkbox"
                     checked={profileData.notifications.email}
                     className="form-checkbox"
+                    onChange={() => handleCheckboxChange("email")}
                   />
                 </div>
               
@@ -120,6 +131,7 @@ const ProfilePage: React.FC = () => {
                     type="checkbox"
                     checked={profileData.notifications.sms}
                     className="form-checkbox"
+                    onChange={() => handleCheckboxChange("sms")}
                   />
                 </div>
               </div>
@@ -134,7 +146,7 @@ const ProfilePage: React.FC = () => {
                 Security Settings
               </h3>
               <div className="form-group">
-                <button className="admin-button w-full">
+                <button className="admin-button w-full" onClick={handlePasswordChange}>
                   Change Password
                 </button>
                 {/* <button className="admin-button w-full">

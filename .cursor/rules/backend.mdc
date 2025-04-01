@@ -18,15 +18,34 @@ alwaysApply: false
 ```sql
 CREATE TABLE Users (
     UserID INT PRIMARY KEY,
+    AgencyID INT,
     Email VARCHAR(255) UNIQUE NOT NULL,
     Password VARCHAR(255) NOT NULL,
     FirstName VARCHAR(50),
     LastName VARCHAR(50),
-    Role ENUM('agent', 'agency-admin', 'admin') NOT NULL,
+    Role ENUM('agent', 'agency-admin', 'super-admin', 'sandbar-employee' ) NOT NULL,
     CompanyName VARCHAR(100),
     PhoneNumber VARCHAR(20),
     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    LastLogin TIMESTAMP
+    LastLogin TIMESTAMP,
+    FOREIGN KEY (AgencyID) REFERENCES Agency(AgencyID)
+);
+```
+
+### Agency Table
+```sql
+CREATE TABLE Agency (
+    AgencyID INT PRIMARY KEY,
+    MainContactEmail VARCHAR(255) NOT NULL,
+    MainContactFirstName VARCHAR(50),
+    MainContactLastName VARCHAR(50),
+    CompanyName VARCHAR(100) NOT NULL,
+    MainPhoneNumber VARCHAR(20),
+    StreetAddress VARCHAR(255),
+    AddressLine2 VARCHAR(255),
+    City VARCHAR(100),
+    State VARCHAR(50),
+    ZipCode VARCHAR(10)
 );
 ```
 
@@ -42,7 +61,7 @@ CREATE TABLE InsuredClients (
     BusinessName VARCHAR(100),
     EntityType ENUM('individual', 'corporation', 'partnership', 'llc', 'limited_partnership', 'unlimited_llc', 'unlimited_partnership', 'other'),
     AdditionalInsuredName VARCHAR(100),
-    MailingAddress VARCHAR(255),
+    Address VARCHAR(255),
     AddressLine2 VARCHAR(255),
     City VARCHAR(100),
     State VARCHAR(50),

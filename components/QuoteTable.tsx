@@ -54,7 +54,7 @@ const QuoteTable: React.FC<QuoteTableProps> = ({ quotes, onQuoteClick }) => {
                   {quote.createdDate}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                  ${quote.premium}
+                  {quote.premium}
                 </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <StatusBadge status={quote.status} />
