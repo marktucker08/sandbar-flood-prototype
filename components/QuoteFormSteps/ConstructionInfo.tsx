@@ -3,7 +3,7 @@ import React from "react";
 import { FormImageRadio, FormFileUpload } from "@/components/ui/form";
 import FormStepLayout from "./FormStepLayout";
 import { QuoteFormData } from "@/types/quote";
-import { QUOTE_FORM_STEPS } from "@/constants/formSteps";
+import { QUOTE_FORM_STEPS } from "@/lib/formSteps";
 import { z } from "zod";
 
 interface ConstructionInfoProps {

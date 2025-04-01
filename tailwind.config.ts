@@ -9,7 +9,7 @@ const config: Config = {
     content: [
         "./components/**/*.{js,ts,jsx,tsx,mdx}",
         "./app/**/*.{js,ts,jsx,tsx,mdx}",
-        "./app/styles/**/*.{css}",
+        "./app/**/*.{css}",
     ],
     theme: {
         extend: {
@@ -18,16 +18,16 @@ const config: Config = {
             },
             colors: {
                 // Sandbar Color Palette
-                sandbar: {
-                    primary: "#0066CC",    // Primary Blue
-                    dark: "#003366",       // Dark Blue
-                    light: "#E6F2FF",      // Light Blue
-                    accent: "#FF9900",     // Accent Orange
-                    gray: {
-                        light: "#F5F5F5",  // Light Gray
-                        dark: "#333333",    // Dark Gray
-                    }
-                },
+                // sandbar: {
+                //     primary: "#0066CC",    // Primary Blue
+                //     dark: "#003366",       // Dark Blue
+                //     light: "#E6F2FF",      // Light Blue
+                //     accent: "#FF9900",     // Accent Orange
+                //     gray: {
+                //         light: "#F5F5F5",  // Light Gray
+                //         dark: "#333333",    // Dark Gray
+                //     }
+                // },
                 primary: {
                     "100": "#FFE8F0",
                     DEFAULT: "#51a4f7",

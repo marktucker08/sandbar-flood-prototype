@@ -4,14 +4,23 @@ import React from "react";
 import QuickActionsSection from "@/components/QuickActionsSection";
 import DashboardSection from "@/components/DashboardSection";
 import SearchBar from "@/components/SearchBar";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 
 export default function HomePage() {
+  const { data: session } = useSession();
+
+  if (!session) {
+    redirect('/sign-in');
+  }
+
   const handleSearch = (searchTerm: string) => {
     // Implement search functionality
     console.log('Searching for:', searchTerm);
   };
 
   return (
+    
     <div className="background-gradient min-h-screen">
       <section className="container mx-auto px-6 py-8 max-w-[1920px]">
         <p className="sub-heading text-white drop-shadow-sm">

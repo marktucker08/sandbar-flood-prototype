@@ -4,7 +4,7 @@ import FormStepLayout from "./FormStepLayout";
 import { FormInput, FormRadioGroup } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
 import { QuoteFormData } from "@/types/quote";
-import { QUOTE_FORM_STEPS } from "@/constants/formSteps";
+import { QUOTE_FORM_STEPS } from "@/lib/formSteps";
 import { z } from "zod";
 
 interface CoverageOptionsProps {

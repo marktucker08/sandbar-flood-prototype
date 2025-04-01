@@ -17,6 +17,7 @@ const Navbar = () => {
   ];
 
   const userMenuItems = [
+    { label: 'Profile', href: '/profile' },
     { label: 'Sign out', href: '#', onClick: () => signOut({ callbackUrl: '/sign-in' }) },
   ];
 

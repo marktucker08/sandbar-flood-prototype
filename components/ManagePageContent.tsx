@@ -22,9 +22,9 @@ const ManagePageContent: React.FC<ManagePageContentProps> = ({
   }
 }) => {
   return (
-    <div className="bg-gradient-to-br from-blue-400 via-blue-300 to-blue-200">
+    <div className="background-gradient min-h-screen">
       <section className="container mx-auto px-6 py-8 max-w-[1920px]">
-        <p className="text-2xl text-center mb-10 text-white font-semibold drop-shadow-sm">
+        <p className="sub-heading text-white drop-shadow-sm">
           {title}
         </p>
 
