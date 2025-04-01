@@ -12,7 +12,7 @@ export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, className = ""
 
   return (
     <span 
-      className={`inline-flex items-center justify-center px-2 py-0.5 text-xs font-medium rounded-full gap-1 ${config.styles.badge} ${className}`}
+      className={`inline-flex items-center justify-center px-2 py-0.5 text-xs w-24 font-medium rounded-full gap-1 ${config.styles.badge} ${className}`}
     >
       <Icon className="icon-sm" />
       {config.label}

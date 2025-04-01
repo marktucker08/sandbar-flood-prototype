@@ -54,8 +54,8 @@ export const STATUS_CONFIG: Record<Status, StatusConfig> = {
     label: "Expired",
     icon: Calendar,
     styles: {
-      badge: "bg-gray-100 text-gray-800",
-      button: "bg-gray-600 hover:bg-gray-700 text-white"
+      badge: "bg-amber-200 text-amber-800",
+      button: "bg-amber-600 hover:bg-amber-700 text-white"
     }
   },
   active: {

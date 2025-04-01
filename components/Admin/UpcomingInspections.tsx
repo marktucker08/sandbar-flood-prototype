@@ -73,7 +73,7 @@ const UpcomingInspections: React.FC = () => {
   return (
     <div className="space-y-4">
       {sampleInspections.map((inspection) => (
-        <div key={inspection.id} className="admin-card p-3">
+        <div key={inspection.id} className="admin-card p-3 ">
           <div className="flex items-start gap-4">
             <div className="flex-shrink-0">
               <Image
@@ -92,15 +92,15 @@ const UpcomingInspections: React.FC = () => {
                 </span>
               </div>
               <div className="mt-1 flex items-center gap-2">
-                <Calendar className="icon-sm text-gray-400" />
+                <Calendar className="icon-sm text-neutral-400" />
                 <span className="form-value">{new Date(inspection.date).toLocaleDateString()}</span>
-                <Clock className="icon-sm text-gray-400 ml-2" />
+                <Clock className="icon-sm text-neutral-400 ml-2" />
                 <span className="form-value">{inspection.time}</span>
               </div>
               <div className="mt-1 flex items-center gap-2">
-                <User className="icon-sm text-gray-400" />
+                <User className="icon-sm text-neutral-400" />
                 <span className="form-value">{inspection.inspector.name}</span>
-                <Building2 className="icon-sm text-gray-400 ml-2" />
+                <Building2 className="icon-sm text-neutral-400 ml-2" />
                 <span className="form-value">{inspection.client}</span>
               </div>
             </div>

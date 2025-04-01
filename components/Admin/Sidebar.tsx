@@ -42,11 +42,11 @@ export const Sidebar = () => {
         </Link>
         <hr className="admin-divider" />
         <div className="admin-search-container">
-          <Search className="icon-sm text-gray-400" />
+          <Search className="icon-sm text-neutral-600" />
           <input
             type="text"
             placeholder="Search"
-            className="admin-search-input"
+            className="admin-search-input text-neutral-800"
           />
         </div>
       </div>
