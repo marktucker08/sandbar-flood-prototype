@@ -12,81 +12,20 @@ import ActionButtons from "@/components/features/admin/Admin/ClientDetails/Actio
 
 // This would typically come from an API call
 const mockClientData: DetailedClient = {
-  id: "CLT-001",
-  name: "John Smith",
-  type: "Individual",
-  status: "active",
+  clientId: 1,
+  firstName: "John",
+  lastName: "Smith",
   email: "john.smith@email.com",
-  phone: "(555) 123-4567",
-  lastContact: "2024-03-15",
-  // Additional client details
-  dateOfBirth: "1980-05-15",
-  ssn: "***-**-1234",
+  phoneNumber: "(555) 123-4567",
+  insuredType: "individual",
   address: "123 Main St",
   city: "Miami",
   state: "FL",
   zipCode: "33139",
-  // Associated records
-  policies: [
-    {
-      id: "POL-001",
-      clientName: "John Smith",
-      type: "Residential",
-      status: "active",
-      premium: "$1,250.00",
-      effectiveDate: "2024-01-01",
-      expiryDate: "2025-01-01",
-    },
-    {
-      id: "POL-002",
-      clientName: "John Smith",
-      type: "Commercial",
-      status: "active",
-      premium: "$2,500.00",
-      effectiveDate: "2024-02-01",
-      expiryDate: "2025-02-01",
-    },
-  ],
-  quotes: [
-    {
-      id: "QOT-001",
-      clientName: "John Smith",
-      property: "123 Main St",
-      status: "pending",
-      premium: "$1,250.00",
-      createdDate: "2024-03-15",
-      expiryDate: "2024-04-15",
-    },
-    {
-      id: "QOT-002",
-      clientName: "John Smith",
-      property: "456 Oak Ave",
-      status: "approved",
-      premium: "$2,100.00",
-      createdDate: "2024-03-10",
-      expiryDate: "2024-04-10",
-    },
-  ],
-  inspections: [
-    {
-      id: "INS-001",
-      client: "John Smith",
-      property: "123 Main St",
-      status: "completed",
-      inspector: "Jane Doe",
-      date: "2024-03-01",
-      time: "10:00 AM",
-    },
-    {
-      id: "INS-002",
-      client: "John Smith",
-      property: "456 Oak Ave",
-      status: "pending",
-      inspector: "Mike Johnson",
-      date: "2024-03-20",
-      time: "2:00 PM",
-    },
-  ],
+  createdAt: new Date(),
+  updatedAt: new Date(),
+  createdBy: 1,
+  status: "active"
 };
 
 const ClientDetailsPage: React.FC = () => {
