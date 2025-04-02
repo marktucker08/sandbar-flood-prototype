@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import { FormInput } from "@/components/ui/form";
-import PasswordInput from "@/components/PasswordInput";
-import { Button } from "@/components/ui/button";
+import { FormInput } from "@/components/common/ui/form";
+import PasswordInput from "@/components/common/forms/PasswordInput";
+import { Button } from "@/components/common/ui/button";
 import Image from "next/image";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { Work_Sans } from "next/font/google";
-import "./globals.css";
+import "@/styles/globals.css";
 import localFont from "next/font/local";
-import { Providers } from "@/components/AuthProviders";
+import { Providers } from "@/components/providers/AuthProviders";
 
 const workSans = Work_Sans({ 
   subsets: ["latin"], 
@@ -11,7 +11,7 @@ const workSans = Work_Sans({
 });
 
 const arSans = localFont({
-  src: "./fonts/AROneSans-VariableFont_ARRR,wght.ttf",
+  src: "../public/fonts/AROneSans-VariableFont_ARRR,wght.ttf",
   variable: "--font-ar-sans",
   display: "swap",
 });

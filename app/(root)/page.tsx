@@ -1,9 +1,9 @@
 'use client';
 
 import React from "react";
-import QuickActionsSection from "@/components/QuickActionsSection";
-import DashboardSection from "@/components/DashboardSection";
-import SearchBar from "@/components/SearchBar";
+import QuickActionsSection from "@/components/features/quotes/QuickActionsSection";
+import DashboardSection from "@/components/common/layout/DashboardSection";
+import SearchBar from "@/components/common/ui/SearchBar";
 import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 

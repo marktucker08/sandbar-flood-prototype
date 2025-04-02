@@ -1,4 +1,4 @@
-import ManageUsersPage from "@/components/Admin/ManageUsersPage";
+import ManageUsersPage from "@/components/features/admin/Admin/ManageUsersPage";
 
 const Page = () => {
   return (

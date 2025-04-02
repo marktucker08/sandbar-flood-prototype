@@ -1,14 +1,14 @@
 "use client";
 import * as React from "react";
 import { useParams } from "next/navigation";
-import { PageHeader } from "@/components/Admin/PageHeader";
-import DetailPageLayout from "@/components/Admin/layouts/DetailPageLayout";
+import { PageHeader } from "@/components/features/admin/Admin/PageHeader";
+import DetailPageLayout from "@/components/features/admin/Admin/layouts/DetailPageLayout";
 import { DetailedClient } from "@/types/admin";
-import PersonalDetails from "@/components/Admin/ClientDetails/PersonalDetails";
-import ContactInformation from "@/components/Admin/ClientDetails/ContactInformation";
-import ClientStatus from "@/components/Admin/ClientDetails/ClientStatus";
-import AssociatedRecords from "@/components/Admin/ClientDetails/AssociatedRecords";
-import ActionButtons from "@/components/Admin/ClientDetails/ActionButtons";
+import PersonalDetails from "@/components/features/admin/Admin/ClientDetails/PersonalDetails";
+import ContactInformation from "@/components/features/admin/Admin/ClientDetails/ContactInformation";
+import ClientStatus from "@/components/features/admin/Admin/ClientDetails/ClientStatus";
+import AssociatedRecords from "@/components/features/admin/Admin/ClientDetails/AssociatedRecords";
+import ActionButtons from "@/components/features/admin/Admin/ClientDetails/ActionButtons";
 
 // This would typically come from an API call
 const mockClientData: DetailedClient = {

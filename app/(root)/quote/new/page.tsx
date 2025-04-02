@@ -1,4 +1,4 @@
-import { InsuranceForm } from '@/components/InsuranceForm'
+import { InsuranceForm } from '@/components/common/forms/InsuranceForm'
 import React from 'react'
 
 const Page = () => {

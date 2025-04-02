@@ -1,4 +1,4 @@
-import { QuotesPage } from '@/components/Admin/QuotesPage'
+import { QuotesPage } from '@/components/features/admin/Admin/QuotesPage'
 import React from 'react'
 
 const Page = () => {

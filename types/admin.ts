@@ -176,17 +176,21 @@ export interface DataTableProps<T> {
   onPageChange?: (page: number) => void;
 }
 
-export interface DetailedClient extends Client {
-  // Additional client details
-  dateOfBirth: string;
-  ssn: string;
+export interface DetailedClient {
+  clientId: number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  phoneNumber: string;
+  insuredType: 'individual' | 'business';
+  businessName?: string;
+  entityType?: 'corporation' | 'partnership' | 'llc' | 'limited_partnership' | 'unlimited_llc' | 'unlimited_partnership' | 'other';
   address: string;
   city: string;
   state: string;
   zipCode: string;
-  
-  // Associated records
-  policies: Policy[];
-  quotes: Quote[];
-  inspections: Inspection[];
+  createdAt: Date;
+  updatedAt: Date;
+  createdBy: number;
+  status: Status;
 } 

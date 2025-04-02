@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import ManagePageContent from "@/components/ManagePageContent";
+import ManagePageContent from "@/components/common/layout/ManagePageContent";
 
 const MyQuotesPage: React.FC = () => {
   const dashboardSections = [
