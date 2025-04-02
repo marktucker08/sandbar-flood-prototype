@@ -25,7 +25,10 @@ const mockClientData: DetailedClient = {
   createdAt: new Date(),
   updatedAt: new Date(),
   createdBy: 1,
-  status: "active"
+  status: "active",
+  policies: [],
+  quotes: [],
+  inspections: [],
 };
 
 const ClientDetailsPage: React.FC = () => {

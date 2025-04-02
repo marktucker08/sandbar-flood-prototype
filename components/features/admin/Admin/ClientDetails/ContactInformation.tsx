@@ -1,6 +1,6 @@
 import React from "react";
 import { DetailedClient } from "@/types/admin";
-import { Mail, Phone, MapPin, Clock } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 
 interface ContactInformationProps {
   data: DetailedClient;
@@ -23,7 +23,7 @@ const ContactInformation: React.FC<ContactInformationProps> = ({ data }) => {
             <Phone className="icon-sm" />
             Phone
           </label>
-          <p className="form-value">{data.phone}</p>
+          <p className="form-value">{data.phoneNumber}</p>
         </div>
         <div className="form-group-full">
           <label className="form-label">
@@ -33,13 +33,6 @@ const ContactInformation: React.FC<ContactInformationProps> = ({ data }) => {
           <p className="form-value">
             {data.address}, {data.city}, {data.state} {data.zipCode}
           </p>
-        </div>
-        <div>
-          <label className="form-label">
-            <Clock className="icon-sm" />
-            Last Contact
-          </label>
-          <p className="form-value">{data.lastContact}</p>
         </div>
       </div>
     </div>

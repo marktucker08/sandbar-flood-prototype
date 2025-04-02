@@ -16,28 +16,28 @@ const PersonalDetails: React.FC<PersonalDetailsProps> = ({ data }) => {
             <User className="icon-sm" />
             Full Name
           </label>
-          <p className="form-value">{data.name}</p>
+          <p className="form-value">{`${data.firstName} ${data.lastName}`}</p>
         </div>
         <div>
           <label className="form-label">
             <Building2 className="icon-sm" />
             Client Type
           </label>
-          <p className="form-value">{data.type}</p>
+          <p className="form-value">{data.insuredType}</p>
         </div>
         <div>
           <label className="form-label">
             <Calendar className="icon-sm" />
             Date of Birth
           </label>
-          <p className="form-value">{data.dateOfBirth}</p>
+          <p className="form-value">N/A</p>
         </div>
         <div>
           <label className="form-label">
             <CreditCard className="icon-sm" />
             SSN
           </label>
-          <p className="form-value">{data.ssn}</p>
+          <p className="form-value">N/A</p>
         </div>
       </div>
     </div>

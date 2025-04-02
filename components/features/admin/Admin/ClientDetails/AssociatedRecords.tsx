@@ -20,7 +20,7 @@ const AssociatedRecords: React.FC<AssociatedRecordsProps> = ({ data }) => {
             <FileText className="icon-sm" />
             Policies
           </h4>
-          <Link href={`/admin/dashboard/clients/${data.id}/policies`}>
+          <Link href={`/admin/dashboard/clients/${data.clientId}/policies`}>
             <button className="admin-action-button">
               View All
               <ChevronRight className="icon-sm" />
@@ -55,7 +55,7 @@ const AssociatedRecords: React.FC<AssociatedRecordsProps> = ({ data }) => {
             <ClipboardList className="icon-sm" />
             Quotes
           </h4>
-          <Link href={`/admin/dashboard/clients/${data.id}/quotes`}>
+          <Link href={`/admin/dashboard/clients/${data.clientId}/quotes`}>
             <button className="admin-action-button">
               View All
               <ChevronRight className="icon-sm" />
@@ -90,7 +90,7 @@ const AssociatedRecords: React.FC<AssociatedRecordsProps> = ({ data }) => {
             <ClipboardCheck className="icon-sm" />
             Inspections
           </h4>
-          <Link href={`/admin/dashboard/clients/${data.id}/inspections`}>
+          <Link href={`/admin/dashboard/clients/${data.clientId}/inspections`}>
             <button className="admin-action-button">
               View All
               <ChevronRight className="icon-sm" />

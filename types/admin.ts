@@ -193,4 +193,7 @@ export interface DetailedClient {
   updatedAt: Date;
   createdBy: number;
   status: Status;
+  policies: Policy[];
+  quotes: Quote[];
+  inspections: Inspection[];
 } 
