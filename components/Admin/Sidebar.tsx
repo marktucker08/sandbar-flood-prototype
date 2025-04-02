@@ -7,12 +7,12 @@ import Image from "next/image";
 import { 
   Home, 
   FileText, 
-  FolderOpen, 
+  FileCheck, 
   Users, 
-  Shield, 
-  BadgeCheck, 
+  ShieldCheck, 
   Settings, 
-  Search 
+  Search,
+  ShieldUser,
 } from "lucide-react";
 
 export const Sidebar = () => {
@@ -21,10 +21,10 @@ export const Sidebar = () => {
   const navItems = [
     { icon: Home, label: "Dashboard", href: "/admin/dashboard" },
     { icon: FileText, label: "Quotes", href: "/admin/dashboard/quotes" },
-    { icon: FolderOpen, label: "Policies", href: "/admin/dashboard/policies" },
+    { icon: FileCheck, label: "Policies", href: "/admin/dashboard/policies" },
     { icon: Users, label: "Clients", href: "/admin/dashboard/clients" },
-    { icon: Shield, label: "Inspections", href: "/admin/dashboard/inspections" },
-    { icon: BadgeCheck, label: "Manage Users", href: "/admin/dashboard/settings/users" },
+    { icon: ShieldCheck, label: "Inspections", href: "/admin/dashboard/inspections" },
+    { icon: ShieldUser, label: "Manage Users", href: "/admin/dashboard/settings/users" },
     { icon: Settings, label: "System Settings", href: "/admin/dashboard/settings" },
   ];
 

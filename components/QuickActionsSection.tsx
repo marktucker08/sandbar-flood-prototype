@@ -1,6 +1,6 @@
 import React from "react";
 import QuickActionButton from "./QuickActionButton";
-import { Home, Building2, Building, CreditCard } from "lucide-react";
+import { Home, CreditCard, Hotel, Building2 } from "lucide-react";
 
 export default function QuickActionsSection() {
   return (
@@ -12,12 +12,12 @@ export default function QuickActionsSection() {
           link="/quote/new"
         />
         <QuickActionButton
-          icon={Building2}
+          icon={Hotel}
           label="Quote Condo"
           link="/quote/new"
         />
         <QuickActionButton
-          icon={Building}
+          icon={Building2}
           label="Quote Commercial"
           link="/quote/new"
         />
