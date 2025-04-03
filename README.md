@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Sandbar Flood Insurance Platform
+
+A modern, secure, and scalable platform for managing flood insurance quotes and policies. This platform serves both insurance agents/brokers and Sandbar employees, providing a unified system for quote management, policy administration, and client services.
+
+## Features
+
+- **User Authentication & Management**
+  - Secure registration and login
+  - Role-based access control
+  - Multi-factor authentication support
+
+- **Quote Management**
+  - Multi-step quote submission process
+  - Integration with multiple quoting engines
+  - Quote approval workflow
+  - Quote comparison and selection
+
+- **Policy Administration**
+  - Policy creation and management
+  - Renewal processing
+  - Endorsement handling
+  - Cancellation management
+
+- **Client Management**
+  - Client profile management
+  - Property information tracking
+  - Document management
+  - Inspection scheduling
+
+- **Admin Console**
+  - User and role management
+  - System configuration
+  - Rating table maintenance
+  - Audit logging
+
+## Tech Stack
+
+- **Frontend**: Next.js with TypeScript and Tailwind CSS
+- **Authentication**: NextAuth with Credentials Provider
+- **Database**: Neon PostgreSQL with Drizzle ORM
+- **Deployment**: Vercel (Development Environment)
+- **UI Components**: Shadcn UI, Lucide React Icons
+
+### API Integrations
+
+- Hiscox Quoting API
+- Google Maps API
+- NFIP National Database
+- Additional quoting APIs
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18.x or later
+- npm or yarn
+- PostgreSQL database
+
+### Installation
+
+1. Clone the repository:
+```bash
+git clone [repository-url]
+cd sandbar-flood-prototype
+```
+
+2. Install dependencies:
+```bash
+npm install
+# or
+yarn install
+```
+
+3. Set up environment variables:
+Create a `.env` file in the root directory with the following variables:
+```env
+DATABASE_URL=your_database_url
+NEXTAUTH_SECRET=your_auth_secret
+NEXTAUTH_URL=http://localhost:3000
+# Add other required environment variables
+```
+
+4. Run the development server:
 ```bash
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Development Guidelines
 
-## Learn More
+- Use TypeScript for all development
+- Follow the established file structure
+- Maintain consistent code formatting
+- Write clear, descriptive comments for complex logic
+- Follow Next.js App Router conventions
 
-To learn more about Next.js, take a look at the following resources:
+## Contributing
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes (`git commit -m 'Add some amazing feature'`)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## License
 
-## Deploy on Vercel
+This project is proprietary and confidential. All rights reserved.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Support
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+For support, please contact the development team or refer to the internal documentation.
