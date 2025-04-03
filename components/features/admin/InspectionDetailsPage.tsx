@@ -1,15 +1,15 @@
 "use client";
 import React from "react";
 import { useParams } from "next/navigation";
-import { PageHeader } from "@/components/features/admin/Admin/PageHeader";
-import DetailPageLayout from "@/components/features/admin/Admin/layouts/DetailPageLayout";
-import InspectionActionButtons from "@/components/features/admin/Admin/InspectionDetails/ActionButtons";
-import PropertyDetails from "@/components/features/admin/Admin/InspectionDetails/PropertyDetails";
-import ContactInformation from "@/components/features/admin/Admin/InspectionDetails/ContactInformation";
-import InspectionDetails from "@/components/features/admin/Admin/InspectionDetails/InspectionDetails";
-import FindingsSection from "@/components/features/admin/Admin/InspectionDetails/FindingsSection";
-import InspectionStatus from "@/components/features/admin/Admin/InspectionDetails/InspectionStatus";
-import DocumentsSection from "@/components/features/admin/Admin/InspectionDetails/DocumentsSection";
+import { PageHeader } from "@/components/features/admin/PageHeader";
+import DetailPageLayout from "@/components/features/admin/layouts/DetailPageLayout";
+import InspectionActionButtons from "@/components/features/admin/InspectionDetails/ActionButtons";
+import PropertyDetails from "@/components/features/admin/InspectionDetails/PropertyDetails";
+import ContactInformation from "@/components/features/admin/InspectionDetails/ContactInformation";
+import InspectionDetails from "@/components/features/admin/InspectionDetails/InspectionDetails";
+import FindingsSection from "@/components/features/admin/InspectionDetails/FindingsSection";
+import InspectionStatus from "@/components/features/admin/InspectionDetails/InspectionStatus";
+import DocumentsSection from "@/components/features/admin/InspectionDetails/DocumentsSection";
 import { DetailedInspection } from "@/types/admin";
 
 // This would typically come from an API call

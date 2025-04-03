@@ -1,4 +1,4 @@
-import QuoteDetailsPage from "@/components/features/admin/Admin/QuoteDetailsPage";
+import QuoteDetailsPage from "@/components/features/admin/QuoteDetailsPage";
 
 export default function Page() {
   return <QuoteDetailsPage />;

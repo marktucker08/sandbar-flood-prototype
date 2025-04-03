@@ -1,14 +1,8 @@
 "use client";
 import * as React from "react";
 import { useParams } from "next/navigation";
-import { PageHeader } from "@/components/features/admin/Admin/PageHeader";
-import DetailPageLayout from "@/components/features/admin/Admin/layouts/DetailPageLayout";
 import { DetailedClient } from "@/types/admin";
-import PersonalDetails from "@/components/features/admin/Admin/ClientDetails/PersonalDetails";
-import ContactInformation from "@/components/features/admin/Admin/ClientDetails/ContactInformation";
-import ClientStatus from "@/components/features/admin/Admin/ClientDetails/ClientStatus";
-import AssociatedRecords from "@/components/features/admin/Admin/ClientDetails/AssociatedRecords";
-import ActionButtons from "@/components/features/admin/Admin/ClientDetails/ActionButtons";
+import ClientDetailsPage from "@/components/features/admin/ClientDetailsPage";
 
 // This would typically come from an API call
 const mockClientData: DetailedClient = {
@@ -31,7 +25,7 @@ const mockClientData: DetailedClient = {
   inspections: [],
 };
 
-const ClientDetailsPage: React.FC = () => {
+const Page: React.FC = () => {
   const params = useParams();
   const clientId = params.clientId as string;
   
@@ -39,33 +33,7 @@ const ClientDetailsPage: React.FC = () => {
   // For now, we'll use the mock data
   const clientData = mockClientData;
 
-  const leftColumn = (
-    <>
-      <PersonalDetails data={clientData} />
-      <ContactInformation data={clientData} />
-    </>
-  );
-
-  const rightColumn = (
-    <>
-      <ClientStatus data={clientData} />
-      <AssociatedRecords data={clientData} />
-    </>
-  );
-
-  return (
-    <main className="admin-page-main">
-      <PageHeader title="Client Details" />
-      <DetailPageLayout
-        title="Client Details"
-        id={clientId}
-        backLink="/admin/dashboard/clients"
-        leftColumn={leftColumn}
-        rightColumn={rightColumn}
-        actionButtons={<ActionButtons data={clientData} />}
-      />
-    </main>
-  );
+  return <ClientDetailsPage clientId={clientId} clientData={clientData} />;
 };
 
-export default ClientDetailsPage; 
+export default Page; 

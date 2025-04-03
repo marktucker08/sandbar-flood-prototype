@@ -2,7 +2,7 @@
 import React from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NavigationItem } from "@/components/features/admin/Admin/NavigationItem";
+import { NavigationItem } from "@/components/features/admin/NavigationItem";
 import Image from "next/image";
 import { 
   Home, 

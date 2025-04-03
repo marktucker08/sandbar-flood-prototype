@@ -1,17 +1,17 @@
 "use client";
 import React from "react";
 import { useParams } from "next/navigation";
-import { PageHeader } from "@/components/features/admin/Admin/PageHeader";
-import DetailPageLayout from "@/components/features/admin/Admin/layouts/DetailPageLayout";
-import PolicyActionButtons from "@/components/features/admin/Admin/PolicyDetails/ActionButtons";
-import PersonalDetails from "@/components/features/admin/Admin/PolicyDetails/PersonalDetails";
-import ContactInformation from "@/components/features/admin/Admin/PolicyDetails/ContactInformation";
-import PolicyInformation from "@/components/features/admin/Admin/PolicyDetails/PolicyInformation";
-import CoverageDetails from "@/components/features/admin/Admin/PolicyDetails/CoverageDetails";
-import PolicyStatus from "@/components/features/admin/Admin/PolicyDetails/PolicyStatus";
-import PaymentInformation from "@/components/features/admin/Admin/PolicyDetails/PaymentInformation";
-import DatesSection from "@/components/features/admin/Admin/PolicyDetails/DatesSection";
-import DocumentsSection from "@/components/features/admin/Admin/PolicyDetails/DocumentsSection";
+import { PageHeader } from "@/components/features/admin/PageHeader";
+import DetailPageLayout from "@/components/features/admin/layouts/DetailPageLayout";
+import PolicyActionButtons from "@/components/features/admin/PolicyDetails/ActionButtons";
+import PersonalDetails from "@/components/features/admin/PolicyDetails/PersonalDetails";
+import ContactInformation from "@/components/features/admin/PolicyDetails/ContactInformation";
+import PolicyInformation from "@/components/features/admin/PolicyDetails/PolicyInformation";
+import CoverageDetails from "@/components/features/admin/PolicyDetails/CoverageDetails";
+import PolicyStatus from "@/components/features/admin/PolicyDetails/PolicyStatus";
+import PaymentInformation from "@/components/features/admin/PolicyDetails/PaymentInformation";
+import DatesSection from "@/components/features/admin/PolicyDetails/DatesSection";
+import DocumentsSection from "@/components/features/admin/PolicyDetails/DocumentsSection";
 import { DetailedPolicy } from "@/types/admin";
 
 // This would typically come from an API call

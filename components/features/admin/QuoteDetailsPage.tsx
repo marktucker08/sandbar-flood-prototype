@@ -1,17 +1,17 @@
 "use client";
 import React from "react";
 import { useParams } from "next/navigation";
-import { PageHeader } from "@/components/features/admin/Admin/PageHeader";
-import DetailPageLayout from "@/components/features/admin/Admin/layouts/DetailPageLayout";
-import QuoteActionButtons from "@/components/features/admin/Admin/QuoteDetails/ActionButtons";
-import PersonalDetails from "@/components/features/admin/Admin/QuoteDetails/PersonalDetails";
-import ContactInformation from "@/components/features/admin/Admin/QuoteDetails/ContactInformation";
-import PolicyInformation from "@/components/features/admin/Admin/QuoteDetails/PolicyInformation";
-import CustomerHistory from "@/components/features/admin/Admin/QuoteDetails/CustomerHistory";
-import QuoteStatus from "@/components/features/admin/Admin/QuoteDetails/QuoteStatus";
-import QuoteBreakdown from "@/components/features/admin/Admin/QuoteDetails/QuoteBreakdown";
-import DatesSection from "@/components/features/admin/Admin/QuoteDetails/DatesSection";
-import DocumentsSection from "@/components/features/admin/Admin/QuoteDetails/DocumentsSection";
+import { PageHeader } from "@/components/features/admin/PageHeader";
+import DetailPageLayout from "@/components/features/admin/layouts/DetailPageLayout";
+import QuoteActionButtons from "@/components/features/admin/QuoteDetails/ActionButtons";
+import PersonalDetails from "@/components/features/admin/QuoteDetails/PersonalDetails";
+import ContactInformation from "@/components/features/admin/QuoteDetails/ContactInformation";
+import PolicyInformation from "@/components/features/admin/QuoteDetails/PolicyInformation";
+import CustomerHistory from "@/components/features/admin/QuoteDetails/CustomerHistory";
+import QuoteStatus from "@/components/features/admin/QuoteDetails/QuoteStatus";
+import QuoteBreakdown from "@/components/features/admin/QuoteDetails/QuoteBreakdown";
+import DatesSection from "@/components/features/admin/QuoteDetails/DatesSection";
+import DocumentsSection from "@/components/features/admin/QuoteDetails/DocumentsSection";
 import { DetailedQuote } from "@/types/admin";
 
 // This would typically come from an API call

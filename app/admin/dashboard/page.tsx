@@ -1,10 +1,10 @@
 'use client';
 
 import React from 'react';
-import StatsCard, { sampleStats } from '@/components/features/admin/Admin/StatsCard';
-import ActivityFeed from '@/components/features/admin/Admin/ActivityFeed';
-import UpcomingInspections from '@/components/features/admin/Admin/UpcomingInspections';
-import { PageHeader } from '@/components/features/admin/Admin/PageHeader';
+import StatsCard, { sampleStats } from '@/components/features/admin/StatsCard';
+import ActivityFeed from '@/components/features/admin/ActivityFeed';
+import UpcomingInspections from '@/components/features/admin/UpcomingInspections';
+import { PageHeader } from '@/components/features/admin/PageHeader';
 import { Download } from 'lucide-react';
 
 const AdminDashboard = () => {

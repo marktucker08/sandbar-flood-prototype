@@ -1,4 +1,4 @@
-import { PoliciesPage } from '@/components/features/admin/Admin/PoliciesPage'
+import { PoliciesPage } from '@/components/features/admin/PoliciesPage'
 import React from 'react'
 
 const Page = () => {

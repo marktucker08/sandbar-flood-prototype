@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { PageHeader } from "@/components/features/admin/Admin/PageHeader";
+import { PageHeader } from "@/components/features/admin/PageHeader";
 import { User, Mail, Phone, Building2, Shield, Bell, Key } from "lucide-react";
 
 interface ProfileData {
