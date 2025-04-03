@@ -14,7 +14,10 @@
 /project-docs
 
 # cursor rules
-.cursor/rules
+.cursor/rules/*.mdc
+.cursor/rules/backend.mdc
+.cursor/rules/frontend.mdc
+.cursor/rules/general-guidelines.mdc
 
 # testing
 /coverage
