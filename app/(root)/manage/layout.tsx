@@ -29,8 +29,8 @@ export default function Layout({
                 href={tab.href}
                 className={`text-sm font-medium py-2 ${
                   pathname === tab.href
-                    ? "text-blue-600 border-b-2 border-blue-600"
-                    : "text-gray-700 hover:text-gray-900"
+                    ? "text-amber-600 border-b-2 border-amber-600"
+                    : "text-gray-700 hover:text-amber-600"
                 }`}
               >
                 {tab.label}

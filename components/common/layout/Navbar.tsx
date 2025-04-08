@@ -5,7 +5,7 @@ import Link from 'next/link'
 import React from 'react'
 import DropdownMenu from '@/components/common/layout/DropdownMenu';
 import { useSession, signOut } from 'next-auth/react'
-import { UserCircle } from 'lucide-react'
+import { UserCircle, Settings } from 'lucide-react'
 
 const Navbar = () => {
   const { data: session } = useSession();
@@ -32,11 +32,7 @@ const Navbar = () => {
                 {session ? (
                     <>
                         <ul className="flex items-center gap-10 self-start justify-start pr-10 whitespace-nowrap">
-                            <li>
-                                <Link href='/admin/dashboard' className='text-gray-700 hover:text-amber-600 py-2 block transition-colors duration-200'>
-                                    Admin Dashboard
-                                </Link>
-                            </li>
+                           
                             <li>
                                 <Link href='/quote/new' className='text-gray-700 hover:text-amber-600 py-2 block transition-colors duration-200'>
                                     Create New Quote
@@ -50,9 +46,17 @@ const Navbar = () => {
                                     Help
                                 </Link>
                             </li>
+                            <li>
+                                <Link href='/admin/dashboard' className='text-gray-700 hover:text-amber-600 py-2 block transition-colors duration-200'>
+                                    <span className='flex items-center gap-1.5 '>
+                                        <Settings className="w-5 h-5 text-gray-700" />
+                                        Admin
+                                    </span>
+                                </Link>
+                            </li>
                         </ul>
-                        <div className="flex items-center gap-2">
-                            <UserCircle className="w-6 h-6 text-gray-700" />
+                        <div className="flex items-center gap-1.5">
+                            <UserCircle className="w-5 h-5 text-gray-700" />
                             <DropdownMenu 
                                 label={session.user?.email || ''} 
                                 items={userMenuItems} 

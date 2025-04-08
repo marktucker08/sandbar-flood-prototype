@@ -50,4 +50,8 @@ export interface QuoteFormData {
   contentsCoverage?: string;
   lossOfUseCoverage?: string;
   deductible?: string;
+
+  // Quote Calculation
+  riskFactor?: string;
+  premium?: string;
 } 

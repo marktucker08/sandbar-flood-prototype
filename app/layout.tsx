@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import { Work_Sans } from "next/font/google";
+import { Inter, Work_Sans } from "next/font/google";
 import "@/styles/globals.css";
+import { QuoteProvider } from "@/context/QuoteContext";
 import localFont from "next/font/local";
 import { Providers } from "@/components/providers/AuthProviders";
+
+const inter = Inter({ subsets: ["latin"] });
 
 const workSans = Work_Sans({ 
   subsets: ["latin"], 
@@ -16,23 +19,24 @@ const arSans = localFont({
   display: "swap",
 });
 
+
 export const metadata: Metadata = {
-  title: "SandBar Flood Insurance",
-  description: "Your one stop solution for all things flood insurance",
+  title: "Sandbar Flood Insurance",
+  description: "Flood insurance quoting and management platform",
 };
 
 export default function RootLayout({
   children,
-}: {
-  children: React.ReactNode
-}) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
   return (
     <html lang="en">
-      <body className={`${workSans.variable} ${arSans.variable}`}>
+      <body className={`${inter.className} ${workSans.variable} ${arSans.variable}`}>
         <Providers>
-          <main>
+          <QuoteProvider>
             {children}
-          </main>
+          </QuoteProvider>
         </Providers>
       </body>
     </html>
