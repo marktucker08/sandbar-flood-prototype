@@ -3,14 +3,16 @@ import React from "react";
 import { FormInput } from "@/components/common/ui/form";
 import FormStepLayout from "./FormStepLayout";
 import { QuoteFormData } from "@/types/quote";
-import { QUOTE_FORM_STEPS } from "@/lib/constants/formSteps";
+import { FormStep } from "@/lib/constants/formSteps";
 import { z } from "zod";
+import { MapPin } from "lucide-react";
 
 interface LocationVerificationProps {
   onNext: () => void;
   onBack: () => void;
-  formData?: QuoteFormData;
-  updateFormData?: (data: Partial<QuoteFormData>) => void;
+  formData: QuoteFormData;
+  updateFormData: (data: Partial<QuoteFormData>) => void;
+  progressSteps: FormStep[];
 }
 
 const locationSchema = z.object({
@@ -30,6 +32,7 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
   onBack,
   formData,
   updateFormData,
+  progressSteps,
 }) => {
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
@@ -74,11 +77,6 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
     }
   };
 
-  const progressSteps = QUOTE_FORM_STEPS.map((step, index) => ({
-    ...step,
-    isActive: index === 0,
-  }));
-
   return (
     <FormStepLayout 
       title="Property Location"
@@ -87,6 +85,15 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
       onBack={onBack}
     >     
       <div className="space-y-6">
+        {/* Placeholder Map */}
+        <div className="w-full h-48 bg-sky-50 rounded-lg border border-sky-200 flex items-center justify-center">
+          <div className="text-center">
+            <MapPin className="w-12 h-12 text-sky-400 mx-auto mb-2" />
+            <p className="text-sky-600 text-sm">Map will be displayed here</p>
+            <p className="text-sky-500 text-xs">Google Maps integration coming soon</p>
+          </div>
+        </div>
+
         <FormInput
           label="Street Address"
           placeholder="Enter your street address"

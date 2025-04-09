@@ -3,14 +3,15 @@ import React from "react";
 import FormStepLayout from "./FormStepLayout";
 import { FormInput, FormRadioGroup } from "@/components/common/ui/form";
 import { QuoteFormData } from "@/types/quote";
-import { QUOTE_FORM_STEPS } from "@/lib/constants/formSteps";
+import { FormStep } from "@/lib/constants/formSteps";
 import { z } from "zod";
 
 interface PropertyDetailsProps {
   onNext: () => void;
   onBack: () => void;
-  formData?: QuoteFormData;
-  updateFormData?: (data: Partial<QuoteFormData>) => void;
+  formData: QuoteFormData;
+  updateFormData: (data: Partial<QuoteFormData>) => void;
+  progressSteps: FormStep[];
 }
 
 const basePropertySchema = z.object({
@@ -30,6 +31,7 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   onBack,
   formData,
   updateFormData,
+  progressSteps,
 }) => {
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
@@ -75,11 +77,6 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
       }
     }
   };
-
-  const progressSteps = QUOTE_FORM_STEPS.map((step, index) => ({
-    ...step,
-    isActive: index === 2,
-  }));
 
   const waitingPeriodOptions = [
     { value: "standard", label: "Standard Wait" },

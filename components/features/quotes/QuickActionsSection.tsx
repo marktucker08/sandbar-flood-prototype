@@ -1,6 +1,6 @@
 import React from "react";
 import QuickActionButton from "./QuickActionButton";
-import { Home, CreditCard, Hotel, Building2 } from "lucide-react";
+import { Home, CreditCard, FileCheck, FileText } from "lucide-react";
 
 export default function QuickActionsSection() {
   return (
@@ -8,18 +8,18 @@ export default function QuickActionsSection() {
       <div className="grid grid-cols-2 md:grid-cols-4 gap-4 justify-items-center">
         <QuickActionButton
           icon={Home}
-          label="Quote 1-4 Family"
+          label="Start New Quote"
           link="/quote/new"
         />
         <QuickActionButton
-          icon={Hotel}
-          label="Quote Condo"
-          link="/quote/new"
+          icon={FileText}
+          label="My Quotes"
+          link="/manage/quotes/my"
         />
         <QuickActionButton
-          icon={Building2}
-          label="Quote Commercial"
-          link="/quote/new"
+          icon={FileCheck}
+          label="My Policies"
+          link="/manage/policies/my"
         />
         <QuickActionButton
           icon={CreditCard}

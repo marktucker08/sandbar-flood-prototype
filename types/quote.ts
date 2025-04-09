@@ -1,4 +1,13 @@
+export type BuildingType = 
+  | "one_home"
+  | "residential_condo"
+  | "mixed_use"
+  | "apartment"
+  | "commercial"
+  | "hotel";
+
 export interface QuoteFormData {
+  buildingType?: BuildingType;
   // Location Verification
   streetAddress?: string;
   unitAptSuite?: string;
@@ -54,4 +63,6 @@ export interface QuoteFormData {
   // Quote Calculation
   riskFactor?: string;
   premium?: string;
+
+  // Add other quote form fields as needed
 } 

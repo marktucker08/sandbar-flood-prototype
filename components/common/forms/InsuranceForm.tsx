@@ -1,5 +1,6 @@
 "use client";
 import * as React from "react";
+import BuildingTypeSelection from "./QuoteFormSteps/BuildingTypeSelection";
 import LocationVerification from "./QuoteFormSteps/LocationVerification";
 import InsuredInformation from "./QuoteFormSteps/InsuredInformation";
 import PropertyDetails from "./QuoteFormSteps/PropertyDetails";
@@ -8,6 +9,7 @@ import FoundationInfo from "./QuoteFormSteps/FoundationInfo";
 import ConstructionInfo from "./QuoteFormSteps/ConstructionInfo";
 import CoverageOptions from "./QuoteFormSteps/CoverageOptions";
 import { QuoteFormData } from "@/types/quote";
+import { QUOTE_FORM_STEPS, FormStep } from "@/lib/constants/formSteps";
 
 export const InsuranceForm = () => {
   const [currentStep, setCurrentStep] = React.useState(0);
@@ -32,13 +34,28 @@ export const InsuranceForm = () => {
     }));
   };
 
+  const progressSteps: FormStep[] = React.useMemo(() => {
+    return QUOTE_FORM_STEPS.map((step, index) => ({
+      ...step,
+      isActive: currentStep === index
+    }));
+  }, [currentStep]);
+
   const steps = [
+    <BuildingTypeSelection
+      key="building-type"
+      onNext={handleNext}
+      formData={formData}
+      updateFormData={updateFormData}
+      progressSteps={progressSteps}
+    />,
     <LocationVerification
       key="location"
       onNext={handleNext}
       onBack={handleBack}
       formData={formData}
       updateFormData={updateFormData}
+      progressSteps={progressSteps}
     />,
     <InsuredInformation
       key="insured"
@@ -46,6 +63,7 @@ export const InsuranceForm = () => {
       onBack={handleBack}
       formData={formData}
       updateFormData={updateFormData}
+      progressSteps={progressSteps}
     />,
     <PropertyDetails
       key="property"
@@ -53,6 +71,7 @@ export const InsuranceForm = () => {
       onBack={handleBack}
       formData={formData}
       updateFormData={updateFormData}
+      progressSteps={progressSteps}
     />,
     <FoundationInfo
       key="foundation"
@@ -60,6 +79,7 @@ export const InsuranceForm = () => {
       onBack={handleBack}
       formData={formData}
       updateFormData={updateFormData}
+      progressSteps={progressSteps}
     />,
     <ElevationCertificate
       key="elevation"
@@ -67,6 +87,7 @@ export const InsuranceForm = () => {
       onBack={handleBack}
       formData={formData}
       updateFormData={updateFormData}
+      progressSteps={progressSteps}
     />,
     <ConstructionInfo
       key="construction"
@@ -74,12 +95,14 @@ export const InsuranceForm = () => {
       onBack={handleBack}
       formData={formData}
       updateFormData={updateFormData}
+      progressSteps={progressSteps}
     />,
     <CoverageOptions
       key="coverage"
       onBack={handleBack}
       formData={formData}
       updateFormData={updateFormData}
+      progressSteps={progressSteps}
     />,
   ];
 
@@ -89,6 +112,7 @@ export const InsuranceForm = () => {
         {React.cloneElement(steps[currentStep], {
           formData,
           updateFormData,
+          progressSteps,
         })}
       </div>
     </main>

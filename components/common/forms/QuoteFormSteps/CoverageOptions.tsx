@@ -4,14 +4,15 @@ import FormStepLayout from "./FormStepLayout";
 import { FormInput, FormRadioGroup } from "@/components/common/ui/form";
 import { useRouter } from "next/navigation";
 import { QuoteFormData } from "@/types/quote";
-import { QUOTE_FORM_STEPS } from "@/lib/constants/formSteps";
+import { FormStep } from "@/lib/constants/formSteps";
 import { z } from "zod";
 import { useQuote } from "@/context/QuoteContext";
 
 interface CoverageOptionsProps {
   onBack: () => void;
-  formData?: QuoteFormData;
-  updateFormData?: (data: Partial<QuoteFormData>) => void;
+  formData: QuoteFormData;
+  updateFormData: (data: Partial<QuoteFormData>) => void;
+  progressSteps: FormStep[];
 }
 
 const coverageSchema = z.object({
@@ -29,6 +30,7 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
   onBack,
   formData,
   updateFormData,
+  progressSteps,
 }) => {
   const router = useRouter();
   const { setQuoteData } = useQuote();
@@ -173,11 +175,6 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
       }
     }
   };
-
-  const progressSteps = QUOTE_FORM_STEPS.map((step, index) => ({
-    ...step,
-    isActive: index === 6,
-  }));
 
   return (
     <FormStepLayout
