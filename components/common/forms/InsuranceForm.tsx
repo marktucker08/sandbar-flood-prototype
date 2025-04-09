@@ -8,6 +8,7 @@ import ElevationCertificate from "./QuoteFormSteps/ElevationCertificate";
 import FoundationInfo from "./QuoteFormSteps/FoundationInfo";
 import ConstructionInfo from "./QuoteFormSteps/ConstructionInfo";
 import CoverageOptions from "./QuoteFormSteps/CoverageOptions";
+import QuoteSummary from "./QuoteFormSteps/QuoteSummary";
 import { QuoteFormData } from "@/types/quote";
 import { QUOTE_FORM_STEPS, FormStep } from "@/lib/constants/formSteps";
 
@@ -100,9 +101,18 @@ export const InsuranceForm = () => {
     <CoverageOptions
       key="coverage"
       onBack={handleBack}
+      onNext={handleNext}
       formData={formData}
       updateFormData={updateFormData}
       progressSteps={progressSteps}
+    />,
+    <QuoteSummary
+      key="summary"
+      onBack={handleBack}
+      formData={formData}
+      updateFormData={updateFormData}
+      progressSteps={progressSteps}
+      setCurrentStep={setCurrentStep}
     />,
   ];
 

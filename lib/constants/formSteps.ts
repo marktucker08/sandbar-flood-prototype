@@ -13,4 +13,5 @@ export const QUOTE_FORM_STEPS: FormStep[] = [
   { label: "Elevation", sublabel: "Certificate", isActive: false },
   { label: "Construction", sublabel: "Type", isActive: false },
   { label: "Coverage", sublabel: "Options", isActive: false },
+  // { label: "Review", sublabel: "Details", isActive: false },
 ]; 

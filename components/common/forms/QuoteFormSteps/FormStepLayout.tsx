@@ -25,7 +25,7 @@ const FormStepLayout: React.FC<FormStepLayoutProps> = ({
 }) => {
   return (
     <div className="flex flex-col gap-6">
-      <ProgressBar steps={progressSteps} />
+      {title !== "Review Quote Details" && <ProgressBar steps={progressSteps} />}
       
       <div className="card">
         <div className="max-w-2xl mx-auto">
