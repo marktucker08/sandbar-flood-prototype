@@ -34,7 +34,7 @@ const Navbar = () => {
                         <ul className="flex items-center gap-10 self-start justify-start pr-10 whitespace-nowrap">
                            
                             <li>
-                                <Link href='/quote/new' className='text-gray-700 hover:text-amber-600 py-2 block transition-colors duration-200'>
+                                <Link href='/quote/new' className='bg-amber-200 text-gray-700 px-4 py-2 rounded-md hover:bg-amber-400 transition-colors duration-200 font-medium'>
                                     Create New Quote
                                 </Link>
                             </li>

@@ -1,11 +1,9 @@
 import type { Metadata } from "next";
-import { Inter, Work_Sans } from "next/font/google";
+import { Work_Sans } from "next/font/google";
 import "@/styles/globals.css";
 import { QuoteProvider } from "@/context/QuoteContext";
 import localFont from "next/font/local";
 import { Providers } from "@/components/providers/AuthProviders";
-
-const inter = Inter({ subsets: ["latin"] });
 
 const workSans = Work_Sans({ 
   subsets: ["latin"], 
@@ -14,11 +12,10 @@ const workSans = Work_Sans({
 });
 
 const arSans = localFont({
-  src: "../public/fonts/AROneSans-VariableFont_ARRR,wght.ttf",
+  src: "./fonts/AROneSans-VariableFont_ARRR,wght.ttf",
   variable: "--font-ar-sans",
-  display: "swap",
+  display: "swap",  
 });
-
 
 export const metadata: Metadata = {
   title: "Sandbar Flood Insurance",
@@ -31,8 +28,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${inter.className} ${workSans.variable} ${arSans.variable}`}>
+    <html lang="en" className={`${workSans.variable} ${arSans.variable}`}>
+      <body>
         <Providers>
           <QuoteProvider>
             {children}
