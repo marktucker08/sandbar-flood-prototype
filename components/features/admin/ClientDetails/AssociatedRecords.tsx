@@ -2,7 +2,7 @@ import React from "react";
 import { DetailedClient } from "@/types/admin";
 import { StatusBadge } from "@/components/common/ui/status-badge";
 import Link from "next/link";
-import { FileText, ClipboardList, ClipboardCheck, ChevronRight } from "lucide-react";
+import { FileText, ClipboardList, ChevronRight } from "lucide-react";
 
 interface AssociatedRecordsProps {
   data: DetailedClient;
@@ -49,7 +49,7 @@ const AssociatedRecords: React.FC<AssociatedRecordsProps> = ({ data }) => {
       </div>
 
       {/* Quotes Section */}
-      <div className="mb-6">
+      <div>
         <div className="admin-section-header">
           <h4 className="admin-section-title flex items-center gap-2">
             <ClipboardList className="icon-sm" />
@@ -76,43 +76,6 @@ const AssociatedRecords: React.FC<AssociatedRecordsProps> = ({ data }) => {
                 <div className="flex items-center gap-4">
                   <span className="form-value">{quote.premium}</span>
                   <StatusBadge status={quote.status} />
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Inspections Section */}
-      <div>
-        <div className="admin-section-header">
-          <h4 className="admin-section-title flex items-center gap-2">
-            <ClipboardCheck className="icon-sm" />
-            Inspections
-          </h4>
-          <Link href={`/admin/dashboard/clients/${data.clientId}/inspections`}>
-            <button className="admin-action-button">
-              View All
-              <ChevronRight className="icon-sm" />
-            </button>
-          </Link>
-        </div>
-        <div className="space-y-3">
-          {data.inspections.map((inspection) => (
-            <div
-              key={inspection.id}
-              className="admin-card p-3"
-            >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="form-value font-medium">{inspection.id}</p>
-                  <p className="text-xs text-gray-500">{inspection.property}</p>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className="form-value">
-                    {inspection.date} {inspection.time}
-                  </span>
-                  <StatusBadge status={inspection.status} />
                 </div>
               </div>
             </div>

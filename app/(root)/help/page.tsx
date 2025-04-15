@@ -1,34 +1,34 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { Rocket, FileText, CreditCard, Settings, Search } from "lucide-react";
+import { FileText, CreditCard, Settings, Search, Compass, FileCheck, LifeBuoy } from "lucide-react";
 
 const HelpPage: React.FC = () => {
   const helpTopics = [
     {
       title: "Getting Started",
-      description: "Learn the basics of using our flood insurance platform",
-      icon: Rocket,
+      description: "Learn how to use the Sandbar Flood Insurance Platform",
+      icon: Compass,
       link: "/help/getting-started",
     },
     {
       title: "Creating Quotes",
-      description: "Step-by-step guide to creating and managing quotes", 
+      description: "Step-by-step guide to creating flood insurance quotes",
       icon: FileText,
       link: "/help/creating-quotes",
     },
-    // {
-    //   title: "Managing Policies",
-    //   description: "How to manage and update existing policies",
-    //   icon: FileCheck,
-    //   link: "/help/managing-policies",
-    // },
-    // {
-    //   title: "Inspections", 
-    //   description: "Understanding the inspection process and requirements",
-    //   icon: ClipboardCheck,
-    //   link: "/help/inspections",
-    // },
+    {
+      title: "Managing Policies",
+      description: "How to manage and update your flood insurance policies",
+      icon: FileCheck,
+      link: "/help/managing-policies",
+    },
+    {
+      title: "Support",
+      description: "Contact our support team for assistance",
+      icon: LifeBuoy,
+      link: "/help/support",
+    },
     {
       title: "Billing & Payments",
       description: "Information about billing, payments, and premium calculations",

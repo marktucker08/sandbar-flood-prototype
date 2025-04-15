@@ -1,8 +1,8 @@
+import { DetailedClient, Policy, Quote } from "@/types/admin";
 import React, { useMemo } from "react";
-import { DetailedClient, Inspection, Policy, Quote } from "@/types/admin";
 import { StatusBadge } from "@/components/common/ui/status-badge";
 import { StatusActions } from "@/components/common/ui/status-actions";
-import { Activity, FileText, ClipboardList, ClipboardCheck } from "lucide-react";
+import { Activity, FileText, ClipboardList } from "lucide-react";
 
 interface ClientStatusProps {
   data: DetailedClient;
@@ -13,12 +13,21 @@ const ClientStatus: React.FC<ClientStatusProps> = ({ data, onStatusAction }) => 
   const stats = useMemo(() => ({
     activePolicies: data.policies.filter((p: Policy) => p.status === "active").length,
     pendingQuotes: data.quotes.filter((q: Quote) => q.status === "pending").length,
-    pendingInspections: data.inspections.filter((i: Inspection) => i.status === "pending").length,
-  }), [data.policies, data.quotes, data.inspections]);  
+  }), [data.policies, data.quotes]);
 
   return (
     <div className="admin-card">
       <h3 className="admin-section-header">Client Status</h3>
+      <div className="grid grid-cols-2 gap-4">
+        <div className="admin-stats-item">
+          <span className="admin-stats-label">Active Policies</span>
+          <span className="admin-stats-value">{stats.activePolicies}</span>
+        </div>
+        <div className="admin-stats-item">
+          <span className="admin-stats-label">Pending Quotes</span>
+          <span className="admin-stats-value">{stats.pendingQuotes}</span>
+        </div>
+      </div>
       <div className="form-group">
         <div>
           <label className="form-label">
@@ -45,15 +54,6 @@ const ClientStatus: React.FC<ClientStatusProps> = ({ data, onStatusAction }) => 
           </label>
           <p className="form-value">
             {stats.pendingQuotes}
-          </p>
-        </div>
-        <div>
-          <label className="form-label">
-            <ClipboardCheck className="icon-sm" />
-            Pending Inspections
-          </label>
-          <p className="form-value">
-            {stats.pendingInspections}
           </p>
         </div>
       </div>

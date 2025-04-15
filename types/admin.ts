@@ -53,16 +53,6 @@ export interface DetailedQuote extends Quote {
   }[];
 }
 
-export interface Inspection {
-  id: string;
-  property: string;
-  client: string;
-  status: Status;
-  inspector: string;
-  date: string;
-  time: string;
-}
-
 export interface Client {
   id: string;
   name: string;
@@ -126,56 +116,6 @@ export interface DetailedPolicy extends Policy {
   }[];
 }
 
-export interface DetailedInspection extends Inspection {
-  // Property Details
-  propertyType: "Single Family" | "Multi Family" | "Commercial";
-  floodZone: string;
-  elevation: string;
-  squareFootage: number;
-  yearBuilt: number;
-  
-  // Inspection Details
-  inspectionType: "Initial" | "Follow-up" | "Final";
-  notes: string;
-  findings: {
-    id: string;
-    category: string;
-    description: string;
-    severity: "Low" | "Medium" | "High";
-  }[];
-  
-  // Contact Information
-  clientEmail: string;
-  clientPhone: string;
-  propertyAddress: string;
-  
-  // Documents
-  documents: {
-    id: string;
-    name: string;
-    type: string;
-    uploadedDate: string;
-  }[];
-}
-
-export interface Column<T> {
-  key: keyof T | string;
-  label: string;
-  render?: (value: T[keyof T] | string, row: T) => React.ReactNode;
-}
-
-export interface DataTableProps<T> {
-  columns: Column<T>[];
-  data: T[];
-  onEdit?: (id: string) => void;
-  onView?: (id: string) => void;
-  editLink?: string;
-  viewLink?: string;
-  currentPage?: number;
-  totalPages?: number;
-  onPageChange?: (page: number) => void;
-}
-
 export interface DetailedClient {
   clientId: number;
   firstName: string;
@@ -195,5 +135,22 @@ export interface DetailedClient {
   status: Status;
   policies: Policy[];
   quotes: Quote[];
-  inspections: Inspection[];
+}
+
+export interface Column<T> {
+  key: keyof T | string;
+  label: string;
+  render?: (value: T[keyof T] | string, row: T) => React.ReactNode;
+}
+
+export interface DataTableProps<T> {
+  columns: Column<T>[];
+  data: T[];
+  onEdit?: (id: string) => void;
+  onView?: (id: string) => void;
+  editLink?: string;
+  viewLink?: string;
+  currentPage?: number;
+  totalPages?: number;
+  onPageChange?: (page: number) => void;
 } 

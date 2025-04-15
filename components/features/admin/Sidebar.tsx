@@ -9,8 +9,7 @@ import {
   FileText, 
   FileCheck, 
   Users, 
-  ShieldCheck, 
-  Settings, 
+  Settings,
   Search,
   ShieldUser,
 } from "lucide-react";
@@ -23,7 +22,6 @@ export const Sidebar = () => {
     { icon: FileText, label: "Quotes", href: "/admin/dashboard/quotes" },
     { icon: FileCheck, label: "Policies", href: "/admin/dashboard/policies" },
     { icon: Users, label: "Clients", href: "/admin/dashboard/clients" },
-    { icon: ShieldCheck, label: "Inspections", href: "/admin/dashboard/inspections" },
     { icon: ShieldUser, label: "Manage Users", href: "/admin/dashboard/settings/users" },
     { icon: Settings, label: "System Settings", href: "/admin/dashboard/settings" },
   ];

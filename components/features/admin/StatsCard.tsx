@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { AreaChart, Area, ResponsiveContainer } from 'recharts';
-import { FileText, ShieldCheck, DollarSign, ClipboardCheck, TrendingUp, TrendingDown } from 'lucide-react';
+import { FileText, ShieldCheck, DollarSign, TrendingUp, TrendingDown } from 'lucide-react';
 
 interface HistoricalData {
   date: string;
@@ -16,7 +16,7 @@ interface StatsCardProps {
     value: number;
     type: 'increase' | 'decrease';
   };
-  type: 'quotes' | 'policies' | 'revenue' | 'inspections';
+  type: 'quotes' | 'policies' | 'revenue';
   historicalData?: HistoricalData[];
 }
 
@@ -28,8 +28,6 @@ const getIcon = (type: StatsCardProps['type']) => {
       return ShieldCheck;
     case 'revenue':
       return DollarSign;
-    case 'inspections':
-      return ClipboardCheck;
     default:
       return FileText;
   }
@@ -43,8 +41,6 @@ const getIconColor = (type: StatsCardProps['type']) => {
       return 'text-green-600 bg-green-100';
     case 'revenue':
       return 'text-purple-600 bg-purple-100';
-    case 'inspections':
-      return 'text-orange-600 bg-orange-100';
     default:
       return 'text-gray-600 bg-gray-100';
   }
@@ -58,8 +54,6 @@ const getChartColor = (type: StatsCardProps['type']) => {
       return '#16a34a';
     case 'revenue':
       return '#9333ea';
-    case 'inspections':
-      return '#ea580c';
     default:
       return '#6b7280';
   }
@@ -160,16 +154,6 @@ export const sampleStats = [
     },
     type: 'revenue' as const,
     historicalData: generateHistoricalData(83000, 5000),
-  },
-  {
-    title: 'Pending Inspections',
-    value: 24,
-    change: {
-      value: 3,
-      type: 'decrease' as const,
-    },
-    type: 'inspections' as const,
-    historicalData: generateHistoricalData(25, 5),
   },
 ];
 

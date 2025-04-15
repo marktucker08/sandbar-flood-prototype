@@ -8,21 +8,20 @@ import ClientDetailsPage from "@/components/features/admin/ClientDetailsPage";
 const mockClientData: DetailedClient = {
   clientId: 1,
   firstName: "John",
-  lastName: "Smith",
-  email: "john.smith@email.com",
+  lastName: "Doe",
+  email: "john.doe@example.com",
   phoneNumber: "(555) 123-4567",
   insuredType: "individual",
   address: "123 Main St",
-  city: "Miami",
-  state: "FL",
-  zipCode: "33139",
+  city: "Anytown",
+  state: "CA",
+  zipCode: "12345",
   createdAt: new Date(),
   updatedAt: new Date(),
   createdBy: 1,
   status: "active",
   policies: [],
   quotes: [],
-  inspections: [],
 };
 
 const Page: React.FC = () => {

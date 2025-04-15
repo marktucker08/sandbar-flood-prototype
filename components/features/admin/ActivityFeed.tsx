@@ -2,11 +2,11 @@
 
 import Image from 'next/image';
 import React from 'react';
-import { FileText, ClipboardCheck, ClipboardList, UserPlus, Activity } from 'lucide-react';
+import { FileText, ClipboardCheck, UserPlus, Activity } from 'lucide-react';
 
 interface Activity {
   id: string;
-  type: 'quote' | 'policy' | 'inspection' | 'client';
+  type: 'quote' | 'policy' | 'client';
   action: string;
   description: string;
   timestamp: string;
@@ -40,17 +40,6 @@ const sampleActivities: Activity[] = [
     },
   },
   {
-    id: '3',
-    type: 'inspection',
-    action: 'Scheduled Inspection',
-    description: 'Property inspection scheduled for 456 Oak Ave',
-    timestamp: '5 hours ago',
-    user: {
-      name: 'Mike Wilson',
-      avatar: 'https://ui-avatars.com/api/?name=Mike+Wilson',
-    },
-  },
-  {
     id: '4',
     type: 'client',
     action: 'Added Client',
@@ -80,8 +69,6 @@ const getActivityIcon = (type: Activity['type']) => {
       return FileText;
     case 'policy':
       return ClipboardCheck;
-    case 'inspection':
-      return ClipboardList;
     case 'client':
       return UserPlus;
     default:
