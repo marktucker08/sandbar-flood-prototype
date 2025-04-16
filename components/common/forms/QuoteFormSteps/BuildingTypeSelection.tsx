@@ -66,7 +66,7 @@ export default function BuildingTypeSelection({ onNext, formData, updateFormData
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   const handleSelect = (value: string) => {
-    updateFormData({ buildingType: value as BuildingType });
+    updateFormData({ buildingType: value as typeof BuildingType[number]["value"] });
     
     try {
       buildingTypeSchema.parse({ buildingType: value });

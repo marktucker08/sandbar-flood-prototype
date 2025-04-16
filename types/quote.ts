@@ -1,13 +1,14 @@
-export type BuildingType = 
-  | "one_home"
-  | "residential_condo"
-  | "mixed_use"
-  | "apartment"
-  | "commercial"
-  | "hotel";
+export const BuildingType = [
+  { value: "one_home", label: "One Home" },
+  { value: "residential_condo", label: "Residential Condo" },
+  { value: "mixed_use", label: "Mixed Use" },
+  { value: "apartment", label: "Apartment" },
+  { value: "commercial", label: "Commercial" },
+  { value: "hotel", label: "Hotel" }
+]
 
 export interface QuoteFormData {
-  buildingType?: BuildingType;
+  buildingType?: typeof BuildingType[number]["value"]; 
   // Location Verification
   streetAddress?: string;
   unitAptSuite?: string;

@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import FormStepLayout from "./FormStepLayout";
-import { QuoteFormData } from "@/types/quote";
+import { BuildingType, QuoteFormData } from "@/types/quote";
 import { FormStep } from "@/lib/constants/formSteps";
 import { formatCurrency } from "@/lib/utils/format";
 import { useQuote } from "@/context/QuoteContext";
@@ -134,7 +134,7 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 mb-1">Property Type</h3>
-                  <p className="text-gray-900">{formData.buildingType}</p>
+                  <p className="text-gray-900">{BuildingType.find(type => type.value === formData.buildingType)?.label}</p>
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 mb-1">Year Built</h3>
@@ -257,7 +257,7 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
             </div>
 
             {/* Risk Assessment */}
-            <div className="bg-gray-50 rounded-lg p-6">
+            {/* <div className="bg-gray-50 rounded-lg p-6">
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-gray-900">Risk Assessment</h2>
               </div>
@@ -273,7 +273,7 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
                   </p>
                 </div>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

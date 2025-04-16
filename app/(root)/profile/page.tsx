@@ -2,12 +2,13 @@
 
 import { useSession } from "next-auth/react";
 import { UserCircle, Mail, Building2, Phone, MapPin } from "lucide-react";
+import { Button } from "@/components/common/ui/button";
 
 export default function ProfilePage() {
   const { data: session } = useSession();
 
   return (
-    <div className="background-gradient min-h-screen py-8">
+    <main className="background-gradient min-h-screen py-8">
       <div className="container mx-auto px-4 max-w-4xl">
         <div className="card">
           <div className="flex flex-col items-center mb-8">
@@ -73,13 +74,13 @@ export default function ProfilePage() {
             </div>
 
             <div className="mt-6 flex justify-end">
-              <button className="btn-primary">
+              <Button className="action-button">
                 Edit Profile
-              </button>
+              </Button>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 } 
