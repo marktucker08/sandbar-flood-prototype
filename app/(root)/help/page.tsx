@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { FileText, CreditCard, Settings, Search, Compass, FileCheck, LifeBuoy } from "lucide-react";
+import { FileText, Search, Compass, LifeBuoy } from "lucide-react";
 
 const HelpPage: React.FC = () => {
   const helpTopics = [
@@ -17,30 +17,30 @@ const HelpPage: React.FC = () => {
       icon: FileText,
       link: "/help/creating-quotes",
     },
-    {
-      title: "Managing Policies",
-      description: "How to manage and update your flood insurance policies",
-      icon: FileCheck,
-      link: "/help/managing-policies",
-    },
+    // {
+    //   title: "Managing Policies",
+    //   description: "How to manage and update your flood insurance policies",
+    //   icon: FileCheck,
+    //   link: "/help/managing-policies",
+    // },
     {
       title: "Support",
       description: "Contact our support team for assistance",
       icon: LifeBuoy,
       link: "/help/support",
     },
-    {
-      title: "Billing & Payments",
-      description: "Information about billing, payments, and premium calculations",
-      icon: CreditCard,
-      link: "/help/billing",
-    },
-    {
-      title: "Account Settings",
-      description: "Manage your account preferences and profile settings",
-      icon: Settings,
-      link: "/help/account-settings",
-    },
+    // {
+    //   title: "Billing & Payments",
+    //   description: "Information about billing, payments, and premium calculations",
+    //   icon: CreditCard,
+    //   link: "/help/billing",
+    // },
+    // {
+    //   title: "Account Settings",
+    //   description: "Manage your account preferences and profile settings",
+    //   icon: Settings,
+    //   link: "/help/account-settings",
+    // },
   ];
 
   return (

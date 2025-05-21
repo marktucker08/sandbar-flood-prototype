@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import FormStepLayout from "./FormStepLayout";
-import { FormInput, FormRadioGroup } from "@/components/common/ui/form";
+import { FormRadioGroup } from "@/components/common/ui/form";
+import { FormSlider } from "@/components/common/ui/form/FormSlider";
 import { QuoteFormData } from "@/types/quote";
 import { FormStep } from "@/lib/constants/formSteps";
 import { z } from "zod";
@@ -45,15 +46,12 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
 }) => {
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
-  const handleInputChange = (field: keyof QuoteFormData) => (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const newValue = e.target.value;
-    updateFormData?.({ [field]: newValue });
+  const handleSliderChange = (field: keyof QuoteFormData) => (value: number) => {
+    updateFormData?.({ [field]: value.toString() });
 
     if (field in coverageSchema.shape) {
       try {
-        coverageSchema.shape[field as CoverageFields].parse(newValue);
+        coverageSchema.shape[field as CoverageFields].parse(value.toString());
         setErrors(prev => ({ ...prev, [field]: "" }));
       } catch (error) {
         if (error instanceof Error) {
@@ -99,61 +97,61 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
     >
       <div className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormInput
+          <FormSlider
             label="Building Replacement Cost"
-            type="number"
-            placeholder="Enter amount"
-            prefix="$"
-            value={formData?.buildingReplacementCost || ""}
-            onChange={handleInputChange("buildingReplacementCost")}
+            value={Number(formData?.buildingReplacementCost) || 0}
+            onChange={handleSliderChange("buildingReplacementCost")}
+            min={100000}
+            max={1000000}
+            step={25000}
             error={errors.buildingReplacementCost}
             required
           />
-          <FormInput
+          <FormSlider
             label="Contents Replacement Cost"
-            type="number"
-            placeholder="Enter amount"
-            prefix="$"
-            value={formData?.contentsReplacementCost || ""}
-            onChange={handleInputChange("contentsReplacementCost")}
+            value={Number(formData?.contentsReplacementCost) || 0}
+            onChange={handleSliderChange("contentsReplacementCost")}
+            min={50000}
+            max={500000}
+            step={5000}
             error={errors.contentsReplacementCost}
             required
           />
+          
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormInput
+          <FormSlider
             label="Building Coverage"
-            type="number"
-            placeholder="Enter amount"
-            prefix="$"
-            value={formData?.buildingCoverage || ""}
-            onChange={handleInputChange("buildingCoverage")}
+            value={Number(formData?.buildingCoverage) || 0}
+            onChange={handleSliderChange("buildingCoverage")}
+            min={100000}
+            max={1000000}
+            step={25000}
             error={errors.buildingCoverage}
             required
           />
-          <FormInput
+          <FormSlider
             label="Contents Coverage"
-            type="number"
-            placeholder="Enter amount"
-            prefix="$"
-            value={formData?.contentsCoverage || ""}
-            onChange={handleInputChange("contentsCoverage")}
+            value={Number(formData?.contentsCoverage) || 0}
+            onChange={handleSliderChange("contentsCoverage")}
+            min={50000}
+            max={500000}
+            step={5000}
             error={errors.contentsCoverage}
             required
           />
-        </div>
-
-        <FormInput
+          <FormSlider
           label="Loss of Use Coverage"
-          type="number"
-          placeholder="Enter amount"
-          prefix="$"
-          value={formData?.lossOfUseCoverage || ""}
-          onChange={handleInputChange("lossOfUseCoverage")}
+          value={Number(formData?.lossOfUseCoverage) || 0}
+          onChange={handleSliderChange("lossOfUseCoverage")}
+          min={0}
+          max={300000}
+          step={5000}
           error={errors.lossOfUseCoverage}
           required
         />
+        </div>
 
         <FormRadioGroup
           label="Deductible"
