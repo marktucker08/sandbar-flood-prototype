@@ -5,9 +5,9 @@ import { FormInput } from "@/components/common/ui/form";
 import PasswordInput from "@/components/common/forms/PasswordInput";
 import { Button } from "@/components/common/ui/button";
 import Image from "next/image";
-import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
+import { supabase } from "@/lib/utils/utils";
 
 export default function SignInPage() {
   const router = useRouter();
@@ -22,14 +22,13 @@ export default function SignInPage() {
     const password = formData.get("password") as string;
 
     try {
-      const result = await signIn("credentials", {
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
-        redirect: false,
       });
 
-      if (result?.error) {
-        toast.error("Invalid email or password");
+      if (error) {
+        toast.error(error.message || "Invalid email or password");
         return;
       }
 
@@ -80,9 +79,17 @@ export default function SignInPage() {
               <PasswordInput 
                 name="password"
                 placeholder="Enter your password" 
-                showForgotPassword={true} 
+                showForgotPassword={false} 
                 required
               />
+              <div className="text-right mt-2">
+                <a
+                  href="/reset-password"
+                  className="text-sm font-semibold text-amber-600 hover:text-amber-700 no-underline"
+                >
+                  Forgot Password?
+                </a>
+              </div>
             </div>
             <div className="flex justify-center">
               <Button 
@@ -97,10 +104,10 @@ export default function SignInPage() {
           <footer className="mt-8 text-sm text-center text-gray-600">
             <span>Don&apos;t have an account?</span>
             <a
-              href="#"
+              href="/sign-up"
               className="ml-1.5 text-sm font-semibold text-amber-600 hover:text-amber-700 no-underline"
             >
-              Contact Us
+              Request Access
             </a>
           </footer>
         </div>

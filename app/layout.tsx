@@ -4,6 +4,7 @@ import "@/styles/globals.css";
 import { QuoteProvider } from "@/context/QuoteContext";
 import localFont from "next/font/local";
 import { Providers } from "@/components/providers/AuthProviders";
+import { SupabaseSessionProvider } from "@/context/SupabaseSessionContext";
 
 const workSans = Work_Sans({ 
   subsets: ["latin"], 
@@ -31,9 +32,11 @@ export default function RootLayout({
     <html lang="en" className={`${workSans.variable} ${arSans.variable}`}>
       <body>
         <Providers>
-          <QuoteProvider>
-            {children}
-          </QuoteProvider>
+          <SupabaseSessionProvider>
+            <QuoteProvider>
+              {children}
+            </QuoteProvider>
+          </SupabaseSessionProvider>
         </Providers>
       </body>
     </html>

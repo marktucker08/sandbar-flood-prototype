@@ -4,12 +4,19 @@ import React from 'react';
 import { PageHeader } from '@/components/features/admin/PageHeader';
 import StatsCard, { sampleStats } from '@/components/features/admin/StatsCard';
 import ActivityFeed from '@/components/features/admin/ActivityFeed';
+import { useSupabaseSessionContext } from '@/context/SupabaseSessionContext';
 
 export default function AdminDashboard() {
+  const { user } = useSupabaseSessionContext();
   return (
     <div>
       <main className="admin-page-main">
         <PageHeader title="Admin Dashboard" />
+        {user && (
+          <div className="mb-4 text-right text-sm text-gray-500">
+            Logged in as: <span className="font-semibold">{user.email}</span>
+          </div>
+        )}
         <div className="admin-content">
           <div className="admin-stats-grid">
           {sampleStats.map((stat, index) => (

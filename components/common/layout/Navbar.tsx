@@ -4,11 +4,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import DropdownMenu from '@/components/common/layout/DropdownMenu';
-import { useSession, signOut } from 'next-auth/react'
+import { useSupabaseSessionContext } from "@/context/SupabaseSessionContext";
+import { supabase } from "@/lib/utils/utils";
 import { UserCircle, Settings } from 'lucide-react'
 
 const Navbar = () => {
-  const { data: session } = useSession();
+  const { user } = useSupabaseSessionContext();
   const manageItems = [
     { label: 'My Clients', href: '/manage/clients/my' },
     { label: 'My Quotes', href: '/manage/quotes/my' },
@@ -18,7 +19,11 @@ const Navbar = () => {
 
   const userMenuItems = [
     { label: 'Profile', href: '/profile' },
-    { label: 'Sign out', href: '#', onClick: () => signOut({ callbackUrl: '/sign-in' }) },
+    { label: 'Sign out', href: '#', onClick: async () => {
+        await supabase.auth.signOut();
+        window.location.href = '/sign-in';
+      }
+    },
   ];
 
   return (
@@ -29,7 +34,7 @@ const Navbar = () => {
             </Link>
 
             <div className='flex items-center gap-5'>
-                {session ? (
+                {user ? (
                     <>
                         <ul className="flex items-center gap-10 self-start justify-start pr-10 whitespace-nowrap">
                            
@@ -58,7 +63,7 @@ const Navbar = () => {
                         <div className="flex items-center gap-1.5">
                             <UserCircle className="w-5 h-5 text-gray-700" />
                             <DropdownMenu 
-                                label={session.user?.email || ''} 
+                                label={user.email || ''} 
                                 items={userMenuItems} 
                             />
                         </div>
