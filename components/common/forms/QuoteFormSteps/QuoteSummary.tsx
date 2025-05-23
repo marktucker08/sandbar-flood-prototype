@@ -4,7 +4,7 @@ import FormStepLayout from "./FormStepLayout";
 import { BuildingType, QuoteFormData } from "@/types/quote";
 import { FormStep } from "@/lib/constants/formSteps";
 import { formatCurrency } from "@/lib/utils/format";
-import { useQuote } from "@/context/QuoteContext";
+// import { useQuote } from "@/context/QuoteContext";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/common/ui/button";
 import { Pencil } from "lucide-react";
@@ -25,7 +25,7 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
   setCurrentStep,
 }) => {
   const router = useRouter();
-  const { setQuoteData } = useQuote();
+  // const { setQuoteData } = useQuote();
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return "";
@@ -60,36 +60,60 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
     const premium = calculatePremium(riskFactor);
 
     const quoteData = {
-      quoteId: `Q-${Date.now()}`,
-      propertyAddress: `${formData?.streetAddress}, ${formData?.city}, ${formData?.state} ${formData?.zipCode}`,
-      coverageAmount: Number(formData?.buildingCoverage) + Number(formData?.contentsCoverage),
-      premium,
-      deductible: Number(formData?.deductible),
-      effectiveDate: formData?.effectiveDate || new Date().toISOString().split('T')[0],
-      expirationDate: new Date(new Date(formData?.effectiveDate || new Date()).setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
-      status: 'Pending Review',
-      riskFactor,
-      buildingCoverage: Number(formData?.buildingCoverage),
-      contentsCoverage: Number(formData?.contentsCoverage),
-      lossOfUseCoverage: Number(formData?.lossOfUseCoverage),
-      buildingReplacementCost: Number(formData?.buildingReplacementCost),
-      contentsReplacementCost: Number(formData?.contentsReplacementCost),
-      yearBuilt: formData?.yearBuilt || '',
-      squareFootage: formData?.squareFootage || '',
-      numberOfStories: formData?.numberOfStories || '',
-      numberOfFamilies: formData?.numberOfFamilies || '',
-      occupancyType: formData?.occupancyType || '',
-      foundationType: formData?.foundationType || '',
-      constructionType: formData?.constructionType || '',
-      floodZone: 'C',
+      quoteId: "QOT-001",
+      propertyAddress: "123 Main St",
+      coverageAmount: 250000,
+      premium: 1200,
+      deductible: 500,
+      effectiveDate: "2024-06-01",
+      expirationDate: "2025-06-01",
+      status: "pending",
+      riskFactor: 1,
+      buildingCoverage: 200000,
+      contentsCoverage: 50000,
+      lossOfUseCoverage: 10000,
+      buildingReplacementCost: 210000,
+      contentsReplacementCost: 55000,
+      yearBuilt: "1990",
+      squareFootage: "2000",
+      numberOfStories: "2",
+      numberOfFamilies: "1",
+      occupancyType: "Primary",
+      foundationType: "Slab",
+      constructionType: "Frame",
+      floodZone: "AE"
     };
+    // {
+    //   quoteId: `Q-${Date.now()}`,
+    //   propertyAddress: `${formData?.streetAddress}, ${formData?.city}, ${formData?.state} ${formData?.zipCode}`,
+    //   coverageAmount: Number(formData?.buildingCoverage) + Number(formData?.contentsCoverage),
+    //   premium,
+    //   deductible: Number(formData?.deductible),
+    //   effectiveDate: formData?.effectiveDate || new Date().toISOString().split('T')[0],
+    //   expirationDate: new Date(new Date(formData?.effectiveDate || new Date()).setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+    //   status: 'Pending Review',
+    //   riskFactor,
+    //   buildingCoverage: Number(formData?.buildingCoverage),
+    //   contentsCoverage: Number(formData?.contentsCoverage),
+    //   lossOfUseCoverage: Number(formData?.lossOfUseCoverage),
+    //   buildingReplacementCost: Number(formData?.buildingReplacementCost),
+    //   contentsReplacementCost: Number(formData?.contentsReplacementCost),
+    //   yearBuilt: formData?.yearBuilt || '',
+    //   squareFootage: formData?.squareFootage || '',
+    //   numberOfStories: formData?.numberOfStories || '',
+    //   numberOfFamilies: formData?.numberOfFamilies || '',
+    //   occupancyType: formData?.occupancyType || '',
+    //   foundationType: formData?.foundationType || '',
+    //   constructionType: formData?.constructionType || '',
+    //   floodZone: 'C',
+    // };
 
     updateFormData?.({
       riskFactor: riskFactor.toString(),
       premium: premium.toString(),
     });
 
-    setQuoteData(quoteData);
+    // setQuoteData(quoteData);
     router.push("/quote/processing");
   };
 

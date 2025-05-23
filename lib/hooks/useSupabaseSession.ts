@@ -11,15 +11,23 @@ export function useSupabaseSession() {
 
   useEffect(() => {
     let mounted = true;
-    supabase.auth.getSession().then(({ data: { session } }) => {
+    console.debug('[useSupabaseSession] Hook mounted, fetching session...');
+    supabase.auth.getSession()
+      .then(({ data: { session } }) => {
+        if (mounted) {
+          console.debug('[useSupabaseSession] getSession resolved:', session);
+          setSession(session);
+          setUser(session?.user ?? null);
+          setLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error('[useSupabaseSession] getSession error:', error);
+        if (mounted) setLoading(false);
+      });
+    const { data: listener } = supabase.auth.onAuthStateChange((event, session) => {
       if (mounted) {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
-      }
-    });
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
-      if (mounted) {
+        console.debug('[useSupabaseSession] Auth state changed:', event, session);
         setSession(session);
         setUser(session?.user ?? null);
       }
@@ -27,6 +35,7 @@ export function useSupabaseSession() {
     return () => {
       mounted = false;
       listener?.subscription.unsubscribe();
+      console.debug('[useSupabaseSession] Hook unmounted, unsubscribed from auth state changes.');
     };
   }, []);
 

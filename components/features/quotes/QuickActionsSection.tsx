@@ -14,12 +14,12 @@ export default function QuickActionsSection() {
         <QuickActionButton
           icon={FileText}
           label="My Quotes"
-          link="/manage/quotes/my"
+          link="/"
         />
         <QuickActionButton
           icon={FileCheck}
           label="My Policies"
-          link="/manage/policies/my"
+          link="/"
         />
         <QuickActionButton
           icon={CreditCard}

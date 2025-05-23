@@ -1,9 +1,16 @@
 "use client";
+
 import React from "react";
 import Link from "next/link";
 import { FileText, CreditCard, Settings, Search, Compass, FileCheck, LifeBuoy } from "lucide-react";
+import { supabase } from "@/lib/utils/utils";
+import { useEffect } from "react";
 
 const HelpPage: React.FC = () => {
+  useEffect(() => {
+    supabase.auth.getSession().then(console.log).catch(console.error);
+  }, []);
+
   const helpTopics = [
     {
       title: "Getting Started",

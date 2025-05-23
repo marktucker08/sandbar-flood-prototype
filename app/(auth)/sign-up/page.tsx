@@ -6,6 +6,7 @@ import { toast } from "react-hot-toast";
 import { Button } from "@/components/common/ui/button";
 import Image from "next/image";
 import { supabase } from "@/lib/utils/utils";
+import { FormInput } from "@/components/common/ui/form";
 
 export default function SignUpPage() {
   const router = useRouter();
@@ -63,24 +64,49 @@ export default function SignUpPage() {
           </p>
           <form onSubmit={handleSubmit} className="w-full space-y-6">
             <div>
-              <label className="block text-sm font-medium mb-1" htmlFor="firstName">First Name</label>
-              <input type="text" name="firstName" id="firstName" required className="input w-full" />
+              <FormInput
+                type="text"
+                name="firstName"
+                label="First Name"
+                placeholder="Enter your first name"
+                required
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1" htmlFor="lastName">Last Name</label>
-              <input type="text" name="lastName" id="lastName" required className="input w-full" />
+              <FormInput
+                type="text"
+                name="lastName"
+                label="Last Name"
+                placeholder="Enter your last name"
+                required
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1" htmlFor="agency">Agency</label>
-              <input type="text" name="agency" id="agency" required className="input w-full" />
+              <FormInput
+                type="text"
+                name="agency"
+                label="Agency"
+                placeholder="Enter your agency name"
+                required
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1" htmlFor="phone">Phone</label>
-              <input type="tel" name="phone" id="phone" required className="input w-full" />
+              <FormInput
+                type="tel"
+                name="phone"
+                label="Phone"
+                placeholder="Enter your phone number"
+                required
+              />
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1" htmlFor="email">Email</label>
-              <input type="email" name="email" id="email" required className="input w-full" />
+              <FormInput
+                type="email"
+                name="email"
+                label="Email"
+                placeholder="Enter your email address"
+                required
+              />
             </div>
             <div className="flex justify-center">
               <Button type="submit" className="btn-primary w-full py-6 text-lg" disabled={isLoading}>

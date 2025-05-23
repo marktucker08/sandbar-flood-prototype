@@ -8,6 +8,10 @@ interface StatusBadgeProps {
 
 export const StatusBadge: React.FC<StatusBadgeProps> = ({ status, className = "" }) => {
   const config = STATUS_CONFIG[status];
+  // Debug logging
+  if (typeof window !== 'undefined') {
+    console.debug('StatusBadge:', { status, config });
+  }
   const Icon = config.icon;
 
   return (

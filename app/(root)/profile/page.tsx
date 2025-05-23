@@ -1,12 +1,10 @@
 'use client';
 
-import { useSession } from "next-auth/react";
 import { UserCircle, Mail, Building2, Phone, MapPin } from "lucide-react";
 import { Button } from "@/components/common/ui/button";
 
 export default function ProfilePage() {
-  const { data: session } = useSession();
-
+  // return <div>ProfilePage</div>
   return (
     <main className="background-gradient min-h-screen py-8">
       <div className="container mx-auto px-4 max-w-4xl">
@@ -15,8 +13,8 @@ export default function ProfilePage() {
             <div className="w-24 h-24 rounded-full bg-sky-50 flex items-center justify-center mb-4">
               <UserCircle className="w-20 h-20 text-sky-950" />
             </div>
-            <h1 className="text-2xl font-bold text-sky-950 mb-2">{session?.user?.name || 'User Profile'}</h1>
-            <p className="text-gray-600">{session?.user?.email}</p>
+            <h1 className="text-2xl font-bold text-sky-950 mb-2">User Profile</h1>
+            <p className="text-gray-600">user@example.com</p>
           </div>
 
           <div className="grid gap-6">
@@ -28,7 +26,7 @@ export default function ProfilePage() {
                   <Mail className="w-5 h-5 text-sky-950" />
                   <div>
                     <p className="text-sm text-gray-500">Email</p>
-                    <p className="text-sky-950">{session?.user?.email}</p>
+                    <p className="text-sky-950">user@example.com</p>
                   </div>
                 </div>
 

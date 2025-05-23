@@ -2,10 +2,36 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useQuote } from '@/context/QuoteContext';
+// import { useQuote } from '@/context/QuoteContext';
+
+const staticQuoteData = {
+  quoteId: "QOT-001",
+  propertyAddress: "123 Main St",
+  coverageAmount: 250000,
+  premium: 1200,
+  deductible: 500,
+  effectiveDate: "2024-06-01",
+  expirationDate: "2025-06-01",
+  status: "pending",
+  riskFactor: 1,
+  buildingCoverage: 200000,
+  contentsCoverage: 50000,
+  lossOfUseCoverage: 10000,
+  buildingReplacementCost: 210000,
+  contentsReplacementCost: 55000,
+  yearBuilt: "1990",
+  squareFootage: "2000",
+  numberOfStories: "2",
+  numberOfFamilies: "1",
+  occupancyType: "Primary",
+  foundationType: "Slab",
+  constructionType: "Frame",
+  floodZone: "AE"
+};
 
 const QuoteResultsPage = () => {
-  const { quoteData } = useQuote();
+  // const { quoteData } = useQuote();
+  const quoteData = staticQuoteData;
 
   if (!quoteData) {
     return (

@@ -6,6 +6,7 @@ import { toast } from "react-hot-toast";
 import { Button } from "@/components/common/ui/button";
 import Image from "next/image";
 import { supabase } from "@/lib/utils/utils";
+import { FormInput } from "@/components/common/ui/form";
 
 export default function ResetPasswordPage() {
   const router = useRouter();
@@ -47,8 +48,13 @@ export default function ResetPasswordPage() {
           </p>
           <form onSubmit={handleSubmit} className="w-full space-y-6">
             <div>
-              <label className="block text-sm font-medium mb-1" htmlFor="email">Email</label>
-              <input type="email" name="email" id="email" required className="input w-full" />
+              <FormInput
+                type="email"
+                name="email"
+                label="Email"
+                placeholder="Enter your email address"
+                required
+              />
             </div>
             <div className="flex justify-center">
               <Button type="submit" className="btn-primary w-full py-6 text-lg" disabled={isLoading}>

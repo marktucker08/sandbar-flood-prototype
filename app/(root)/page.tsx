@@ -4,16 +4,8 @@ import React from "react";
 import QuickActionsSection from "@/components/features/quotes/QuickActionsSection";
 import DashboardSection from "@/components/common/layout/DashboardSection";
 import SearchBar from "@/components/common/ui/SearchBar";
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
 
 export default function HomePage() {
-  const { data: session } = useSession();
-
-  if (!session) {
-    redirect('/sign-in');
-  }
-
   const handleSearch = (searchTerm: string) => {
     // Implement search functionality
     console.log('Searching for:', searchTerm);

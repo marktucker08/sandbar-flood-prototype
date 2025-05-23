@@ -1,4 +1,4 @@
-export type Status = "active" | "pending" | "expired" | "approved" | "rejected" | "completed";
+import type { Status } from "@/lib/constants/status";
 
 export interface Quote {
   id: string;

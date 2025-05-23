@@ -3,8 +3,7 @@ import { Work_Sans } from "next/font/google";
 import "@/styles/globals.css";
 import { QuoteProvider } from "@/context/QuoteContext";
 import localFont from "next/font/local";
-import { Providers } from "@/components/providers/AuthProviders";
-import { SupabaseSessionProvider } from "@/context/SupabaseSessionContext";
+// import { SupabaseSessionProvider } from "@/context/SupabaseSessionContext";
 
 const workSans = Work_Sans({ 
   subsets: ["latin"], 
@@ -31,13 +30,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${workSans.variable} ${arSans.variable}`}>
       <body>
-        <Providers>
-          <SupabaseSessionProvider>
-            <QuoteProvider>
-              {children}
-            </QuoteProvider>
-          </SupabaseSessionProvider>
-        </Providers>
+        {/* <SupabaseSessionProvider> */}
+          <QuoteProvider>
+            {children}
+          </QuoteProvider>
+        {/* </SupabaseSessionProvider> */}
       </body>
     </html>
   );
