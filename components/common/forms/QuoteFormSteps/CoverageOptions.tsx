@@ -1,8 +1,7 @@
 "use client";
 import React from "react";
 import FormStepLayout from "./FormStepLayout";
-import { FormRadioGroup } from "@/components/common/ui/form";
-import { FormSlider } from "@/components/common/ui/form/FormSlider";
+import { FormInput, FormRadioGroup } from "@/components/common/ui/form";
 import { QuoteFormData } from "@/types/quote";
 import { FormStep } from "@/lib/constants/formSteps";
 import { z } from "zod";
@@ -46,8 +45,9 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
 }) => {
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
-  const handleSliderChange = (field: keyof QuoteFormData) => (value: number) => {
-    updateFormData?.({ [field]: value.toString() });
+  const handleInputChange = (field: keyof QuoteFormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    updateFormData?.({ [field]: value });
 
     if (field in coverageSchema.shape) {
       try {
@@ -97,23 +97,17 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
     >
       <div className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormSlider
+          <FormInput
             label="Building Replacement Cost"
-            value={Number(formData?.buildingReplacementCost) || 0}
-            onChange={handleSliderChange("buildingReplacementCost")}
-            min={100000}
-            max={1000000}
-            step={25000}
+            value={formData?.buildingReplacementCost || ""}
+            onChange={handleInputChange("buildingReplacementCost")}
             error={errors.buildingReplacementCost}
             required
           />
-          <FormSlider
+          <FormInput
             label="Contents Replacement Cost"
-            value={Number(formData?.contentsReplacementCost) || 0}
-            onChange={handleSliderChange("contentsReplacementCost")}
-            min={50000}
-            max={500000}
-            step={5000}
+            value={formData?.contentsReplacementCost || ""}
+            onChange={handleInputChange("contentsReplacementCost")}
             error={errors.contentsReplacementCost}
             required
           />
@@ -121,33 +115,24 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormSlider
+          <FormInput
             label="Building Coverage"
-            value={Number(formData?.buildingCoverage) || 0}
-            onChange={handleSliderChange("buildingCoverage")}
-            min={100000}
-            max={1000000}
-            step={25000}
+            value={formData?.buildingCoverage || ""}
+            onChange={handleInputChange("buildingCoverage")}
             error={errors.buildingCoverage}
             required
           />
-          <FormSlider
+          <FormInput
             label="Contents Coverage"
-            value={Number(formData?.contentsCoverage) || 0}
-            onChange={handleSliderChange("contentsCoverage")}
-            min={50000}
-            max={500000}
-            step={5000}
+            value={formData?.contentsCoverage || ""}
+            onChange={handleInputChange("contentsCoverage")}
             error={errors.contentsCoverage}
             required
           />
-          <FormSlider
+          <FormInput
           label="Loss of Use Coverage"
-          value={Number(formData?.lossOfUseCoverage) || 0}
-          onChange={handleSliderChange("lossOfUseCoverage")}
-          min={0}
-          max={300000}
-          step={5000}
+          value={formData?.lossOfUseCoverage || ""}
+          onChange={handleInputChange("lossOfUseCoverage")}
           error={errors.lossOfUseCoverage}
           required
         />

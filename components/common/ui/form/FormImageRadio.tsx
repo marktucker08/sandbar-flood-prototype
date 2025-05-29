@@ -41,7 +41,7 @@ const FormImageRadio: React.FC<FormImageRadioProps> = ({
     >
       <div className={cn(
         "grid gap-6",
-        `grid-cols-1 md:grid-cols-${columns}`
+        `grid-cols-2 md:grid-cols-${columns}`
       )}>
         {options.map(({ value: optionValue, label: optionLabel, image }) => (
           <label

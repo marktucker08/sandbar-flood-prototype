@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { FormImageRadio, FormFileUpload } from "@/components/common/ui/form";
+import { FormImageRadio } from "@/components/common/ui/form";
 import FormStepLayout from "./FormStepLayout";
 import { QuoteFormData } from "@/types/quote";
 import { FormStep } from "@/lib/constants/formSteps";
@@ -15,7 +15,7 @@ interface ConstructionInfoProps {
 }
 
 const constructionSchema = z.object({
-  constructionType: z.enum(["frame", "masonry", "superior"], {
+  constructionType: z.enum(["frame", "brick", "joisted"], {
     required_error: "Please select a construction type",
   }),
   constructionDocs: z.any().optional(), // File type will be handled separately
@@ -40,14 +40,14 @@ const ConstructionInfo: React.FC<ConstructionInfoProps> = ({
       image: "/wood-frame2.jpg"
     },
     {
-      value: "masonry",
-      label: "Masonry",
+      value: "brick",
+      label: "Brick Veneer",
       description: "Brick, concrete block, or stone construction",
       image: "/brick-wall2.jpg"
     },
     {
-      value: "superior",
-      label: "Superior",
+      value: "joisted",
+      label: "Joisted Masonry",
       description: "Reinforced concrete or superior construction methods",
       image: "/concrete-wall2.jpg"
     }
@@ -66,9 +66,9 @@ const ConstructionInfo: React.FC<ConstructionInfoProps> = ({
     }
   };
 
-  const handleFileChange = (file: File | null) => {
-    updateFormData?.({ constructionDocs: file });
-  };
+  // const handleFileChange = (file: File | null) => {
+  //   updateFormData?.({ constructionDocs: file });
+  // };
 
   const handleNext = () => {
     try {
@@ -107,14 +107,14 @@ const ConstructionInfo: React.FC<ConstructionInfoProps> = ({
           columns={3}
         />
 
-        <FormFileUpload
+        {/* <FormFileUpload
           label="Construction Type Documentation"
           name="construction_docs"
           accept=".pdf,.jpg,.jpeg,.png"
           onChange={handleFileChange}
           description="Please upload any relevant documentation about your building's construction type (optional)"
           maxSize={10}
-        />
+        /> */}
       </div>
     </FormStepLayout>
   );

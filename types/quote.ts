@@ -38,9 +38,12 @@ export interface QuoteFormData {
   numberOfStories?: string;
   numberOfFamilies?: string;
   occupancyType?: string;
+  floodZoneVerified?: boolean;
+  correctedFloodZone?: string;
 
   // Foundation Info
   foundationType?: string;
+  isFoundationVented?: boolean;
 
   // Elevation Certificate
   hasCertificate?: boolean;

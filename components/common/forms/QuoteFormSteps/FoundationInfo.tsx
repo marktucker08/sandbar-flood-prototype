@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { FormImageRadio } from "@/components/common/ui/form";
+import { FormImageRadio, FormRadio } from "@/components/common/ui/form";
 import FormStepLayout from "./FormStepLayout";
 import { QuoteFormData } from "@/types/quote";
 import { FormStep } from "@/lib/constants/formSteps";
@@ -16,6 +16,7 @@ interface FoundationInfoProps {
 
 const foundationSchema = z.object({
   foundationType: z.enum([
+    "crawlspace",
     "slab",
     "raised",
     "unfinished",
@@ -25,6 +26,9 @@ const foundationSchema = z.object({
     "full-wall"
   ], {
     required_error: "Please select a foundation type",
+  }),
+  isFoundationVented: z.boolean({
+    required_error: "Please specify if the foundation is properly vented",
   }),
 });
 
@@ -40,13 +44,14 @@ const FoundationInfo: React.FC<FoundationInfoProps> = ({
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   const foundationTypes = [
-    { value: "slab", label: "Slab at Grade", image: "https://placehold.co/600x400" },
-    { value: "raised", label: "Raised Slab on Fill", image: "https://placehold.co/600x400" },
-    { value: "unfinished", label: "Unfinished Basement", image: "https://placehold.co/600x400" },
-    { value: "finished", label: "Finished Basement", image: "https://placehold.co/600x400" },
-    { value: "pilings-enclosure", label: "Elevated on Pilings with Enclosure", image: "https://placehold.co/600x400" },
-    { value: "pilings-no-enclosure", label: "Elevated on Pilings with No Enclosure", image: "https://placehold.co/600x400" },
-    { value: "full-wall", label: "Elevated on Full Foundation Wall", image: "https://placehold.co/600x400" },
+    { value: "crawlspace", label: "Crawlspace", image: "https://placehold.co/400x200" },
+    { value: "slab", label: "Slab at Grade", image: "https://placehold.co/400x200" },
+    { value: "raised", label: "Raised Slab on Fill", image: "https://placehold.co/400x200" },
+    { value: "unfinished", label: "Unfinished Basement", image: "https://placehold.co/400x200" },
+    { value: "finished", label: "Finished Basement", image: "https://placehold.co/400x200" },
+    { value: "pilings-enclosure", label: "Elevated on Pilings with Enclosure", image: "https://placehold.co/400x200" },
+    { value: "pilings-no-enclosure", label: "Elevated on Pilings with No Enclosure", image: "https://placehold.co/400x200" },
+    { value: "full-wall", label: "Elevated on Full Foundation Wall", image: "https://placehold.co/400x200" },
   ];
 
   const handleFoundationChange = (value: string) => {
@@ -62,9 +67,21 @@ const FoundationInfo: React.FC<FoundationInfoProps> = ({
     }
   };
 
+  const handleVentedChange = (value: boolean) => {
+    updateFormData?.({ isFoundationVented: value });
+    try {
+      foundationSchema.shape.isFoundationVented.parse(value);
+      setErrors(prev => ({ ...prev, isFoundationVented: "" }));
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setErrors(prev => ({ ...prev, isFoundationVented: error.errors[0].message }));
+      }
+    }
+  };
+
   const handleNext = () => {
     try {
-      foundationSchema.parse({ foundationType: formData?.foundationType });
+      foundationSchema.parse({ foundationType: formData?.foundationType, isFoundationVented: formData?.isFoundationVented });
       onNext();
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -92,8 +109,18 @@ const FoundationInfo: React.FC<FoundationInfoProps> = ({
         onChange={handleFoundationChange}
         error={errors.foundationType}
         required
-        columns={3}
+        columns={4}
       />
+      <div className="mt-8">
+        <FormRadio
+          label="Is the foundation properly vented?"
+          name="isFoundationVented"
+          value={formData?.isFoundationVented ?? null}
+          onChange={handleVentedChange}
+          error={errors.isFoundationVented}
+          required
+        />
+      </div>
     </FormStepLayout>
   );
 };

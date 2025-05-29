@@ -34,6 +34,7 @@ export const quoteFormSchema = z.object({
 
   // Foundation Info
   foundationType: z.enum([
+    "crawlspace",
     "slab",
     "raised",
     "unfinished",
@@ -50,14 +51,15 @@ export const quoteFormSchema = z.object({
   stepsToFrontDoor: z.string().optional(),
 
   // Construction Info
-  constructionType: z.enum(["frame", "masonry", "superior"]),
+  constructionType: z.enum(["frame", "brick", "joisted"]),
 
   // Coverage Options
   buildingReplacementCost: z.string().min(1, "Building replacement cost is required"),
   contentsReplacementCost: z.string().min(1, "Contents replacement cost is required"),
   buildingCoverage: z.string().min(1, "Building coverage is required"),
   contentsCoverage: z.string().min(1, "Contents coverage is required"),
-  lossOfUseCoverage: z.string().min(1, "Loss of use coverage is required"),
+  lossOfUseCoverage: z.string().min(1, "Loss of use coverage is required").max(50000, "Loss of use coverage is too high, max is $50,000"),
+  deductible: z.string().min(1, "Deductible is required"),
 }).refine((data) => {
   if (data.insuredType === "individual") {
     return data.firstName && data.lastName;
