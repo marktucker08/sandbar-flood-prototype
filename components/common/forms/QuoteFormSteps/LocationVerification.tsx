@@ -52,7 +52,7 @@ function useGoogleMapsLoader(src: string, onReady: () => void) {
     script.onload = () => {
       script.setAttribute('data-loaded', 'true');
       onReady();
-      console.log('Google Maps script Loaded:', src);
+      // console.log('Google Maps script Loaded:', src);
     };
     document.body.appendChild(script);
     // Do not remove the script on unmount
@@ -114,7 +114,7 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
           geocoder.geocode({ location: { lat, lng } }, (results: any, status: string) => {
             if (status === 'OK' && results && results[0]) {
               const address = results[0];
-              console.log(results[0]);
+              
               const getComponent = (type: string) =>
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 address.address_components.find((c: any) => c.types.includes(type))?.long_name || '';
@@ -135,14 +135,14 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
           });
         }
       });
-      console.log('Map and marker initialized');
+      // console.log('Map and marker initialized');
     })();
   }, [mapsReady, map, updateFormData, formData]);
 
   // Setup new PlaceAutocompleteElement widget
   useEffect(() => {
     if (!mapsReady || !map || typeof google === 'undefined' || !google.maps.importLibrary) {
-      console.log('Waiting for mapsReady and map:', { mapsReady, map });
+      // console.log('Waiting for mapsReady and map:', { mapsReady, map });
       return;
     }
     (async () => {
@@ -155,7 +155,7 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
         autocomplete.style.width = "100%";
         autocompleteContainerRef.current.innerHTML = "";
         autocompleteContainerRef.current.appendChild(autocomplete);
-        console.log('Autocomplete widget created and appended to DOM');
+        // console.log('Autocomplete widget created and appended to DOM');
 
         // Attach the correct event listener for the new API
         // const domEl = autocompleteContainerRef.current.querySelector('gmp-place-autocomplete');
@@ -173,7 +173,7 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
         autocomplete.addEventListener('gmp-select', async ({ placePrediction }: { placePrediction: any }) => {
           const place = placePrediction.toPlace();
           await place.fetchFields({ fields: ['displayName', 'formattedAddress', 'addressComponents', 'location', 'viewport'] });
-            console.log('Selected place (from DOM event):', place);
+            // console.log('Selected place (from DOM event):', place);
 
             updateFormData({
               streetAddress: place.displayName || "",
@@ -197,14 +197,14 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
               }
             // }
           // });
-          console.log('Event listener attached to DOM element');
+          // console.log('Event listener attached to DOM element');
         // } else {
         //   console.error('Could not find gmp-place-autocomplete DOM element');
         // }
       });
     }})();  
   }, [mapsReady, map, updateFormData]);
-  console.log(formData);
+  
 
   const handleInputChange = (field: keyof QuoteFormData) => (
     e: React.ChangeEvent<HTMLInputElement>
