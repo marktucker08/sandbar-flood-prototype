@@ -15,6 +15,7 @@ export interface QuoteFormData {
   city?: string;
   state?: string;
   zipCode?: string;
+  latLng?: { lat: number, lng: number };
   
   // Insured Information
   insuredType?: 'individual' | 'business';
