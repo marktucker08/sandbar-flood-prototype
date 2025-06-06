@@ -5,7 +5,6 @@ import FormStepLayout from "./FormStepLayout";
 import { QuoteFormData } from "@/types/quote";
 import { FormStep } from "@/lib/constants/formSteps";
 import { z } from "zod";
-import { MapPin } from "lucide-react";
 
 interface LocationVerificationProps {
   onNext: () => void;
@@ -34,15 +33,30 @@ type LocationFields = keyof z.infer<typeof locationSchema>;
 declare const google: any;
 
 // --- Google Maps Script Loader Hook ---
-function useGoogleMapsLoader(src: string, onReady: () => void) {
+function useGoogleMapsLoader(src: string, onReady: () => void, maxRetries = 10, retryDelay = 200) {
   useEffect(() => {
+    let retries = 0;
+    let timeout: ReturnType<typeof setTimeout> | null = null;
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    function hasGoogleMaps() { return typeof window !== 'undefined' && (window as any).google && (window as any).google.maps; }
+
+    function checkGoogleMaps() {
+      if (hasGoogleMaps()) {
+        onReady();
+      } else if (retries < maxRetries) {
+        retries++;
+        timeout = setTimeout(checkGoogleMaps, retryDelay);
+      }
+    }
+
     let script = document.querySelector(`script[src='${src}']`) as HTMLScriptElement | null;
     if (script) {
       if (script.getAttribute('data-loaded') === 'true') {
-        onReady();
+        checkGoogleMaps();
         return;
       }
-      script.addEventListener('load', onReady);
+      script.addEventListener('load', checkGoogleMaps);
       return;
     }
     script = document.createElement("script") as HTMLScriptElement;
@@ -51,12 +65,15 @@ function useGoogleMapsLoader(src: string, onReady: () => void) {
     script.setAttribute('data-loaded', 'false');
     script.onload = () => {
       script.setAttribute('data-loaded', 'true');
-      onReady();
-      // console.log('Google Maps script Loaded:', src);
+      checkGoogleMaps();
     };
     document.body.appendChild(script);
-    // Do not remove the script on unmount
-  }, [src, onReady]);
+
+    // Cleanup
+    return () => {
+      if (timeout) clearTimeout(timeout);
+    };
+  }, [src, onReady, maxRetries, retryDelay]);
 }
 
 const LocationVerification: React.FC<LocationVerificationProps> = ({
@@ -90,7 +107,7 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
       const initialLatLng = { lat: 39.5873284, lng: -74.225578 }; // NJ default
       const gMap = new Map(mapRef.current, {
         center: formData.latLng ? formData.latLng : initialLatLng,
-        zoom: 16,
+        zoom: 17,
         mapId: 'DEMO_MAP_ID',
       });
       setMap(gMap);
@@ -150,9 +167,15 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
       if (autocompleteContainerRef.current && !autocompleteContainerRef.current.querySelector('gmp-place-autocomplete')) {
         const autocomplete = new PlaceAutocompleteElement();
         autocomplete.id = "new-places-autocomplete";
-        autocomplete.placeholder = "Enter your street address";
-        autocomplete.setAttribute('placeholder', "Enter your street address");
+        // autocomplete.placeholder = "Enter your street address";
+        // autocomplete.setAttribute('placeholder', "Enter your street address");
         autocomplete.style.width = "100%";
+        autocomplete.style.height = "60px";
+        autocomplete.style.borderRadius = "0.5rem";
+        autocomplete.style.border = "1px solid #e0e7ef";
+        autocomplete.style.padding = "0.75rem 1rem";
+        autocomplete.style.fontSize = "1rem";
+        autocomplete.style.background = "#f8fafc";
         autocompleteContainerRef.current.innerHTML = "";
         autocompleteContainerRef.current.appendChild(autocomplete);
         // console.log('Autocomplete widget created and appended to DOM');
@@ -186,7 +209,7 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
               map.fitBounds(place.viewport);
               } else {
               map.setCenter(place.location);
-              map.setZoom(16);
+              map.setZoom(17);
           }  
             // if (place.location && map) {
             //   const latLng = { lat: place.location.lat, lng: place.location.lng };
@@ -257,21 +280,26 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
     >     
       <div className="space-y-6">
         {/* Google Map */}
-        <div className="w-full h-70 bg-sky-50 rounded-lg border border-sky-200 flex items-center justify-center">
+        <div className="w-full h-70 bg-sky-50 rounded-lg border border-sky-200 flex items-center justify-center relative">
           <div className="w-full h-full" ref={mapRef} />
-          {!mapsReady && (
-            <div className="absolute text-center w-full">
-              <MapPin className="w-12 h-12 text-sky-400 mx-auto mb-2" />
-              <p className="text-sky-600 text-sm">Loading map...</p>
+          {(!mapsReady || !map) && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/70 z-10">
+              <svg className="animate-spin h-10 w-10 text-sky-400 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z" />
+              </svg>
+              <span className="text-sky-600 text-sm">Loading map...</span>
             </div>
           )}
         </div>
 
-        {/* New Google Maps PlaceAutocompleteElement widget */}
-        <label htmlFor="new-places-autocomplete" className="block text-sm font-medium text-gray-700 mb-1">
-          Enter a location
-        </label>
-        <div ref={autocompleteContainerRef} />
+        {/* Autocomplete input with label and wrapper for consistent spacing */}
+        <div className="mb-4">
+          <label htmlFor="new-places-autocomplete" className="block text-sm font-medium text-gray-700 mb-1">
+            Enter a location
+          </label>
+          <div ref={autocompleteContainerRef} />
+        </div>
 
         {/* Read-only field to show the selected address */}
         {/* <FormInput
