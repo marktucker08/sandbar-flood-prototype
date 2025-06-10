@@ -281,9 +281,6 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
   const addressForFloodApi = cleanAddressForFloodApi(formData.formattedAddress || "");
   console.log("Address for Flood API:", addressForFloodApi); // TODO: Use this value when calling the National Flood API
 
-  // --- National Flood API Key ---
-  const floodApiKey = process.env.NATIONAL_FLOOD_API_KEY;
-
   // --- Async handleNext with API call ---
   const handleNext = async () => {
     const locationFields = {
@@ -310,19 +307,13 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
 
     setLoading(true);
     try {
-      const params = new URLSearchParams({
-        searchtype: 'addressparcel',
-        address: addressForFloodApi,
-        elevation: 'True',
-        property: 'True',
-      });
-      const response = await fetch(`https://api.nationalflooddata.com/v3/data?${params.toString()}`, {
-        headers: {
-          'x-api-key': floodApiKey || '',
-        },
+      const response = await fetch("/api/flooddata", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ address: addressForFloodApi }),
       });
       if (!response.ok) {
-        throw new Error('Failed to fetch flood data');
+        throw new Error("Failed to fetch flood data");
       }
       const data = await response.json();
       console.log("Full Flood API response", data);
