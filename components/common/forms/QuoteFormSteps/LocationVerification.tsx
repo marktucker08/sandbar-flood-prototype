@@ -282,7 +282,7 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
   console.log("Address for Flood API:", addressForFloodApi); // TODO: Use this value when calling the National Flood API
 
   // --- National Flood API Key ---
-  const floodApiKey = process.env.NEXT_PUBLIC_NATIONAL_FLOOD_API_KEY;
+  const floodApiKey = process.env.NATIONAL_FLOOD_API_KEY;
 
   // --- Async handleNext with API call ---
   const handleNext = async () => {
