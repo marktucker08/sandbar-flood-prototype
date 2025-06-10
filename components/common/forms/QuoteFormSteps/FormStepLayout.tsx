@@ -13,6 +13,7 @@ interface FormStepLayoutProps {
   onNext: () => void;
   onBack: () => void;
   nextLabel?: string;
+  nextDisabled?: boolean;
 }
 
 const FormStepLayout: React.FC<FormStepLayoutProps> = ({
@@ -21,7 +22,8 @@ const FormStepLayout: React.FC<FormStepLayoutProps> = ({
   progressSteps,
   onNext,
   onBack,
-  nextLabel
+  nextLabel,
+  nextDisabled,
 }) => {
   return (
     <div className="flex flex-col gap-6">
@@ -41,6 +43,7 @@ const FormStepLayout: React.FC<FormStepLayoutProps> = ({
             onBack={onBack} 
             onNext={onNext}
             nextLabel={nextLabel}
+            nextDisabled={nextDisabled}
           />
         </div>
       </div>

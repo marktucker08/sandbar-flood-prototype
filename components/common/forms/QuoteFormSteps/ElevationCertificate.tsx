@@ -94,7 +94,7 @@ const ElevationCertificate: React.FC<ElevationCertificateProps> = ({
       elevationSchema.parse({
         hasCertificate: formData?.hasCertificate,
         certificateNumber: formData?.certificateNumber,
-        elevation: formData?.elevation,
+        certificateElevation: formData?.certificateElevation,
         stepsToFrontDoor: formData?.stepsToFrontDoor,
         floodZoneVerified: formData?.floodZoneVerified,
         correctedFloodZone: formData?.floodZoneVerified === false ? formData?.correctedFloodZone : undefined,
@@ -152,9 +152,9 @@ const ElevationCertificate: React.FC<ElevationCertificateProps> = ({
               label="1st Floor Elevation"
               type="number"
               placeholder="Enter 1st floor elevation from the certificate"
-              value={formData?.elevation || ""}
-              onChange={handleInputChange("elevation")}
-              error={errors.elevation}
+              value={formData?.certificateElevation || ""}
+              onChange={handleInputChange("certificateElevation")}
+              error={errors.certificateElevation}
             />
             {/* <FormFileUpload
               label="Upload Elevation Certificate"
@@ -181,9 +181,9 @@ const ElevationCertificate: React.FC<ElevationCertificateProps> = ({
               label="Elevation"
               type="number"
               placeholder="Enter elevation"
-              value={formData?.elevation || ""}
-              onChange={handleInputChange("elevation")}
-              error={errors.elevation}
+              value={formData?.certificateElevation || ""}
+              onChange={handleInputChange("certificateElevation")}
+              error={errors.certificateElevation}
             /> */}
 
             <FormInput
@@ -200,7 +200,7 @@ const ElevationCertificate: React.FC<ElevationCertificateProps> = ({
         {/* Flood Zone Verification */}
         <div className="space-y-6 pt-8 border-t border-gray-200 mt-8">
           <FormRadio
-            label="Is the Flood Zone determination correct? (Current Flood Zone: A)"
+            label={`Is the Flood Zone determination correct? (Current Flood Zone: ${formData?.floodZone || "Unknown"})`}
             name="floodZoneVerified"
             value={formData?.floodZoneVerified}
             onChange={handleFloodZoneVerifiedChange}

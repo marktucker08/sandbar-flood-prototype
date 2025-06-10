@@ -152,6 +152,10 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
                   <h3 className="text-sm font-medium text-gray-500 mb-1">Construction Type</h3>
                   <p className="text-gray-900">{formData.constructionType}</p>
                 </div>
+                <div>
+                  <h3 className="text-sm font-medium text-gray-500 mb-1">Flood Zone</h3>
+                  <p className="text-gray-900">{formData.floodZone || "N/A"}</p>
+                </div>
               </div>
             </div>
 
@@ -188,6 +192,18 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
                       <p className="text-gray-900">{formData.entityType}</p>
                     </div>
                   </>
+                )}
+                {formData.phoneNumber && (
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 mb-1">Phone Number</h3>
+                    <p className="text-gray-900">{formData.phoneNumber}</p>
+                  </div>
+                )}
+                {formData.email && (
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 mb-1">Email</h3>
+                    <p className="text-gray-900">{formData.email}</p>
+                  </div>
                 )}
                 {!formData.sameAsPropertyAddress && (
                   <div className="col-span-2">

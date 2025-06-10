@@ -23,8 +23,17 @@ const locationSchema = z.object({
   state: z.string().min(1, "State is required"),
   zipCode: z.string()
     .min(1, "ZIP code is required")
-    // .regex(/^\d{5}$/, "ZIP code must contain only numbers"),
+    // .regex(/^[0-9]{5}$/, "ZIP code must contain only numbers"),
 });
+
+/**
+ * Cleans the address for the National Flood API by removing commas and trailing 'USA'.
+ * @param address The full address string.
+ * @returns The cleaned address string.
+ */
+function cleanAddressForFloodApi(address: string): string {
+  return address.replace(/,/g, '').replace(/\s*USA\s*$/i, '').trim();
+}
 
 type LocationFields = keyof z.infer<typeof locationSchema>;
 
@@ -92,6 +101,7 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
   progressSteps,
 }) => {
   const [errors, setErrors] = React.useState<Record<string, string>>({});
+  const [loading, setLoading] = React.useState(false);
   const mapRef = useRef<HTMLDivElement>(null);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const markerRef = useRef<any>(null);
@@ -267,7 +277,15 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
     }
   };
 
-  const handleNext = () => {
+  // Prepare address for National Flood API (no commas, no trailing USA)
+  const addressForFloodApi = cleanAddressForFloodApi(formData.formattedAddress || "");
+  console.log("Address for Flood API:", addressForFloodApi); // TODO: Use this value when calling the National Flood API
+
+  // --- National Flood API Key ---
+  const floodApiKey = process.env.NEXT_PUBLIC_NATIONAL_FLOOD_API_KEY;
+
+  // --- Async handleNext with API call ---
+  const handleNext = async () => {
     const locationFields = {
       streetAddress: formData?.streetAddress,
       unitAptSuite: formData?.unitAptSuite,
@@ -279,7 +297,6 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
 
     try {
       locationSchema.parse(locationFields);
-      onNext();
     } catch (error) {
       if (error instanceof z.ZodError) {
         const newErrors: Record<string, string> = {};
@@ -288,6 +305,58 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
         });
         setErrors(newErrors);
       }
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const params = new URLSearchParams({
+        searchtype: 'addressparcel',
+        address: addressForFloodApi,
+        elevation: 'True',
+        property: 'True',
+      });
+      const response = await fetch(`https://api.nationalflooddata.com/v3/data?${params.toString()}`, {
+        headers: {
+          'x-api-key': floodApiKey || '',
+        },
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch flood data');
+      }
+      const data = await response.json();
+      console.log("Full Flood API response", data);
+      // Extract fields safely
+      const floodZone = data?.result?.['flood.s_fld_haz_ar']?.[0]?.fld_zone || '';
+      // Use BFE as elevation for quoting
+      const propertyElevation = data?.result?.elevation?.propertyelevation || '';
+      const bfe = data?.result?.elevation?.['flood.basefloodelevation']?.[0]?.elevation || '';
+      const squareFootage = data?.result?.property?.sqft || '';
+      const yearBuilt = data?.result?.property?.yearbuilt || '';
+      const numberOfStories = data?.result?.property?.storiescount || '';
+      console.log("Flood API values", {
+        propertyElevation,
+        floodZone,
+        bfe,
+        squareFootage,
+        yearBuilt,
+        numberOfStories,
+      });
+      updateFormData({
+        propertyElevation: propertyElevation?.toString() || "",
+        floodZone: floodZone?.toString() || "",
+        baseFloodElevation: bfe?.toString() || "",
+        squareFootage: squareFootage?.toString() || "",
+        yearBuilt: yearBuilt?.toString() || "",
+        numberOfStories: numberOfStories?.toString() || "",
+      });
+      console.log("Called updateFormData with above values");
+      setLoading(false);
+      onNext();
+    } catch (err) {
+      setLoading(false);
+      alert('Error fetching flood data. Please verify the address and try again.');
+      console.error('[FloodAPI] Error:', err);
     }
   };
 
@@ -297,6 +366,7 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
       progressSteps={progressSteps}
       onNext={handleNext}
       onBack={onBack}
+      nextDisabled={loading}
     >     
 
       {/* Autocomplete input with label and wrapper for consistent spacing */}

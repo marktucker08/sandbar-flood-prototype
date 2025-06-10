@@ -33,6 +33,7 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   updateFormData,
   progressSteps,
 }) => {
+  console.log("Quote Form Data in Property Details", formData);
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   const handleInputChange = (field: keyof QuoteFormData) => (
