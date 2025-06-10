@@ -11,9 +11,11 @@ export const quoteFormSchema = z.object({
   
   // Insured Information
   insuredType: z.enum(["individual", "business"]),
-  firstName: z.string().min(1, "First name is required").optional(),
-  lastName: z.string().min(1, "Last name is required").optional(),
-  businessName: z.string().min(1, "Business name is required").optional(),
+  firstName: z.string().min(1, "First name is required"),
+  lastName: z.string().min(1, "Last name is required"),
+  phoneNumber: z.string().min(1, "Phone number is required").optional(),
+  email: z.string().email("Invalid email address"),
+  businessName: z.string().min(1, "Business name is required"),
   entityType: z.string().optional(),
   additionalInsured: z.string().optional(),
   sameAsPropertyAddress: z.boolean(),
@@ -30,7 +32,7 @@ export const quoteFormSchema = z.object({
   squareFootage: z.string().min(1, "Square footage is required"),
   numberOfStories: z.string().min(1, "Number of stories is required"),
   numberOfFamilies: z.string().min(1, "Number of families is required"),
-  occupancyType: z.enum(["primary", "secondary", "seasonal", "rental"]),
+  occupancyType: z.enum(["primary", "secondary", "2-4 family", "single condo"]),
 
   // Foundation Info
   foundationType: z.enum([

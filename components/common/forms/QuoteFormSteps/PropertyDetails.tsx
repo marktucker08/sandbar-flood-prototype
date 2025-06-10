@@ -21,7 +21,7 @@ const basePropertySchema = z.object({
   squareFootage: z.string().min(1, "Square footage is required"),
   numberOfStories: z.string().min(1, "Number of stories is required"),
   numberOfFamilies: z.string().min(1, "Number of families is required"),
-  occupancyType: z.enum(["primary", "secondary", "seasonal", "rental"]),
+  occupancyType: z.enum(["primary", "secondary", "2-4_family", "single_condo"]),
 });
 
 type PropertyFields = keyof z.infer<typeof basePropertySchema>;
@@ -84,10 +84,10 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   ];
 
   const occupancyTypeOptions = [
-    { value: "primary", label: "Primary Residence" },
-    { value: "secondary", label: "Secondary Residence" },
-    { value: "seasonal", label: "Seasonal Residence" },
-    { value: "rental", label: "Building Rented To Others" },
+    { value: "primary", label: "Single-Family Primary" },
+    { value: "secondary", label: "Single-Family Secondary" },
+    { value: "2-4_family", label: "2-4 Family" },
+    { value: "single_condo", label: "Single Condo Unit" }, 
   ];
 
   return (
@@ -115,6 +115,7 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
         onChange={(value) => updateFormData?.({ waitingPeriod: value as "standard" | "loan" })}
         layout="grid"
         gridCols={2}
+        error={errors.waitingPeriod}
         required
       />
 
@@ -165,8 +166,10 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
         name="occupancyType"
         options={occupancyTypeOptions}
         value={formData?.occupancyType}
-        onChange={(value) => updateFormData?.({ occupancyType: value as "primary" | "secondary" | "seasonal" | "rental" })}
-        layout="horizontal"
+        onChange={(value) => updateFormData?.({ occupancyType: value as "primary" | "secondary" | "2-4_family" | "single_condo" })}
+        layout="grid"
+        gridCols={2}
+        error={errors.occupancyType}
         required
       />
     </FormStepLayout>

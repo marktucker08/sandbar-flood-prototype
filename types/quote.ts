@@ -10,6 +10,7 @@ export const BuildingType = [
 export interface QuoteFormData {
   buildingType?: typeof BuildingType[number]["value"]; 
   // Location Verification
+  formattedAddress?: string;
   streetAddress?: string;
   unitAptSuite?: string;
   city?: string;
@@ -21,6 +22,8 @@ export interface QuoteFormData {
   insuredType?: 'individual' | 'business';
   firstName?: string;
   lastName?: string;
+  phoneNumber?: string;
+  email?: string;
   businessName?: string;
   entityType?: string;
   additionalInsured?: string;

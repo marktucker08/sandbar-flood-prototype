@@ -17,7 +17,7 @@ const residentialTypes = [
   {
     value: "one_home",
     label: "One Home",
-    description: "Single-family home, single unit in a building of any size, or an entire detached 2-4 family building.",
+    description: "Single-family home, single unit in a building of any size, or an entire detached 2-4 family building",
     icon: House,
     isPopular: true
   },
@@ -30,7 +30,7 @@ const residentialTypes = [
   {
     value: "mixed_use",
     label: "Mixed Use Building",
-    description: "Some residential and some commercial use in the same building. Entire Building.",
+    description: "An entire building with some residential and some commercial use",
     icon: BuildingOffice
   },
   {

@@ -14,6 +14,8 @@ interface LocationVerificationProps {
   progressSteps: FormStep[];
 }
 
+// let formattedAddress = "";
+
 const locationSchema = z.object({
   streetAddress: z.string().min(1, "Street address is required"),
   unitAptSuite: z.string().optional(),
@@ -33,20 +35,27 @@ type LocationFields = keyof z.infer<typeof locationSchema>;
 declare const google: any;
 
 // --- Google Maps Script Loader Hook ---
-function useGoogleMapsLoader(src: string, onReady: () => void, maxRetries = 10, retryDelay = 200) {
+function useGoogleMapsLoader(src: string, onReady: () => void, maxRetries = 20, retryDelay = 200) {
   useEffect(() => {
     let retries = 0;
     let timeout: ReturnType<typeof setTimeout> | null = null;
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    function hasGoogleMaps() { return typeof window !== 'undefined' && (window as any).google && (window as any).google.maps; }
+    function hasGoogleMaps() {
+      return typeof window !== 'undefined' &&
+        (window as unknown as { google?: unknown }).google &&
+        (window as unknown as { google: { maps?: unknown } }).google.maps &&
+        typeof (window as unknown as { google: { maps: { importLibrary?: unknown } } }).google.maps.importLibrary === 'function';
+    }
 
     function checkGoogleMaps() {
       if (hasGoogleMaps()) {
+        console.log('[GoogleMapsLoader] google.maps.importLibrary is available.');
         onReady();
       } else if (retries < maxRetries) {
         retries++;
         timeout = setTimeout(checkGoogleMaps, retryDelay);
+      } else {
+        console.error('[GoogleMapsLoader] Google Maps JS API failed to load after retries.');
       }
     }
 
@@ -69,7 +78,6 @@ function useGoogleMapsLoader(src: string, onReady: () => void, maxRetries = 10, 
     };
     document.body.appendChild(script);
 
-    // Cleanup
     return () => {
       if (timeout) clearTimeout(timeout);
     };
@@ -100,132 +108,144 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
 
   // Initialize map and legacy Marker
   useEffect(() => {
-    if (!mapsReady || map || !mapRef.current || typeof google === 'undefined' || !google.maps.importLibrary) return;
+    if (!mapsReady) {
+      console.log('[MapInit] Waiting for mapsReady');
+      return;
+    }
+    if (map) {
+      console.log('[MapInit] Map already initialized');
+      return;
+    }
+    if (!mapRef.current) {
+      console.log('[MapInit] mapRef not ready');
+      return;
+    }
+    if (typeof google === 'undefined' || !google.maps.importLibrary) {
+      console.log('[MapInit] google.maps.importLibrary not available');
+      return;
+    }
     (async () => {
-      const { Map } = await google.maps.importLibrary('maps');
-      // Use formData coordinates if available, else default
-      const initialLatLng = { lat: 39.5873284, lng: -74.225578 }; // NJ default
-      const gMap = new Map(mapRef.current, {
-        center: formData.latLng ? formData.latLng : initialLatLng,
-        zoom: 17,
-        mapId: 'DEMO_MAP_ID',
-      });
-      setMap(gMap);
-      // Use legacy Marker for draggable functionality
-      const marker = new google.maps.Marker({
-        map: gMap,
-        position: formData.latLng ? formData.latLng : initialLatLng,
-        draggable: true,
-        title: 'Selected Location',
-      });
-      markerRef.current = marker;
-
-      // Add dragend event listener
-      marker.addListener('dragend', () => {
-        const newPosition = marker.getPosition();
-        if (newPosition) {
-          const lat = newPosition.lat();
-          const lng = newPosition.lng();
-          const geocoder = new google.maps.Geocoder();
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          geocoder.geocode({ location: { lat, lng } }, (results: any, status: string) => {
-            if (status === 'OK' && results && results[0]) {
-              const address = results[0];
-              
-              const getComponent = (type: string) =>
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                address.address_components.find((c: any) => c.types.includes(type))?.long_name || '';
-              updateFormData({
-                streetAddress: (getComponent('street_number') + " " + getComponent('route')) || "",
-                city: getComponent('locality'),
-                state: getComponent('administrative_area_level_1'),
-                zipCode: getComponent('postal_code'),
-                latLng: { lat, lng },
-              });
-              // Update the autocomplete input value
-              // const autocompleteEl = autocompleteContainerRef.current?.querySelector('gmp-place-autocomplete');
-              // if (autocompleteEl) {
-              //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              //   (autocompleteEl as any).value = (address.formatted_address) || "";
-              // }
-            }
-          });
-        }
-      });
-      // console.log('Map and marker initialized');
+      try {
+        const { Map } = await google.maps.importLibrary('maps');
+        const initialLatLng = { lat: 39.5873284, lng: -74.225578 }; // NJ default
+        const gMap = new Map(mapRef.current, {
+          center: formData.latLng ? formData.latLng : initialLatLng,
+          zoom: 12,
+          mapId: 'DEMO_MAP_ID',
+          mapTypeId: google.maps.MapTypeId.HYBRID,
+        });
+        setMap(gMap);
+        // Use legacy Marker for draggable functionality
+        const marker = new google.maps.Marker({
+          map: gMap,
+          position: formData.latLng ? formData.latLng : initialLatLng,
+          draggable: true,
+          title: 'Selected Location',
+        });
+        markerRef.current = marker;
+        marker.addListener('dragend', () => {
+          const newPosition = marker.getPosition();
+          if (newPosition) {
+            const lat = newPosition.lat();
+            const lng = newPosition.lng();
+            const geocoder = new google.maps.Geocoder();
+  
+            geocoder.geocode({ location: { lat, lng } }, (results: unknown, status: string) => {
+              if (status === 'OK' && results && (results as Array<unknown>)[0]) {
+                const address = (results as Array<any>)[0]; // eslint-disable-line @typescript-eslint/no-explicit-any
+                const getComponent = (type: string) => {
+                  // Type guard for address component
+                  const component = address.address_components.find((c: unknown) => {
+                    if (typeof c === 'object' && c !== null && 'types' in c && Array.isArray((c as { types: unknown }).types)) {
+                      return (c as { types: string[] }).types.includes(type);
+                    }
+                    return false;
+                  });
+                  return component && typeof component === 'object' && component !== null && 'long_name' in component
+                    ? (component as { long_name: string }).long_name
+                    : '';
+                };
+                updateFormData({
+                  streetAddress: (getComponent('street_number') + " " + getComponent('route')) || "",
+                  city: getComponent('locality'),
+                  state: getComponent('administrative_area_level_1'),
+                  zipCode: getComponent('postal_code'),
+                  latLng: { lat, lng },
+                  formattedAddress: address.formatted_address,
+                });
+              }
+            });
+          }
+        });
+        console.log('[MapInit] Map and marker initialized');
+      } catch (err) {
+        console.error('[MapInit] Error initializing map:', err);
+      }
     })();
   }, [mapsReady, map, updateFormData, formData]);
 
   // Setup new PlaceAutocompleteElement widget
   useEffect(() => {
-    if (!mapsReady || !map || typeof google === 'undefined' || !google.maps.importLibrary) {
-      // console.log('Waiting for mapsReady and map:', { mapsReady, map });
+    if (!mapsReady) {
+      console.log('[AutocompleteInit] Waiting for mapsReady');
+      return;
+    }
+    if (!map) {
+      console.log('[AutocompleteInit] Waiting for map');
+      return;
+    }
+    if (typeof google === 'undefined' || !google.maps.importLibrary) {
+      console.log('[AutocompleteInit] google.maps.importLibrary not available');
       return;
     }
     (async () => {
-      const { PlaceAutocompleteElement } = await google.maps.importLibrary('places');
-      if (autocompleteContainerRef.current && !autocompleteContainerRef.current.querySelector('gmp-place-autocomplete')) {
-        const autocomplete = new PlaceAutocompleteElement();
-        autocomplete.id = "new-places-autocomplete";
-        // autocomplete.placeholder = "Enter your street address";
-        // autocomplete.setAttribute('placeholder', "Enter your street address");
-        autocomplete.style.width = "100%";
-        autocomplete.style.height = "60px";
-        autocomplete.style.borderRadius = "0.5rem";
-        autocomplete.style.border = "1px solid #e0e7ef";
-        autocomplete.style.padding = "0.75rem 1rem";
-        autocomplete.style.fontSize = "1rem";
-        autocomplete.style.background = "#f8fafc";
-        autocompleteContainerRef.current.innerHTML = "";
-        autocompleteContainerRef.current.appendChild(autocomplete);
-        // console.log('Autocomplete widget created and appended to DOM');
-
-        // Attach the correct event listener for the new API
-        // const domEl = autocompleteContainerRef.current.querySelector('gmp-place-autocomplete');
-        // if (domEl) {
-        //   domEl.addEventListener('gmp-select', async (event: Event) => {
-        //     const customEvent = event as CustomEvent;
-        //     const { placePrediction } = customEvent.detail;
-        //     if (!placePrediction) {
-        //       console.error('No placePrediction in event detail');
-        //       return;
-        //     }
-        //     const place = placePrediction.toPlace();
-        //     await place.fetchFields({ fields: ['formattedAddress', 'location', 'addressComponents'] });
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        autocomplete.addEventListener('gmp-select', async ({ placePrediction }: { placePrediction: any }) => {
-          const place = placePrediction.toPlace();
-          await place.fetchFields({ fields: ['displayName', 'formattedAddress', 'addressComponents', 'location', 'viewport'] });
-            // console.log('Selected place (from DOM event):', place);
-
-            updateFormData({
-              streetAddress: place.displayName || "",
-              city: place.addressComponents[2].longText || "",
-              state: place.addressComponents[4].shortText || "",
-              zipCode: place.addressComponents[6].shortText || "",
-              latLng: place.location,
-            });
-            if (place.viewport) {
-              map.fitBounds(place.viewport);
+      try {
+        const { PlaceAutocompleteElement } = await google.maps.importLibrary('places');
+        if (autocompleteContainerRef.current && !autocompleteContainerRef.current.querySelector('gmp-place-autocomplete')) {
+          const autocomplete = new PlaceAutocompleteElement();
+          autocomplete.id = "new-places-autocomplete";
+          autocomplete.style.width = "100%";
+          autocomplete.style.height = "60px";
+          autocomplete.style.borderRadius = "0.5rem";
+          autocomplete.style.border = "1px solid #e0e7ef";
+          autocomplete.style.padding = "0.75rem 1rem";
+          autocomplete.style.fontSize = "1rem";
+          autocomplete.style.background = "#f8fafc";
+          autocompleteContainerRef.current.innerHTML = "";
+          autocompleteContainerRef.current.appendChild(autocomplete);
+          autocomplete.addEventListener('gmp-select', async (event: unknown) => {
+            try {
+              const { placePrediction } = event as { placePrediction: any }; // eslint-disable-line @typescript-eslint/no-explicit-any
+              const place = placePrediction.toPlace();
+              await place.fetchFields({ fields: ['displayName', 'formattedAddress', 'addressComponents', 'location', 'viewport'] });
+              updateFormData({
+                streetAddress: place.displayName || "",
+                city: place.addressComponents[2].longText || "",
+                state: place.addressComponents[4].shortText || "",
+                zipCode: place.addressComponents[6].shortText || "",
+                latLng: place.location,
+                formattedAddress: place.formattedAddress || "",
+              });
+              if (place.viewport) {
+                map.fitBounds(place.viewport);
               } else {
-              map.setCenter(place.location);
-              map.setZoom(17);
-          }  
-            // if (place.location && map) {
-            //   const latLng = { lat: place.location.lat, lng: place.location.lng };
-            //   map.setCenter(latLng);
-            //   map.setZoom(16);
+                map.setCenter(place.location);
+                map.setZoom(18);
+              }
               if (markerRef.current) {
                 markerRef.current.setPosition(place.location);
               }
-            // }
-          // });
-          // console.log('Event listener attached to DOM element');
-        // } else {
-        //   console.error('Could not find gmp-place-autocomplete DOM element');
-        // }
-      });
-    }})();  
+              console.log('[AutocompleteInit] Place selected and map/fields updated');
+            } catch (err) {
+              console.error('[AutocompleteInit] Error handling place selection:', err);
+            }
+          });
+          console.log('[AutocompleteInit] Autocomplete widget created and event attached');
+        }
+      } catch (err) {
+        console.error('[AutocompleteInit] Error initializing autocomplete:', err);
+      }
+    })();
   }, [mapsReady, map, updateFormData]);
   
 
@@ -278,9 +298,18 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
       onNext={handleNext}
       onBack={onBack}
     >     
+
+      {/* Autocomplete input with label and wrapper for consistent spacing */}
+      <div className="mb-4">
+            <label htmlFor="new-places-autocomplete" className="block text-sm font-medium text-gray-700 mb-1">
+              Enter a location
+            </label>
+            <div ref={autocompleteContainerRef} />
+      </div>
+
       <div className="space-y-6">
         {/* Google Map */}
-        <div className="w-full h-70 bg-sky-50 rounded-lg border border-sky-200 flex items-center justify-center relative">
+        <div className="w-full h-80 bg-sky-50 rounded-lg border border-sky-200 flex items-center justify-center relative">
           <div className="w-full h-full" ref={mapRef} />
           {(!mapsReady || !map) && (
             <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/70 z-10">
@@ -293,22 +322,20 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
           )}
         </div>
 
-        {/* Autocomplete input with label and wrapper for consistent spacing */}
-        <div className="mb-4">
-          <label htmlFor="new-places-autocomplete" className="block text-sm font-medium text-gray-700 mb-1">
-            Enter a location
-          </label>
-          <div ref={autocompleteContainerRef} />
+        <div className="space-y-6">
+          <p>
+            * Please verify the address below is correct. Drag the pin to the correct location if needed.
+          </p>
         </div>
 
         {/* Read-only field to show the selected address */}
-        {/* <FormInput
-          label="Selected Address"
+        <FormInput
+          label="Verify Address"
           placeholder="No address selected"
           type="text"
-          value={formData?.streetAddress || ""}
+          value={formData?.formattedAddress || ""}
           readOnly
-        /> */}
+        />
 
         <FormInput
           label="Street Address"

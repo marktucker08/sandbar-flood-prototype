@@ -18,6 +18,8 @@ const baseInsuredSchema = z.object({
   insuredType: z.enum(["individual", "business"]),
   firstName: z.string().min(1, "First name is required").optional(),
   lastName: z.string().min(1, "Last name is required").optional(),
+  phoneNumber: z.string().min(1, "Phone number is required").optional(),
+  email: z.string().email("Invalid email address").optional(),
   businessName: z.string().min(1, "Business name is required").optional(),
   entityType: z.string().optional(),
   additionalInsured: z.string().optional(),
@@ -121,6 +123,8 @@ const InsuredInformation: React.FC<InsuredInformationProps> = ({
       insuredType: formData?.insuredType, 
       firstName: formData?.firstName,
       lastName: formData?.lastName,
+      phoneNumber: formData?.phoneNumber,
+      email: formData?.email,
       businessName: formData?.businessName,
       entityType: formData?.entityType,
       additionalInsured: formData?.additionalInsured,
@@ -155,6 +159,7 @@ const InsuredInformation: React.FC<InsuredInformationProps> = ({
     { value: "llc", label: "LLC" },
     { value: "corporation", label: "Corporation" },
     { value: "partnership", label: "Partnership" },
+    { value: "other", label: "Other" },
   ];
 
   const sameAsPropertyOptions = [
@@ -216,7 +221,7 @@ const InsuredInformation: React.FC<InsuredInformationProps> = ({
               name="entityType"
               options={entityTypeOptions}
               value={formData?.entityType || ""}
-              onChange={(value) => updateFormData?.({ entityType: value as "llc" | "corporation" | "partnership" })}
+              onChange={(value) => updateFormData?.({ entityType: value as "llc" | "corporation" | "partnership" | "other" })}
               error={errors.entityType}
               required
             />
@@ -229,6 +234,24 @@ const InsuredInformation: React.FC<InsuredInformationProps> = ({
           type="text"
           value={formData?.additionalInsured || ""}
           onChange={handleInputChange("additionalInsured")}
+        />
+
+        <FormInput
+          label="Phone Number"
+          placeholder="Enter phone number"
+          type="text"
+          value={formData?.phoneNumber || ""}
+          onChange={handleInputChange("phoneNumber")}
+        />
+
+        <FormInput
+          label="Email"
+          placeholder="Enter email"
+          type="email"
+          value={formData?.email || ""}
+          onChange={handleInputChange("email")}
+          error={errors.email}
+          required
         />
 
         <div className="space-y-4">
