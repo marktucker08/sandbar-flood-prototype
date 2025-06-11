@@ -11,20 +11,35 @@ import CoverageOptions from "./QuoteFormSteps/CoverageOptions";
 import QuoteSummary from "./QuoteFormSteps/QuoteSummary";
 import { QuoteFormData } from "@/types/quote";
 import { QUOTE_FORM_STEPS, FormStep } from "@/lib/constants/formSteps";
+// import { ProgressBar } from "@/components/features/quotes/ProgressBar";
 
 export const InsuranceForm = () => {
   const [currentStep, setCurrentStep] = React.useState(0);
   const [formData, setFormData] = React.useState<QuoteFormData>({});
+  const [completedSteps, setCompletedSteps] = React.useState<number[]>([]);
 
   const handleNext = () => {
     if (currentStep < steps.length - 1) {
       setCurrentStep(currentStep + 1);
+      setCompletedSteps((prev) => {
+        if (!prev.includes(currentStep)) {
+          return [...prev, currentStep];
+        }
+        return prev;
+      });
     }
   };
 
   const handleBack = () => {
     if (currentStep > 0) {
       setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleStepClick = (index: number) => {
+    // Only allow navigation to previous/completed steps
+    if (index < currentStep && completedSteps.includes(index)) {
+      setCurrentStep(index);
     }
   };
 
@@ -49,6 +64,8 @@ export const InsuranceForm = () => {
       formData={formData}
       updateFormData={updateFormData}
       progressSteps={progressSteps}
+      currentStep={currentStep}
+      completedSteps={completedSteps}
     />,
     <LocationVerification
       key="location"
@@ -57,6 +74,8 @@ export const InsuranceForm = () => {
       formData={formData}
       updateFormData={updateFormData}
       progressSteps={progressSteps}
+      currentStep={currentStep}
+      completedSteps={completedSteps}
     />,
     <InsuredInformation
       key="insured"
@@ -65,6 +84,8 @@ export const InsuranceForm = () => {
       formData={formData}
       updateFormData={updateFormData}
       progressSteps={progressSteps}
+      currentStep={currentStep}
+      completedSteps={completedSteps}
     />,
     <PropertyDetails
       key="property"
@@ -73,6 +94,8 @@ export const InsuranceForm = () => {
       formData={formData}
       updateFormData={updateFormData}
       progressSteps={progressSteps}
+      currentStep={currentStep}
+      completedSteps={completedSteps}
     />,
     <FoundationInfo
       key="foundation"
@@ -81,6 +104,8 @@ export const InsuranceForm = () => {
       formData={formData}
       updateFormData={updateFormData}
       progressSteps={progressSteps}
+      currentStep={currentStep}
+      completedSteps={completedSteps}
     />,
     <ElevationCertificate
       key="elevation"
@@ -89,6 +114,8 @@ export const InsuranceForm = () => {
       formData={formData}
       updateFormData={updateFormData}
       progressSteps={progressSteps}
+      currentStep={currentStep}
+      completedSteps={completedSteps}
     />,
     <ConstructionInfo
       key="construction"
@@ -96,7 +123,9 @@ export const InsuranceForm = () => {
       onBack={handleBack}
       formData={formData}
       updateFormData={updateFormData}
-      progressSteps={progressSteps}
+      progressSteps={progressSteps} 
+      currentStep={currentStep}
+      completedSteps={completedSteps}
     />,
     <CoverageOptions
       key="coverage"
@@ -105,6 +134,8 @@ export const InsuranceForm = () => {
       formData={formData}
       updateFormData={updateFormData}
       progressSteps={progressSteps}
+      currentStep={currentStep}
+      completedSteps={completedSteps}
     />,
     <QuoteSummary
       key="summary"
@@ -113,16 +144,27 @@ export const InsuranceForm = () => {
       updateFormData={updateFormData}
       progressSteps={progressSteps}
       setCurrentStep={setCurrentStep}
+      currentStep={currentStep}
+      completedSteps={completedSteps}
     />,
   ];
 
   return (
     <main className="background-gradient min-h-screen py-8 px-4">
       <div className="max-w-4xl mx-auto">
+        {/* <ProgressBar
+          steps={progressSteps}
+          currentStep={currentStep}
+          completedSteps={completedSteps}
+          onStepClick={handleStepClick}
+        /> */}
         {React.cloneElement(steps[currentStep], {
           formData,
           updateFormData,
           progressSteps,
+          currentStep,
+          completedSteps,
+          onStepClick: handleStepClick,
         })}
       </div>
     </main>

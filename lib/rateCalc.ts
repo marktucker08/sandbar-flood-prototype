@@ -1,0 +1,165 @@
+// Utility for Sandbar Flood base rate calculation
+// Based on project-docs/RateCalc.md and mapping logic
+
+export type FoundationType =
+  | "pilings-enclosure"
+  | "crawlspace"
+  | "full-wall"
+  | "slab"
+  | "unfinished"
+  | "finished";
+
+export type FloodZone = string; // e.g., "A", "AE", "X", etc.
+
+export interface RateCalcInput {
+  propertyElevation: number; // from API
+  baseFloodElevation: number; // from API
+  certificateElevation?: number; // optional
+  numberOfSteps?: number; // optional, if no certificateElevation
+  foundationType: FoundationType;
+  isProperlyVented: boolean;
+  floodZone: FloodZone;
+  occupancyType: string; // e.g., "primary", "secondary"
+  deductible: 1500 | 2500 | 5000 | 10000;
+  buildingCoverage: number;
+  contentsCoverage: number;
+}
+
+// Foundation row types for table lookup
+export type FoundationRow =
+  | "Pilings, Crawlspace, Foundation wall, properly vented"
+  | "Unvented enclosure"
+  | "Slab"
+  | "Basement";
+
+// Table data from RateCalc.md
+const A_ZONE_RATES: Record<FoundationRow, number[]> = {
+  "Pilings, Crawlspace, Foundation wall, properly vented": [0.15, 0.16, 0.18, 0.20, 0.35, 0.70, 1.50],
+  "Unvented enclosure": [0.15, 0.17, 0.22, 0.28, 0.35, 0.70, 1.50],
+  "Slab": [0.23, 0.23, 0.25, 0.32, 0.48, 0.70, 1.50],
+  "Basement": [0.50, 0.55, 0.60, 0.90, 1.00, 1.00, 2.00],
+};
+
+const BCX_ZONE_RATES: Record<"Basement" | "All other foundations", number[]> = {
+  Basement: [0.15, 0.25, 0.30, 0.50, 0.50, 0.50, 0.50, 0.55, 0.60, 0.90, 1.00],
+  "All other foundations": [0.12, 0.12, 0.12, 0.12, 0.12, 0.13, 0.14, 0.15, 0.18, 0.20, 0.35],
+};
+
+function getFoundationRow(
+  foundationType: FoundationType,
+  isProperlyVented: boolean
+): FoundationRow {
+  if (
+    foundationType === "pilings-enclosure" ||
+    foundationType === "crawlspace" ||
+    foundationType === "full-wall"
+  ) {
+    return isProperlyVented
+      ? "Pilings, Crawlspace, Foundation wall, properly vented"
+      : "Unvented enclosure";
+  }
+  if (foundationType === "slab") return "Slab";
+  if (foundationType === "unfinished") return "Basement";
+  if (foundationType === "finished") return "Basement";
+  throw new Error("Unknown foundation type");
+}
+
+function getRateTable(floodZone: FloodZone): "A Zones" | "B, C & X Zones" {
+  if (floodZone.toUpperCase().startsWith("A")) {
+    return "A Zones";
+  }
+  if (
+    floodZone.toUpperCase() === "B" ||
+    floodZone.toUpperCase() === "C" ||
+    floodZone.toUpperCase() === "X"
+  ) {
+    return "B, C & X Zones";
+  }
+  throw new Error("Unknown flood zone");
+}
+
+function getElevationAboveBFE(input: RateCalcInput): number {
+  // If certificateElevation is provided, use it. Otherwise, use numberOfSteps * 7in (converted to ft)
+  let elevation = input.propertyElevation;
+  if (typeof input.certificateElevation === "number") {
+    elevation = input.certificateElevation;
+  } else if (typeof input.numberOfSteps === "number") {
+    elevation = input.propertyElevation + (input.numberOfSteps * 7) / 12;
+  }
+  return +(elevation - input.baseFloodElevation).toFixed(1); // round to 1 decimal
+}
+
+function getARateIndex(elevAboveBFE: number): number {
+  // 4+ = 0, 3+ = 1, 2+ = 2, 1+ = 3, 0 = 4, -1 = 5, Below -1 = 6
+  if (elevAboveBFE >= 4) return 0;
+  if (elevAboveBFE >= 3) return 1;
+  if (elevAboveBFE >= 2) return 2;
+  if (elevAboveBFE >= 1) return 3;
+  if (elevAboveBFE >= 0) return 4;
+  if (elevAboveBFE >= -1) return 5;
+  return 6; // below -1
+}
+
+function getBCXRateIndex(elevAboveBFE: number): number {
+  // 10+ & up = 0, 9+ = 1, ... 0 = 10
+  if (elevAboveBFE >= 10) return 0;
+  if (elevAboveBFE >= 9) return 1;
+  if (elevAboveBFE >= 8) return 2;
+  if (elevAboveBFE >= 7) return 3;
+  if (elevAboveBFE >= 6) return 4;
+  if (elevAboveBFE >= 5) return 5;
+  if (elevAboveBFE >= 4) return 6;
+  if (elevAboveBFE >= 3) return 7;
+  if (elevAboveBFE >= 2) return 8;
+  if (elevAboveBFE >= 1) return 9;
+  return 10; // 0 or below
+}
+
+export function calculateBaseRatePremium(input: RateCalcInput): {
+  premium: number;
+  baseRatePercent: number;
+  discounts: { primary: boolean; deductible: number };
+  minimumApplied: boolean;
+  details: string;
+} {
+  const table = getRateTable(input.floodZone);
+  const elevAboveBFE = getElevationAboveBFE(input);
+  let baseRatePercent = 0;
+  let details = "";
+  if (table === "A Zones") {
+    const row = getFoundationRow(input.foundationType, input.isProperlyVented);
+    baseRatePercent = A_ZONE_RATES[row][getARateIndex(elevAboveBFE)];
+    details = `A Zones: ${row}, Elevation: ${elevAboveBFE} ft, Rate: ${baseRatePercent}%`;
+  } else {
+    const row = input.foundationType === "unfinished" || input.foundationType === "finished" ? "Basement" : "All other foundations";
+    baseRatePercent = BCX_ZONE_RATES[row][getBCXRateIndex(elevAboveBFE)];
+    details = `B, C & X Zones: ${row}, Elevation: ${elevAboveBFE} ft, Rate: ${baseRatePercent}%`;
+  }
+  // Calculate base premium
+  const basePremium = ((input.buildingCoverage + input.contentsCoverage) * baseRatePercent) / 100;
+  // Discounts
+  let discount = 0;
+  let primary = false;
+  if (input.occupancyType.toLowerCase() === "primary") {
+    discount += 0.075;
+    primary = true;
+  }
+  let deductibleDiscount = 0;
+  if (input.deductible === 2500) deductibleDiscount = 0.03;
+  if (input.deductible === 5000) deductibleDiscount = 0.075;
+  if (input.deductible === 10000) deductibleDiscount = 0.15;
+  discount += deductibleDiscount;
+  let premium = basePremium * (1 - discount);
+  let minimumApplied = false;
+  if (table === "A Zones" && premium < 450) {
+    premium = 450;
+    minimumApplied = true;
+  }
+  return {
+    premium: Math.round(premium),
+    baseRatePercent,
+    discounts: { primary, deductible: deductibleDiscount },
+    minimumApplied,
+    details,
+  };
+} 

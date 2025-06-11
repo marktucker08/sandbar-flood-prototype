@@ -12,6 +12,9 @@ interface CoverageOptionsProps {
   formData: QuoteFormData;
   updateFormData: (data: Partial<QuoteFormData>) => void;
   progressSteps: FormStep[];
+  currentStep: number;
+  completedSteps: number[];
+  onStepClick?: (index: number) => void;
 }
 
 const deductibleOptions = [
@@ -42,6 +45,9 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
   formData,
   updateFormData,
   progressSteps,
+  currentStep,
+  completedSteps,
+  onStepClick,
 }) => {
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
@@ -94,6 +100,9 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
       onNext={handleNext}
       onBack={onBack}
       nextLabel="Review Quote"
+      currentStep={currentStep}
+      completedSteps={completedSteps}
+      onStepClick={onStepClick}
     >
       <div className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -146,6 +155,7 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
           onChange={handleDeductibleChange}
           layout="grid"
           gridCols={2}
+          error={errors.deductible}
           required
         />
       </div>

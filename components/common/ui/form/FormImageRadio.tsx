@@ -7,6 +7,7 @@ interface ImageRadioOption {
   value: string;
   label: string;
   image: string;
+  sizes?: string;
 }
 
 interface FormImageRadioProps {
@@ -43,7 +44,7 @@ const FormImageRadio: React.FC<FormImageRadioProps> = ({
         "grid gap-6",
         `grid-cols-2 md:grid-cols-${columns}`
       )}>
-        {options.map(({ value: optionValue, label: optionLabel, image }) => (
+        {options.map(({ value: optionValue, label: optionLabel, image, sizes }) => (
           <label
             key={optionValue}
             className={cn(
@@ -67,6 +68,7 @@ const FormImageRadio: React.FC<FormImageRadioProps> = ({
                 alt={optionLabel}
                 fill
                 className="object-contain p-2"
+                sizes={sizes}
               />
             </div>
             <span className="text-sm font-medium text-center text-gray-900">

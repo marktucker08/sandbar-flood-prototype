@@ -8,6 +8,7 @@ import { useQuote } from "@/context/QuoteContext";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/common/ui/button";
 import { Pencil } from "lucide-react";
+import { calculateBaseRatePremium, RateCalcInput, FoundationType } from "@/lib/rateCalc";
 
 interface QuoteSummaryProps {
   onBack: () => void;
@@ -15,6 +16,9 @@ interface QuoteSummaryProps {
   updateFormData: (data: Partial<QuoteFormData>) => void;
   progressSteps: FormStep[];
   setCurrentStep: (step: number) => void;
+  currentStep: number;
+  completedSteps: number[];
+  onStepClick?: (index: number) => void;
 }
 
 const QuoteSummary: React.FC<QuoteSummaryProps> = ({
@@ -23,6 +27,9 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
   updateFormData,
   progressSteps,
   setCurrentStep,
+  currentStep,
+  completedSteps,
+  onStepClick,
 }) => {
   const router = useRouter();
   const { setQuoteData } = useQuote();
@@ -36,29 +43,51 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
     });
   };
 
-  const calculateRiskFactor = () => {
-    const baseRisk = 1.0;
-    const buildingValue = Number(formData?.buildingReplacementCost) || 0;
-    const contentsValue = Number(formData?.contentsReplacementCost) || 0;
-    const totalValue = buildingValue + contentsValue;
-    const valueFactor = Math.min(1 + (totalValue / 1000000), 2.0);
-    const deductible = Number(formData?.deductible) || 0;
-    const deductibleFactor = Math.max(1 - (deductible / 5000), 0.5);
-    return baseRisk * valueFactor * deductibleFactor;
+  // Helper to map formData.foundationType to FoundationType
+  const mapFoundationType = (type: string): FoundationType => {
+    switch (type?.toLowerCase()) {
+      case "pilings-enclosure":
+      case "pilings":
+        return "pilings-enclosure";
+      case "crawlspace":
+        return "crawlspace";
+      case "full-wall":
+      case "foundation wall":
+        return "full-wall";
+      case "slab":
+        return "slab";
+      case "unfinished":
+        return "unfinished";
+      case "finished":
+        return "finished";
+      default:
+        throw new Error("Unknown foundation type: " + type);
+    }
   };
 
-  const calculatePremium = (riskFactor: number) => {
-    const baseRate = 0.001;
-    const buildingCoverage = Number(formData?.buildingCoverage) || 0;
-    const contentsCoverage = Number(formData?.contentsCoverage) || 0;
-    const totalCoverage = buildingCoverage + contentsCoverage;
-    return Math.round(totalCoverage * baseRate * riskFactor);
+  // Helper to determine if properly vented (assume boolean in formData, adjust if needed)
+  const isProperlyVented = Boolean(formData.isFoundationVented);
+
+  // Prepare input for rate calculation
+  const rateInput: RateCalcInput = {
+    propertyElevation: Number(formData.propertyElevation),
+    baseFloodElevation: Number(formData.baseFloodElevation),
+    certificateElevation: formData.certificateElevation ? Number(formData.certificateElevation) : undefined,
+    numberOfSteps: formData.stepsToFrontDoor ? Number(formData.stepsToFrontDoor) : undefined,
+    foundationType: mapFoundationType(formData.foundationType || ''),
+    isProperlyVented,
+    floodZone: formData.floodZone || '',
+    occupancyType: formData.occupancyType || '',
+    deductible: Number(formData.deductible) as 1500 | 2500 | 5000 | 10000,
+    buildingCoverage: Number(formData.buildingCoverage) || 0,
+    contentsCoverage: Number(formData.contentsCoverage) || 0,
   };
+
+  const rateResult = calculateBaseRatePremium(rateInput);
 
   const handleSubmit = async () => {
-    const riskFactor = calculateRiskFactor();
-    const premium = calculatePremium(riskFactor);
-
+    // Use the calculated premium
+    const premium = rateResult.premium;
     const quoteData = {
       quoteId: `Q-${Date.now()}`,
       propertyAddress: `${formData?.streetAddress}, ${formData?.city}, ${formData?.state} ${formData?.zipCode}`,
@@ -68,7 +97,7 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
       effectiveDate: formData?.effectiveDate || new Date().toISOString().split('T')[0],
       expirationDate: new Date(new Date(formData?.effectiveDate || new Date()).setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
       status: 'Pending Review',
-      riskFactor,
+      riskFactor: 0, // required by QuoteDetails, not used
       buildingCoverage: Number(formData?.buildingCoverage),
       contentsCoverage: Number(formData?.contentsCoverage),
       lossOfUseCoverage: Number(formData?.lossOfUseCoverage),
@@ -88,7 +117,6 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
     };
 
     updateFormData?.({
-      riskFactor: riskFactor.toString(),
       premium: premium.toString(),
     });
 
@@ -107,6 +135,9 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
       onNext={handleSubmit}
       onBack={onBack}
       nextLabel="Submit Quote"
+      currentStep={currentStep}
+      completedSteps={completedSteps}
+      onStepClick={onStepClick}
     >
       <div className="max-w-4xl mx-auto">
         <div className="bg-white rounded-xl shadow-sm p-8">
@@ -271,6 +302,16 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
                   <p className="text-gray-900">
                     {formData.waitingPeriod === "standard" ? "Standard" : "Loan Closing"}
                   </p>
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium text-gray-500 mb-1">Estimated Premium</h3>
+                  <p className="text-gray-900 font-bold text-lg">
+                    {formatCurrency(rateResult.premium)}
+                  </p>
+                  <div className="text-xs text-gray-500 mt-1">
+                    {rateResult.details}
+                    {rateResult.minimumApplied && <><br/>Minimum premium applied for A zone.</>}
+                  </div>
                 </div>
               </div>
             </div>

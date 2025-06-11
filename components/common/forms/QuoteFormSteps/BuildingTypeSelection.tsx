@@ -11,6 +11,9 @@ interface BuildingTypeSelectionProps {
   formData: QuoteFormData;
   updateFormData: (data: Partial<QuoteFormData>) => void;
   progressSteps: FormStep[];
+  currentStep: number;
+  completedSteps: number[];
+  onStepClick?: (index: number) => void;
 }
 
 const residentialTypes = [
@@ -62,7 +65,7 @@ const buildingTypeSchema = z.object({
   }),
 });
 
-export default function BuildingTypeSelection({ onNext, formData, updateFormData, progressSteps }: BuildingTypeSelectionProps) {
+export default function BuildingTypeSelection({ onNext, formData, updateFormData, progressSteps, currentStep, completedSteps, onStepClick }: BuildingTypeSelectionProps) {
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   const handleSelect = (value: string) => {
@@ -99,6 +102,9 @@ export default function BuildingTypeSelection({ onNext, formData, updateFormData
         }
       }}
       onBack={() => {}}
+      currentStep={currentStep}
+      completedSteps={completedSteps}
+      onStepClick={onStepClick}
     >
       <div className="space-y-8">
         <p className="text-gray-500 mb-6">Choose the type of building you want to insure</p>

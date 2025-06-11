@@ -12,6 +12,9 @@ interface InsuredInformationProps {
   formData: QuoteFormData;
   updateFormData: (data: Partial<QuoteFormData>) => void;
   progressSteps: FormStep[];
+  currentStep: number;
+  completedSteps: number[];
+  onStepClick?: (index: number) => void;
 }
 
 const baseInsuredSchema = z.object({
@@ -50,6 +53,9 @@ const InsuredInformation: React.FC<InsuredInformationProps> = ({
   formData,
   updateFormData,
   progressSteps,
+  currentStep,
+  completedSteps,
+  onStepClick,
 }) => {
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
@@ -173,6 +179,9 @@ const InsuredInformation: React.FC<InsuredInformationProps> = ({
       progressSteps={progressSteps}
       onNext={handleNext}
       onBack={onBack}
+      currentStep={currentStep}
+      completedSteps={completedSteps}
+      onStepClick={onStepClick}
     >
       <div className="space-y-6">
         <FormToggle

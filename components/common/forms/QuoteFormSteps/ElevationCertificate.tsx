@@ -13,6 +13,9 @@ interface ElevationCertificateProps {
   formData: QuoteFormData;
   updateFormData: (data: Partial<QuoteFormData>) => void;
   progressSteps: FormStep[];
+  currentStep: number;
+  completedSteps: number[];
+  onStepClick?: (index: number) => void;
 }
 
 const elevationSchema = z.object({
@@ -36,6 +39,9 @@ const ElevationCertificate: React.FC<ElevationCertificateProps> = ({
   formData,
   updateFormData,
   progressSteps,
+  currentStep,
+  completedSteps,
+  onStepClick,
 }) => {
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
@@ -122,6 +128,9 @@ const ElevationCertificate: React.FC<ElevationCertificateProps> = ({
       progressSteps={progressSteps}
       onNext={handleNext}
       onBack={onBack}
+      currentStep={currentStep}
+      completedSteps={completedSteps}
+      onStepClick={onStepClick}
     >
       <div className="space-y-8">
         <FormRadio

@@ -14,6 +14,9 @@ interface FormStepLayoutProps {
   onBack: () => void;
   nextLabel?: string;
   nextDisabled?: boolean;
+  currentStep: number;
+  completedSteps: number[];
+  onStepClick?: (index: number) => void;
 }
 
 const FormStepLayout: React.FC<FormStepLayoutProps> = ({
@@ -24,10 +27,20 @@ const FormStepLayout: React.FC<FormStepLayoutProps> = ({
   onBack,
   nextLabel,
   nextDisabled,
+  currentStep,
+  completedSteps,
+  onStepClick,
 }) => {
   return (
     <div className="flex flex-col gap-6">
-      {title !== "Review Quote Details" && <ProgressBar steps={progressSteps} />}
+      {title !== "Review Quote Details" && (
+        <ProgressBar 
+          steps={progressSteps} 
+          currentStep={currentStep}
+          completedSteps={completedSteps}
+          onStepClick={onStepClick}
+        />
+      )}
       
       <div className="card">
         <div className="max-w-2xl mx-auto">

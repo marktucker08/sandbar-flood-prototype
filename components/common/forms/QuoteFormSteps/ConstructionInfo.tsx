@@ -12,6 +12,9 @@ interface ConstructionInfoProps {
   formData: QuoteFormData;
   updateFormData: (data: Partial<QuoteFormData>) => void;
   progressSteps: FormStep[];
+  currentStep: number;
+  completedSteps: number[];
+  onStepClick?: (index: number) => void;
 }
 
 const constructionSchema = z.object({
@@ -29,6 +32,9 @@ const ConstructionInfo: React.FC<ConstructionInfoProps> = ({
   formData,
   updateFormData,
   progressSteps,
+  currentStep,
+  completedSteps,
+  onStepClick,
 }) => {
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
@@ -37,19 +43,22 @@ const ConstructionInfo: React.FC<ConstructionInfoProps> = ({
       value: "frame",
       label: "Frame",
       description: "Wood frame, steel frame, or other skeletal structure",
-      image: "/wood-frame2.jpg"
+      image: "/wood-frame2.jpg",
+      sizes: "200px"
     },
     {
       value: "brick",
       label: "Brick Veneer",
       description: "Brick, concrete block, or stone construction",
-      image: "/brick-wall2.jpg"
+      image: "/brick-wall2.jpg",
+      sizes: "200px"
     },
     {
       value: "joisted",
       label: "Joisted Masonry",
       description: "Reinforced concrete or superior construction methods",
-      image: "/concrete-wall2.jpg"
+      image: "/concrete-wall2.jpg",
+      sizes: "200px"
     }
   ];
 
@@ -94,6 +103,9 @@ const ConstructionInfo: React.FC<ConstructionInfoProps> = ({
       progressSteps={progressSteps}
       onNext={handleNext}
       onBack={onBack}
+      currentStep={currentStep}
+      completedSteps={completedSteps}
+      onStepClick={onStepClick}
     >
       <div className="space-y-8">
         <FormImageRadio

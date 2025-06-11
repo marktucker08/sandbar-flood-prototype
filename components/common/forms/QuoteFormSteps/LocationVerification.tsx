@@ -12,6 +12,9 @@ interface LocationVerificationProps {
   formData: QuoteFormData;
   updateFormData: (data: Partial<QuoteFormData>) => void;
   progressSteps: FormStep[];
+  currentStep: number;
+  completedSteps: number[];
+  onStepClick?: (index: number) => void;
 }
 
 // let formattedAddress = "";
@@ -99,6 +102,9 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
   formData,
   updateFormData,
   progressSteps,
+  currentStep,
+  completedSteps,
+  onStepClick,
 }) => {
   const [errors, setErrors] = React.useState<Record<string, string>>({});
   const [loading, setLoading] = React.useState(false);
@@ -352,11 +358,14 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
   };
 
   return (
-    <FormStepLayout 
-      title="Property Location"
+    <FormStepLayout
+      title="Location Verification"
       progressSteps={progressSteps}
       onNext={handleNext}
       onBack={onBack}
+      currentStep={currentStep}
+      completedSteps={completedSteps}
+      onStepClick={onStepClick}
       nextDisabled={loading}
     >     
 
