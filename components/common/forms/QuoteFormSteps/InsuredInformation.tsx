@@ -54,11 +54,11 @@ const InsuredInformation: React.FC<InsuredInformationProps> = ({
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   // Set default insured type to individual when component mounts
-  React.useEffect(() => {
-    if (!formData?.insuredType && updateFormData) {
-      updateFormData({ insuredType: "individual" });
-    }
-  }, [formData?.insuredType, updateFormData]);
+  // React.useEffect(() => {
+  //   if (!formData?.insuredType && updateFormData) {
+  //     updateFormData({ insuredType: "individual" });
+  //   }
+  // }, [formData?.insuredType, updateFormData]);
 
   const handleInputChange = (field: keyof QuoteFormData) => (
     e: React.ChangeEvent<HTMLInputElement>

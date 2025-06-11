@@ -79,9 +79,12 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
       numberOfStories: formData?.numberOfStories || '',
       numberOfFamilies: formData?.numberOfFamilies || '',
       occupancyType: formData?.occupancyType || '',
+      commercialOccupancy: formData?.commercialOccupancy || '',
       foundationType: formData?.foundationType || '',
       constructionType: formData?.constructionType || '',
-      floodZone: 'C',
+      floodZone: formData?.floodZone || '',
+      condoType: formData?.condoType || '',
+      numberOfUnits: formData?.numberOfUnits || '',
     };
 
     updateFormData?.({

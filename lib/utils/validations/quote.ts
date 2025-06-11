@@ -32,7 +32,9 @@ export const quoteFormSchema = z.object({
   squareFootage: z.string().min(1, "Square footage is required"),
   numberOfStories: z.string().min(1, "Number of stories is required"),
   numberOfFamilies: z.string().min(1, "Number of families is required"),
+  numberOfUnits: z.string().min(1, "Number of units is required"),
   occupancyType: z.enum(["primary", "secondary", "2-4 family", "single condo"]),
+  commercialOccupancy: z.string().optional(),
 
   // Foundation Info
   foundationType: z.enum([

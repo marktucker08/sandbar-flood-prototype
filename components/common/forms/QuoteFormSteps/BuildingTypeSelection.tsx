@@ -66,7 +66,12 @@ export default function BuildingTypeSelection({ onNext, formData, updateFormData
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   const handleSelect = (value: string) => {
-    updateFormData({ buildingType: value as typeof BuildingType[number]["value"] });
+    // Set insuredType based on buildingType selection
+    if (value === "one_home") {
+      updateFormData({ buildingType: value as typeof BuildingType[number]["value"], insuredType: "individual" });
+    } else {
+      updateFormData({ buildingType: value as typeof BuildingType[number]["value"], insuredType: "business" });
+    }
     
     try {
       buildingTypeSchema.parse({ buildingType: value });

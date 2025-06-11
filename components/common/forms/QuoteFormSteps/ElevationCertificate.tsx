@@ -1,10 +1,11 @@
 "use client";
 import React from "react";
-import { FormInput, FormRadio } from "@/components/common/ui/form";
+import { FormInput, FormRadio, FormSelect } from "@/components/common/ui/form";
 import FormStepLayout from "./FormStepLayout";
 import { QuoteFormData } from "@/types/quote";
 import { FormStep } from "@/lib/constants/formSteps";
 import { z } from "zod";
+import { FLOOD_ZONES } from "@/lib/constants/floodZones";
 
 interface ElevationCertificateProps {
   onNext: () => void;
@@ -208,11 +209,11 @@ const ElevationCertificate: React.FC<ElevationCertificateProps> = ({
             required
           />
           {formData?.floodZoneVerified === false && (
-            <FormInput
-              label="Enter the correct Flood Zone"
-              placeholder="e.g. A, B, C, X, etc."
+            <FormSelect
+              label="Select the correct Flood Zone"
+              options={FLOOD_ZONES.map(zone => ({ value: zone, label: zone }))}
               value={formData?.correctedFloodZone || ""}
-              onChange={handleInputChange("correctedFloodZone")}
+              onChange={(value) => updateFormData?.({ correctedFloodZone: value })}
               error={errors.correctedFloodZone}
               required
             />

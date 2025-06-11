@@ -41,7 +41,10 @@ export interface QuoteFormData {
   squareFootage?: string;
   numberOfStories?: string;
   numberOfFamilies?: string;
+  numberOfUnits?: string;
   occupancyType?: string;
+  condoType?: string;
+  commercialOccupancy?: string;
 
   // Flood Data
   baseFloodElevation?: string; // BFE

@@ -1,10 +1,11 @@
 "use client";
 import React from "react";
 import FormStepLayout from "./FormStepLayout";
-import { FormInput, FormRadioGroup } from "@/components/common/ui/form";
+import { FormInput, FormRadioGroup, FormSelect } from "@/components/common/ui/form";
 import { QuoteFormData } from "@/types/quote";
 import { FormStep } from "@/lib/constants/formSteps";
 import { z } from "zod";
+import { COMMERCIAL_OCCUPANCIES } from "@/lib/constants/occupancies";
 
 interface PropertyDetailsProps {
   onNext: () => void;
@@ -20,8 +21,11 @@ const basePropertySchema = z.object({
   yearBuilt: z.string().min(1, "Year built is required"),
   squareFootage: z.string().min(1, "Square footage is required"),
   numberOfStories: z.string().min(1, "Number of stories is required"),
-  numberOfFamilies: z.string().min(1, "Number of families is required"),
-  occupancyType: z.enum(["primary", "secondary", "2-4_family", "single_condo"]),
+  numberOfFamilies: z.string().min(1, "Number of families is required").optional(),
+  numberOfUnits: z.string().min(1, "Number of units is required").optional(),
+  occupancyType: z.enum(["primary", "secondary", "2-4_family", "single_condo"]).optional(),
+  condoType: z.enum(["low_rise", "high_rise"]).optional(),
+  commercialOccupancy: z.string().optional(),
 });
 
 type PropertyFields = keyof z.infer<typeof basePropertySchema>;
@@ -33,7 +37,7 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   updateFormData,
   progressSteps,
 }) => {
-  console.log("Quote Form Data in Property Details", formData);
+
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
   const handleInputChange = (field: keyof QuoteFormData) => (
@@ -54,6 +58,20 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
     }
   };
 
+  const handleSelectChange = (field: keyof QuoteFormData) => (value: string) => {
+    updateFormData?.({ [field]: value });
+    if (field in basePropertySchema.shape) {
+      try {
+        basePropertySchema.shape[field as PropertyFields].parse(value);
+        setErrors(prev => ({ ...prev, [field]: "" }));
+      } catch (error) {
+        if (error instanceof Error) {
+          setErrors(prev => ({ ...prev, [field]: error.message }));
+        }
+      }
+    }
+  };
+
   const handleNext = () => {
     const propertyFields = {
       effectiveDate: formData?.effectiveDate,
@@ -62,7 +80,10 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
       squareFootage: formData?.squareFootage,
       numberOfStories: formData?.numberOfStories,
       numberOfFamilies: formData?.numberOfFamilies,
+      numberOfUnits: formData?.numberOfUnits,
       occupancyType: formData?.occupancyType,
+      condoType: formData?.condoType,
+      commercialOccupancy: formData?.commercialOccupancy,
     };
 
     try {
@@ -90,6 +111,13 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
     { value: "2-4_family", label: "2-4 Family" },
     { value: "single_condo", label: "Single Condo Unit" }, 
   ];
+
+  const condoTypeOptions = [
+    { value: "low_rise", label: "Low-Rise Condo" },
+    { value: "high_rise", label: "High-Rise Condo" },
+  ];
+
+  const commercialOccupancyOptions = COMMERCIAL_OCCUPANCIES.map((occ) => ({ value: occ, label: occ.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase()).trim() }));
 
   return (
     <FormStepLayout
@@ -151,17 +179,31 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
           error={errors.numberOfStories}
           required
         />
-        <FormInput
-          label="Number of Families"
-          type="number"
-          placeholder="Enter number of families"
-          value={formData?.numberOfFamilies || ""}
-          onChange={handleInputChange("numberOfFamilies")}
-          error={errors.numberOfFamilies}
-          required
-        />
+        {formData.buildingType === "one_home" ? (
+          <FormInput
+            label="Number of Families"
+            type="number"
+            placeholder="Enter number of families"
+            value={formData?.numberOfFamilies || ""}
+            onChange={handleInputChange("numberOfFamilies")}
+            error={errors.numberOfFamilies}
+            required
+          />
+        ) :
+          ["residential_condo", "mixed_use", "commercial", "apartment"].includes(formData.buildingType || "") ? (
+            <FormInput
+              label="Number of Units"
+              type="number"
+              placeholder="Enter number of units"
+              value={formData?.numberOfUnits || ""}
+              onChange={handleInputChange("numberOfUnits")}
+              error={errors.numberOfUnits}
+              required
+            />
+          ) : null
+        }
       </div>
-
+      {formData.buildingType === "one_home" ? (
       <FormRadioGroup
         label="Occupancy Type"
         name="occupancyType"
@@ -173,6 +215,28 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
         error={errors.occupancyType}
         required
       />
+      ) : ["residential_condo"].includes(formData.buildingType || "") ? (
+      <FormRadioGroup
+        label="Condo Type"
+        name="condoType"
+        options={condoTypeOptions}
+        value={formData?.condoType}
+        onChange={(value) => updateFormData?.({ condoType: value as "low_rise" | "high_rise" })}
+        layout="grid"
+        gridCols={2}
+        error={errors.condoType}
+        required
+      />
+      ) : ["mixed_use", "commercial"].includes(formData.buildingType || "") ? (
+        <FormSelect
+          label="Commercial Occupancy Type"
+          options={commercialOccupancyOptions}
+          value={formData?.commercialOccupancy || ""}
+          onChange={handleSelectChange("commercialOccupancy")}
+          error={errors.commercialOccupancy}
+          required
+        />
+      ) : null}
     </FormStepLayout>
   );
 };
