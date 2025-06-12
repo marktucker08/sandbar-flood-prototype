@@ -22,9 +22,8 @@ const elevationSchema = z.object({
   hasCertificate: z.boolean({
     required_error: "Please indicate if you have an elevation certificate",
   }),
-  certificateNumber: z.string().optional(),
-  elevation: z.string().optional(),
-  stepsToFrontDoor: z.string().optional(),
+  certificateElevation: z.string().min(1, "Certificate elevation is required").optional(),
+  stepsToFrontDoor: z.string().min(1, "Number of steps to front door is required").optional(),
   floodZoneVerified: z.boolean({
     required_error: "Please verify the flood zone determination",
   }),
@@ -100,7 +99,6 @@ const ElevationCertificate: React.FC<ElevationCertificateProps> = ({
     try {
       elevationSchema.parse({
         hasCertificate: formData?.hasCertificate,
-        certificateNumber: formData?.certificateNumber,
         certificateElevation: formData?.certificateElevation,
         stepsToFrontDoor: formData?.stepsToFrontDoor,
         floodZoneVerified: formData?.floodZoneVerified,
@@ -144,13 +142,6 @@ const ElevationCertificate: React.FC<ElevationCertificateProps> = ({
 
         {formData?.hasCertificate && (
           <div className="space-y-6">
-            {/* <FormInput
-              label="Certificate Number"
-              placeholder="Enter certificate number"
-              value={formData?.certificateNumber || ""}
-              onChange={handleInputChange("certificateNumber")}
-              error={errors.certificateNumber}
-            /> */}
             
             <div className="bg-amber-50 border border-amber-200 rounded-lg p-6">
             <p className="text-sm text-amber-800">
@@ -165,6 +156,7 @@ const ElevationCertificate: React.FC<ElevationCertificateProps> = ({
               value={formData?.certificateElevation || ""}
               onChange={handleInputChange("certificateElevation")}
               error={errors.certificateElevation}
+              required
             />
             {/* <FormFileUpload
               label="Upload Elevation Certificate"
@@ -187,14 +179,6 @@ const ElevationCertificate: React.FC<ElevationCertificateProps> = ({
 
         {formData?.hasCertificate === false && (
           <div className="space-y-6">
-            {/* <FormInput
-              label="Elevation"
-              type="number"
-              placeholder="Enter elevation"
-              value={formData?.certificateElevation || ""}
-              onChange={handleInputChange("certificateElevation")}
-              error={errors.certificateElevation}
-            /> */}
 
             <FormInput
               label="Number of Steps to Front Door"
@@ -203,6 +187,7 @@ const ElevationCertificate: React.FC<ElevationCertificateProps> = ({
               value={formData?.stepsToFrontDoor || ""}
               onChange={handleInputChange("stepsToFrontDoor")}
               error={errors.stepsToFrontDoor}
+              required
             />
           </div>
         )}

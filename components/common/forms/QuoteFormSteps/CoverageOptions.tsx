@@ -34,7 +34,9 @@ const coverageSchema = z.object({
   buildingCoverage: z.string().min(1, "Building coverage is required"),
   contentsCoverage: z.string().min(1, "Contents coverage is required"),
   lossOfUseCoverage: z.string().min(1, "Loss of use coverage is required"),
-  deductible: z.string().min(1, "Deductible is required"),
+  deductible: z.enum(["1000", "1500", "2000", "5000", "10000", "25000", "50000"], {
+    required_error: "Deductible is required",
+  }),
 });
 
 type CoverageFields = keyof z.infer<typeof coverageSchema>;
@@ -60,8 +62,8 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
         coverageSchema.shape[field as CoverageFields].parse(value.toString());
         setErrors(prev => ({ ...prev, [field]: "" }));
       } catch (error) {
-        if (error instanceof Error) {
-          setErrors(prev => ({ ...prev, [field]: error.message }));
+        if (error instanceof z.ZodError) {
+          setErrors(prev => ({ ...prev, [field]: error.errors[0].message }));
         }
       }
     }
@@ -69,6 +71,14 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
 
   const handleDeductibleChange = (value: string) => {
     updateFormData?.({ deductible: value });
+    try {
+      coverageSchema.shape.deductible.parse(value);
+      setErrors(prev => ({ ...prev, deductible: "" }));
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setErrors(prev => ({ ...prev, deductible: error.errors[0].message }));
+      }
+    }
   };
 
   const handleNext = () => {

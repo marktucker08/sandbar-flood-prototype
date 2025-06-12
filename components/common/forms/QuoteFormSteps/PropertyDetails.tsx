@@ -57,8 +57,8 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
         basePropertySchema.shape[field as PropertyFields].parse(newValue);
         setErrors(prev => ({ ...prev, [field]: "" }));
       } catch (error) {
-        if (error instanceof Error) {
-          setErrors(prev => ({ ...prev, [field]: error.message }));
+        if (error instanceof z.ZodError) {
+          setErrors(prev => ({ ...prev, [field]: error.errors[0].message }));
         }
       }
     }
@@ -71,8 +71,8 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
         basePropertySchema.shape[field as PropertyFields].parse(value);
         setErrors(prev => ({ ...prev, [field]: "" }));
       } catch (error) {
-        if (error instanceof Error) {
-          setErrors(prev => ({ ...prev, [field]: error.message }));
+        if (error instanceof z.ZodError) {
+          setErrors(prev => ({ ...prev, [field]: error.errors[0].message }));
         }
       }
     }

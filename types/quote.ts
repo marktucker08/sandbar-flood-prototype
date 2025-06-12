@@ -59,14 +59,11 @@ export interface QuoteFormData {
 
   // Elevation Certificate
   hasCertificate?: boolean;
-  certificateNumber?: string;
   certificateElevation?: string;
   stepsToFrontDoor?: string;
-  elevationCertificate?: File;
 
   // Construction Info
   constructionType?: string;
-  constructionDocs?: File | null;
 
   // Coverage Options
   buildingReplacementCost?: string;

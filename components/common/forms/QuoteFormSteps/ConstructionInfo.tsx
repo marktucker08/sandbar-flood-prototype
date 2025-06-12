@@ -21,7 +21,6 @@ const constructionSchema = z.object({
   constructionType: z.enum(["frame", "brick", "joisted"], {
     required_error: "Please select a construction type",
   }),
-  constructionDocs: z.any().optional(), // File type will be handled separately
 });
 
 type ConstructionFields = keyof z.infer<typeof constructionSchema>;
@@ -83,7 +82,6 @@ const ConstructionInfo: React.FC<ConstructionInfoProps> = ({
     try {
       constructionSchema.parse({
         constructionType: formData?.constructionType,
-        constructionDocs: formData?.constructionDocs,
       });
       onNext();
     } catch (error) {

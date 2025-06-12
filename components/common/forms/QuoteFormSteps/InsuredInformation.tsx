@@ -22,9 +22,11 @@ const baseInsuredSchema = z.object({
   firstName: z.string().min(1, "First name is required").optional(),
   lastName: z.string().min(1, "Last name is required").optional(),
   phoneNumber: z.string().min(1, "Phone number is required").optional(),
-  email: z.string().email("Invalid email address").optional(),
+  email: z.string().email("Invalid email address").min(1, "Email is required"),
   businessName: z.string().min(1, "Business name is required").optional(),
-  entityType: z.string().optional(),
+  entityType: z.enum(["llc", "corporation", "partnership", "other"], {
+    required_error: "Entity type is required",
+  }).optional(),
   additionalInsured: z.string().optional(),
   sameAsPropertyAddress: z.boolean(),
   mailingAddress: z.string().min(1, "Mailing address is required"),
@@ -59,13 +61,6 @@ const InsuredInformation: React.FC<InsuredInformationProps> = ({
 }) => {
   const [errors, setErrors] = React.useState<Record<string, string>>({});
 
-  // Set default insured type to individual when component mounts
-  // React.useEffect(() => {
-  //   if (!formData?.insuredType && updateFormData) {
-  //     updateFormData({ insuredType: "individual" });
-  //   }
-  // }, [formData?.insuredType, updateFormData]);
-
   const handleInputChange = (field: keyof QuoteFormData) => (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -78,8 +73,8 @@ const InsuredInformation: React.FC<InsuredInformationProps> = ({
         baseInsuredSchema.shape[field as InsuredFields].parse(newValue);
         setErrors(prev => ({ ...prev, [field]: "" }));
       } catch (error) {
-        if (error instanceof Error) {
-          setErrors(prev => ({ ...prev, [field]: error.message }));
+        if (error instanceof z.ZodError) {
+          setErrors(prev => ({ ...prev, [field]: error.errors[0].message }));
         }
       }
     }
