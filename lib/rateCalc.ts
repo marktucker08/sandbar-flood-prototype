@@ -3,11 +3,13 @@
 
 export type FoundationType =
   | "pilings-enclosure"
+  | "pilings-no-enclosure"
   | "crawlspace"
   | "full-wall"
   | "slab"
   | "unfinished"
-  | "finished";
+  | "finished"
+  | "raised-slab";
 
 export type FloodZone = string; // e.g., "A", "AE", "X", etc.
 
@@ -51,6 +53,7 @@ function getFoundationRow(
 ): FoundationRow {
   if (
     foundationType === "pilings-enclosure" ||
+    foundationType === "pilings-no-enclosure" ||
     foundationType === "crawlspace" ||
     foundationType === "full-wall"
   ) {
@@ -59,6 +62,7 @@ function getFoundationRow(
       : "Unvented enclosure";
   }
   if (foundationType === "slab") return "Slab";
+  if (foundationType === "raised-slab") return "Slab";
   if (foundationType === "unfinished") return "Basement";
   if (foundationType === "finished") return "Basement";
   throw new Error("Unknown foundation type");
