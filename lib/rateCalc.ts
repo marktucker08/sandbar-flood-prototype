@@ -140,20 +140,32 @@ export function calculateBaseRatePremium(input: RateCalcInput): {
   // Discounts
   let discount = 0;
   let primary = false;
+  const discountDetails: string[] = [];
   if (input.occupancyType.toLowerCase() === "primary") {
     discount += 0.075;
     primary = true;
+    discountDetails.push("Primary residence: -7.5% off");
   }
   let deductibleDiscount = 0;
-  if (input.deductible === 2500) deductibleDiscount = 0.03;
-  if (input.deductible === 5000) deductibleDiscount = 0.075;
-  if (input.deductible === 10000) deductibleDiscount = 0.15;
+  if (input.deductible >= 2500 && input.deductible < 5000) {
+    deductibleDiscount = 0.03;
+    discountDetails.push(`Deductible $${input.deductible}: -3% off`);
+  } else if (input.deductible >= 5000 && input.deductible < 10000) {
+    deductibleDiscount = 0.075;
+    discountDetails.push(`Deductible $${input.deductible}: -7.5% off`);
+  } else if (input.deductible >= 10000) {
+    deductibleDiscount = 0.15;
+    discountDetails.push(`Deductible $${input.deductible}: -15% off`);
+  }
   discount += deductibleDiscount;
   let premium = basePremium * (1 - discount);
   let minimumApplied = false;
   if (table === "A Zones" && premium < 450) {
     premium = 450;
     minimumApplied = true;
+  }
+  if (discountDetails.length > 0) {
+    details += `\nDiscounts applied: ${discountDetails.join(", ")}. Total discount: -${(discount * 100).toFixed(1)}%`;
   }
   return {
     premium: Math.round(premium),

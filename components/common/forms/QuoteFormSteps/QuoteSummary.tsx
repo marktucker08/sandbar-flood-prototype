@@ -32,7 +32,7 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
   onStepClick,
 }) => {
   const router = useRouter();
-  const { setQuoteData } = useQuote();
+  const { setQuoteData, clearQuoteData } = useQuote();
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return "";
@@ -122,6 +122,12 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
 
     setQuoteData(quoteData);
     router.push("/quote/processing");
+  };
+
+  const handleCancel = () => {
+    clearQuoteData();
+    updateFormData({}); // Reset all form fields
+    router.push("/");
   };
 
   const getStepIndex = (stepLabel: string) => {
@@ -303,7 +309,8 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
                     {formData.waitingPeriod === "standard" ? "Standard" : "Loan Closing"}
                   </p>
                 </div>
-                <div>
+              </div>
+                <div className="col-span-2 mt-4">
                   <h3 className="text-sm font-medium text-gray-500 mb-1">Estimated Premium</h3>
                   <p className="text-gray-900 font-bold text-lg">
                     {formatCurrency(rateResult.premium)}
@@ -313,7 +320,7 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
                     {rateResult.minimumApplied && <><br/>Minimum premium applied for A zone.</>}
                   </div>
                 </div>
-              </div>
+              
             </div>
 
             {/* Risk Assessment */}
@@ -334,6 +341,17 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
                 </div>
               </div>
             </div> */}
+          </div>
+          {/* Action Buttons */}
+          <div className="flex flex-col md:flex-row gap-4 justify-end mt-8">
+            <Button
+              type="button"
+              variant="secondary"
+              onClick={handleCancel}
+              className="md:w-auto w-full"
+            >
+              Cancel
+            </Button>
           </div>
         </div>
       </div>

@@ -251,12 +251,12 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
               if (markerRef.current) {
                 markerRef.current.setPosition(place.location);
               }
-              console.log('[AutocompleteInit] Place selected and map/fields updated');
+              // console.log('[AutocompleteInit] Place selected and map/fields updated');
             } catch (err) {
               console.error('[AutocompleteInit] Error handling place selection:', err);
             }
           });
-          console.log('[AutocompleteInit] Autocomplete widget created and event attached');
+          // console.log('[AutocompleteInit] Autocomplete widget created and event attached');
         }
       } catch (err) {
         console.error('[AutocompleteInit] Error initializing autocomplete:', err);
@@ -285,7 +285,7 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
 
   // Prepare address for National Flood API (no commas, no trailing USA)
   const addressForFloodApi = cleanAddressForFloodApi(formData.formattedAddress || "");
-  console.log("Address for Flood API:", addressForFloodApi); // TODO: Use this value when calling the National Flood API
+  // console.log("Address for Flood API:", addressForFloodApi); // TODO: Use this value when calling the National Flood API
 
   // --- Async handleNext with API call ---
   const handleNext = async () => {
