@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
-  const { address } = await req.json();
+  const { address, fallback } = await req.json();
   const apiKey = process.env.NATIONAL_FLOOD_API_KEY;
 
   if (!apiKey) {
@@ -15,16 +15,39 @@ export async function POST(req: NextRequest) {
     property: "True",
   });
 
-  const response = await fetch(`https://api.nationalflooddata.com/v3/data?${params.toString()}`,
-    {
-      headers: { "x-api-key": apiKey },
+  const fallbackParams = new URLSearchParams({
+    searchtype: "addresscoord",
+    elevation: "True",
+    address,
+  });
+
+  try {
+    if (!fallback) {
+      const response = await fetch(`https://api.nationalflooddata.com/v3/data?${params.toString()}`,
+        {
+          headers: { "x-api-key": apiKey },
+        }
+      );
+      if (!response.ok) {
+        return NextResponse.json({ error: 'Primary API failed' }, { status: 500 });
+      }
+
+      const data = await response.json();
+      return NextResponse.json(data, { status: 200 });
+    } else {
+      const response = await fetch(`https://api.nationalflooddata.com/v3/data?${fallbackParams.toString()}`,
+        {
+          headers: { "x-api-key": apiKey },
+        }
+      );
+      if (!response.ok) {
+        return NextResponse.json({ error: "Failed to fetch flood data" }, { status: 500 });
+      }
+      const data = await response.json();
+      return NextResponse.json(data, { status: 200 });
     }
-  );
-
-  if (!response.ok) {
-    return NextResponse.json({ error: "Failed to fetch flood data" }, { status: 500 });
+  } catch (error) {
+    console.error("Unexpected error:", error);
+    return NextResponse.json({ error: "Unexpected error" }, { status: 500 });
   }
-
-  const data = await response.json();
-  return NextResponse.json(data);
 } 

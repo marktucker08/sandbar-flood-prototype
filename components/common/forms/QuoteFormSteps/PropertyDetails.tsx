@@ -26,12 +26,81 @@ const basePropertySchema = z.object({
   numberOfStories: z.string().min(1, "Number of stories is required"),
   numberOfFamilies: z.string().min(1, "Number of families is required").optional(),
   numberOfUnits: z.string().min(1, "Number of units is required").optional(),
-  occupancyType: z.enum(["primary", "secondary", "2-4_family", "single_condo"]).optional(),
-  condoType: z.enum(["low_rise", "high_rise"]).optional(),
+  occupancyType: z.enum(["primary", "secondary", "2-4_family", "single_condo"], {
+    required_error: "Occupancy type is required",
+  }),
+  condoType: z.enum(["low_rise", "high_rise"], {
+    required_error: "Condo type is required",
+  }).optional(),
   commercialOccupancy: z.string().optional(),
 });
 
 type PropertyFields = keyof z.infer<typeof basePropertySchema>;
+
+// Helper to get schema based on buildingType
+const getPropertySchemaForBuildingType = (buildingType?: string) => {
+  // Always match the basePropertySchema's optional/required status
+  if (buildingType === "one_home") {
+    return z.object({
+      effectiveDate: z.string().min(1, "Effective date is required"),
+      waitingPeriod: z.enum(["standard", "loan"]),
+      yearBuilt: z.string().min(1, "Year built is required"),
+      squareFootage: z.string().min(1, "Square footage is required"),
+      numberOfStories: z.string().min(1, "Number of stories is required"),
+      numberOfFamilies: z.string().optional(), // always optional in base
+      numberOfUnits: z.string().optional(),
+      occupancyType: z.enum(["primary", "secondary", "2-4_family", "single_condo"], {
+        required_error: "Occupancy type is required",
+      }),
+      condoType: z.enum(["low_rise", "high_rise"]).optional(),
+      commercialOccupancy: z.string().optional(),
+    });
+  } else if (buildingType === "residential_condo") {
+    return z.object({
+      effectiveDate: z.string().min(1, "Effective date is required"),
+      waitingPeriod: z.enum(["standard", "loan"]),
+      yearBuilt: z.string().min(1, "Year built is required"),
+      squareFootage: z.string().min(1, "Square footage is required"),
+      numberOfStories: z.string().min(1, "Number of stories is required"),
+      numberOfFamilies: z.string().optional(),
+      numberOfUnits: z.string().optional(),
+      occupancyType: z.enum(["primary", "secondary", "2-4_family", "single_condo"]).optional(),
+      condoType: z.enum(["low_rise", "high_rise"], {
+        required_error: "Condo type is required",
+      }),
+      commercialOccupancy: z.string().optional(),
+    });
+  } else if (["mixed_use", "commercial"].includes(buildingType || "")) {
+    return z.object({
+      effectiveDate: z.string().min(1, "Effective date is required"),
+      waitingPeriod: z.enum(["standard", "loan"]),
+      yearBuilt: z.string().min(1, "Year built is required"),
+      squareFootage: z.string().min(1, "Square footage is required"),
+      numberOfStories: z.string().min(1, "Number of stories is required"),
+      numberOfFamilies: z.string().optional(),
+      numberOfUnits: z.string().optional(),
+      occupancyType: z.enum(["primary", "secondary", "2-4_family", "single_condo"]).optional(),
+      condoType: z.enum(["low_rise", "high_rise"]).optional(),
+      commercialOccupancy: z.string().optional(),
+    });
+  } else if (buildingType === "apartment" || buildingType === "hotel") {
+    return z.object({
+      effectiveDate: z.string().min(1, "Effective date is required"),
+      waitingPeriod: z.enum(["standard", "loan"]),
+      yearBuilt: z.string().min(1, "Year built is required"),
+      squareFootage: z.string().min(1, "Square footage is required"),
+      numberOfStories: z.string().min(1, "Number of stories is required"),
+      numberOfFamilies: z.string().optional(),
+      numberOfUnits: z.string().optional(),
+      occupancyType: z.enum(["primary", "secondary", "2-4_family", "single_condo"]).optional(),
+      condoType: z.enum(["low_rise", "high_rise"]).optional(),
+      commercialOccupancy: z.string().optional(),
+    });
+  } else {
+    // fallback to basePropertySchema
+    return basePropertySchema;
+  }
+};
 
 const PropertyDetails: React.FC<PropertyDetailsProps> = ({
   onNext,
@@ -52,9 +121,11 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
     const newValue = e.target.value;
     updateFormData?.({ [field]: newValue });
 
-    if (field in basePropertySchema.shape) {
+    // Use dynamic schema
+    const schema = getPropertySchemaForBuildingType(formData.buildingType);
+    if (field in schema.shape) {
       try {
-        basePropertySchema.shape[field as PropertyFields].parse(newValue);
+        schema.shape[field as PropertyFields].parse(newValue);
         setErrors(prev => ({ ...prev, [field]: "" }));
       } catch (error) {
         if (error instanceof z.ZodError) {
@@ -66,9 +137,10 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
 
   const handleSelectChange = (field: keyof QuoteFormData) => (value: string) => {
     updateFormData?.({ [field]: value });
-    if (field in basePropertySchema.shape) {
+    const schema = getPropertySchemaForBuildingType(formData.buildingType);
+    if (field in schema.shape) {
       try {
-        basePropertySchema.shape[field as PropertyFields].parse(value);
+        schema.shape[field as PropertyFields].parse(value);
         setErrors(prev => ({ ...prev, [field]: "" }));
       } catch (error) {
         if (error instanceof z.ZodError) {
@@ -91,9 +163,9 @@ const PropertyDetails: React.FC<PropertyDetailsProps> = ({
       condoType: formData?.condoType,
       commercialOccupancy: formData?.commercialOccupancy,
     };
-
+    const schema = getPropertySchemaForBuildingType(formData.buildingType);
     try {
-      basePropertySchema.parse(propertyFields);
+      schema.parse(propertyFields);
       onNext();
     } catch (error) {
       if (error instanceof z.ZodError) {

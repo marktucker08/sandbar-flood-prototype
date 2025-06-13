@@ -313,24 +313,52 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
 
     setLoading(true);
     try {
-      const response = await fetch("/api/flooddata", {
+      // First attempt: POST request to internal API
+      let response = await fetch("/api/flooddata", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ address: addressForFloodApi }),
       });
-      if (!response.ok) {
+
+      let data;
+      let usedFallback = false;
+      if (response.status === 500) {
+        // Fallback: POST to /api/flooddata with fallback flag
+        response = await fetch("/api/flooddata", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ address: addressForFloodApi, fallback: true }),
+        });
+        if (!response.ok) {
+          throw new Error("Fallback POST request also failed");
+        }
+        data = await response.json();
+        usedFallback = true;
+      } else if (!response.ok) {
         throw new Error("Failed to fetch flood data");
+      } else {
+        data = await response.json();
       }
-      const data = await response.json();
-      console.log("Full Flood API response", data);
+
       // Extract fields safely
-      const floodZone = data?.result?.['flood.s_fld_haz_ar']?.[0]?.fld_zone || '';
-      // Use BFE as elevation for quoting
-      const propertyElevation = data?.result?.elevation?.propertyelevation || '';
-      const bfe = data?.result?.elevation?.['flood.basefloodelevation']?.[0]?.elevation || '';
-      const squareFootage = data?.result?.property?.sqft || '';
-      const yearBuilt = data?.result?.property?.yearbuilt || '';
-      const numberOfStories = data?.result?.property?.storiescount || '';
+      let floodZone, propertyElevation, bfe, squareFootage, yearBuilt, numberOfStories;
+      if (!usedFallback) {
+        floodZone = data?.result?.['flood.s_fld_haz_ar']?.[0]?.fld_zone || '';
+        propertyElevation = data?.result?.elevation?.propertyelevation || '';
+        bfe = data?.result?.elevation?.['flood.basefloodelevation']?.[0]?.elevation || '';
+        squareFootage = data?.result?.property?.sqft || '';
+        yearBuilt = data?.result?.property?.yearbuilt || '';
+        numberOfStories = data?.result?.property?.storiescount || '';
+      } else {
+        // Fallback response: only elevation and flood zone are available
+        floodZone = data?.result?.['flood.s_fld_haz_ar']?.[0]?.fld_zone || '';
+        propertyElevation = data?.result?.elevation?.propertyelevation || '';
+        bfe = data?.result?.elevation?.['flood.basefloodelevation']?.[0]?.elevation || '';
+        // The following fields are not available in fallback
+        squareFootage = '';
+        yearBuilt = '';
+        numberOfStories = '';
+      }
       console.log("Flood API values", {
         propertyElevation,
         floodZone,

@@ -75,6 +75,9 @@ export default function BuildingTypeSelection({ onNext, formData, updateFormData
     } else {
       updateFormData({ buildingType: value as typeof BuildingType[number]["value"], insuredType: "business" });
     }
+    if (value === "hotel") {
+      updateFormData({ buildingType: value, commercialOccupancy: "hotel" });
+    }
     
     try {
       buildingTypeSchema.parse({ buildingType: value });
