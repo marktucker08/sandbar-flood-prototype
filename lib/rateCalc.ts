@@ -9,7 +9,7 @@ export type FoundationType =
   | "slab"
   | "unfinished"
   | "finished"
-  | "raised-slab";
+  | "raised";
 
 export type FloodZone = string; // e.g., "A", "AE", "X", etc.
 
@@ -62,7 +62,7 @@ function getFoundationRow(
       : "Unvented enclosure";
   }
   if (foundationType === "slab") return "Slab";
-  if (foundationType === "raised-slab") return "Slab";
+  if (foundationType === "raised") return "Slab";
   if (foundationType === "unfinished") return "Basement";
   if (foundationType === "finished") return "Basement";
   throw new Error("Unknown foundation type");

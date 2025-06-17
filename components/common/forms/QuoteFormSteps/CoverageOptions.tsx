@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import FormStepLayout from "./FormStepLayout";
-import { FormInput, FormRadioGroup } from "@/components/common/ui/form";
+import { FormInput, FormRadioGroup, FormSelect } from "@/components/common/ui/form";
 import { QuoteFormData } from "@/types/quote";
 import { FormStep } from "@/lib/constants/formSteps";
 import { z } from "zod";
@@ -21,20 +21,25 @@ const deductibleOptions = [
   { value: "1000", label: "$1,000" },
   { value: "1500", label: "$1,500" },
   { value: "2000", label: "$2,000" },
+  { value: "2500", label: "$2,500" },
   { value: "5000", label: "$5,000" },
   { value: "10000", label: "$10,000" },
   { value: "25000", label: "$25,000" },
   { value: "50000", label: "$50,000" },
 ];
 
+const lossOfUseOptions = Array.from({ length: 11 }, (_, i) => ({
+  value: (i * 5000).toString(),
+  label: `$${(i * 5000).toLocaleString()}`,
+}));
 
 const coverageSchema = z.object({
   buildingReplacementCost: z.string().min(1, "Building replacement cost is required"),
   contentsReplacementCost: z.string().min(1, "Contents replacement cost is required"),
   buildingCoverage: z.string().min(1, "Building coverage is required"),
   contentsCoverage: z.string().min(1, "Contents coverage is required"),
-  lossOfUseCoverage: z.string().min(1, "Loss of use coverage is required"),
-  deductible: z.enum(["1000", "1500", "2000", "5000", "10000", "25000", "50000"], {
+  lossOfUseCoverage: z.string().optional(),
+  deductible: z.enum(["1000", "1500", "2000", "2500", "5000", "10000", "25000", "50000"], {
     required_error: "Deductible is required",
   }),
 });
@@ -78,6 +83,18 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
     } catch (error) {
       if (error instanceof z.ZodError) {
         setErrors(prev => ({ ...prev, deductible: error.errors[0].message }));
+      }
+    }
+  };
+
+  const handleLossOfUseChange = (value: string) => {
+    updateFormData?.({ lossOfUseCoverage: value });
+    try {
+      coverageSchema.shape.lossOfUseCoverage.parse(value);
+      setErrors((prev) => ({ ...prev, lossOfUseCoverage: "" }));
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        setErrors((prev) => ({ ...prev, lossOfUseCoverage: error.errors[0].message }));
       }
     }
   };
@@ -149,13 +166,14 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
             error={errors.contentsCoverage}
             required
           />
-          <FormInput
-          label="Loss of Use Coverage"
-          value={formData?.lossOfUseCoverage || ""}
-          onChange={handleInputChange("lossOfUseCoverage")}
-          error={errors.lossOfUseCoverage}
-          required
-        />
+          <FormSelect
+            label="Loss of Use Coverage"
+            options={lossOfUseOptions}
+            value={formData?.lossOfUseCoverage || "0"}
+            onChange={handleLossOfUseChange}
+            error={errors.lossOfUseCoverage}
+            required
+          />
         </div>
 
         <FormRadioGroup

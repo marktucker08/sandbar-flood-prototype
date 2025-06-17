@@ -56,6 +56,8 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
         return "full-wall";
       case "slab":
         return "slab";
+      case "raised":
+        return "raised";
       case "unfinished":
         return "unfinished";
       case "finished":
@@ -290,7 +292,9 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 mb-1">Loss of Use Coverage</h3>
                   <p className="text-gray-900">
-                    {formatCurrency(Number(formData.lossOfUseCoverage))}
+                    {formData.lossOfUseCoverage === undefined || formData.lossOfUseCoverage === null || formData.lossOfUseCoverage === "" || Number(formData.lossOfUseCoverage) === 0
+                      ? "$0"
+                      : formatCurrency(Number(formData.lossOfUseCoverage))}
                   </p>
                 </div>
                 <div>
