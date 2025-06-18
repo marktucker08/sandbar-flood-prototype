@@ -70,7 +70,8 @@ function getFoundationRow(
 }
 
 function getRateTable(floodZone: FloodZone): "A Zones" | "B, C & X Zones" {
-  if (floodZone.toUpperCase().startsWith("A")) {
+  // V-Zones are same as A-Zones?
+  if (floodZone.toUpperCase().startsWith("A") || floodZone.toUpperCase().startsWith("V")) {
     return "A Zones";
   }
   if (

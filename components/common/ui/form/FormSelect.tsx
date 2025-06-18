@@ -41,7 +41,7 @@ const FormSelect: React.FC<FormSelectProps> = ({
 
   return (
     <FormField label={label} error={error} required={required} className={className}>
-      <Combobox value={selectedOption} onChange={(opt) => onChange(opt.value)}>
+      <Combobox value={selectedOption} onChange={(opt) => opt && onChange(opt.value)}>
         <div className="relative">
           <Combobox.Input
             className={cn(
