@@ -1,14 +1,14 @@
 "use client";
 import React from "react";
 import FormStepLayout from "./FormStepLayout";
-import { BuildingType, QuoteFormData } from "@/types/quote";
+import { BuildingType, QuoteFormData, FoundationType as FoundationTypeOptions } from "@/types/quote";
 import { FormStep } from "@/lib/constants/formSteps";
 import { formatCurrency } from "@/lib/utils/format";
 import { useQuote } from "@/context/QuoteContext";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/common/ui/button";
 import { Pencil } from "lucide-react";
-import { calculateBaseRatePremium, RateCalcInput, FoundationType } from "@/lib/rateCalc";
+import { calculateBaseRatePremium, RateCalcInput } from "@/lib/rateCalc";
 
 interface QuoteSummaryProps {
   onBack: () => void;
@@ -44,7 +44,7 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
   };
 
   // Helper to map formData.foundationType to FoundationType
-  const mapFoundationType = (type: string): FoundationType => {
+  const mapFoundationType = (type: string) => {
     switch (type?.toLowerCase()) {
       case "pilings-enclosure":
       case "pilings":
@@ -83,6 +83,7 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
     deductible: Number(formData.deductible) as 1500 | 2500 | 5000 | 10000,
     buildingCoverage: Number(formData.buildingCoverage) || 0,
     contentsCoverage: Number(formData.contentsCoverage) || 0,
+    replacementCost: Number(formData.buildingReplacementCost) || 0,
   };
 
   const rateResult = calculateBaseRatePremium(rateInput);
@@ -148,6 +149,15 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
       onStepClick={onStepClick}
     >
       <div className="max-w-4xl mx-auto">
+        {/* Estimated Premium Section - Prominent and at the top */}
+        <div className="bg-blue-50 border border-blue-200 rounded-xl shadow-md p-8 mb-8 flex flex-col items-center justify-center">
+          <h2 className="text-xl font-bold text-blue-900 mb-2">Estimated Premium</h2>
+          <p className="text-3xl font-extrabold text-blue-700 mb-1">{formatCurrency(rateResult.premium)}</p>
+          <div className="text-sm text-blue-800 mb-1">{rateResult.details}</div>
+          {rateResult.minimumApplied && (
+            <div className="text-xs text-blue-600 mt-1">Minimum premium applied for A zone.</div>
+          )}
+        </div>
         <div className="bg-white rounded-xl shadow-sm p-8">
           <div className="space-y-8">
             {/* Property Information */}
@@ -188,7 +198,9 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 mb-1">Foundation Type</h3>
-                  <p className="text-gray-900">{formData.foundationType}</p>
+                  <p className="text-gray-900">{
+                    FoundationTypeOptions.find(type => type.value === formData.foundationType)?.label || formData.foundationType || "N/A"
+                  }</p>
                 </div>
                 <div>
                   <h3 className="text-sm font-medium text-gray-500 mb-1">Construction Type</h3>
@@ -314,17 +326,6 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
                   </p>
                 </div>
               </div>
-                <div className="col-span-2 mt-4">
-                  <h3 className="text-sm font-medium text-gray-500 mb-1">Estimated Premium</h3>
-                  <p className="text-gray-900 font-bold text-lg">
-                    {formatCurrency(rateResult.premium)}
-                  </p>
-                  <div className="text-xs text-gray-500 mt-1">
-                    {rateResult.details}
-                    {rateResult.minimumApplied && <><br/>Minimum premium applied for A zone.</>}
-                  </div>
-                </div>
-              
             </div>
 
             {/* Risk Assessment */}

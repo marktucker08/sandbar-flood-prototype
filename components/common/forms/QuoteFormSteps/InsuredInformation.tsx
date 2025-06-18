@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { FormInput, FormRadioGroup, FormToggle } from "@/components/common/ui/form";
+import { FormInput, FormToggle, FormSelect } from "@/components/common/ui/form";
 import FormStepLayout from "./FormStepLayout";
 import { QuoteFormData } from "@/types/quote";
 import { FormStep } from "@/lib/constants/formSteps";
@@ -24,7 +24,7 @@ const baseInsuredSchema = z.object({
   phoneNumber: z.string().min(1, "Phone number is required").optional(),
   email: z.string().email("Invalid email address").min(1, "Email is required"),
   businessName: z.string().min(1, "Business name is required").optional(),
-  entityType: z.enum(["llc", "corporation", "partnership", "other"], {
+  entityType: z.enum(["llc", "corporation", "partnership", "rcbap", "other"], {
     required_error: "Entity type is required",
   }).optional(),
   additionalInsured: z.string().optional(),
@@ -160,6 +160,7 @@ const InsuredInformation: React.FC<InsuredInformationProps> = ({
     { value: "llc", label: "LLC" },
     { value: "corporation", label: "Corporation" },
     { value: "partnership", label: "Partnership" },
+    { value: "rcbap", label: "RCBAP (Condo Association)" },
     { value: "other", label: "Other" },
   ];
 
@@ -220,14 +221,25 @@ const InsuredInformation: React.FC<InsuredInformationProps> = ({
               error={errors.businessName}
               required
             />
-            <FormRadioGroup
+            <FormSelect
               label="Entity Type"
-              name="entityType"
               options={entityTypeOptions}
-              value={formData?.entityType || ""}
-              onChange={(value) => updateFormData?.({ entityType: value as "llc" | "corporation" | "partnership" | "other" })}
+              value={(() => {
+                if (
+                  formData?.buildingType === "residential_condo" &&
+                  !formData?.entityType
+                ) {
+                  setTimeout(() => {
+                    updateFormData?.({ entityType: "rcbap" });
+                  }, 0);
+                  return "rcbap";
+                }
+                return formData?.entityType || "";
+              })()}
+              onChange={(value) => updateFormData?.({ entityType: value })}
               error={errors.entityType}
               required
+              placeholder="Select entity type"
             />
           </div>
         )}
@@ -241,16 +253,16 @@ const InsuredInformation: React.FC<InsuredInformationProps> = ({
         />
 
         <FormInput
-          label="Phone Number"
-          placeholder="Enter phone number"
+          label="Insured Phone Number"
+          placeholder="Enter insured phone number"
           type="text"
           value={formData?.phoneNumber || ""}
           onChange={handleInputChange("phoneNumber")}
         />
 
         <FormInput
-          label="Email"
-          placeholder="Enter email"
+          label="Insured Email"
+          placeholder="Enter insured email address"
           type="email"
           value={formData?.email || ""}
           onChange={handleInputChange("email")}

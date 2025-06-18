@@ -57,7 +57,7 @@ const CoverageOptions: React.FC<CoverageOptionsProps> = ({
   onStepClick,
 }) => {
   const [errors, setErrors] = React.useState<Record<string, string>>({});
-  console.log(formData);
+  // console.log(formData);
 
   const handleInputChange = (field: keyof QuoteFormData) => (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;

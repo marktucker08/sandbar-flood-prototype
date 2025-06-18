@@ -25,6 +25,7 @@ export interface RateCalcInput {
   deductible: 1500 | 2500 | 5000 | 10000;
   buildingCoverage: number;
   contentsCoverage: number;
+  replacementCost: number; // NEW: for RCE calculation
 }
 
 // Foundation row types for table lookup
@@ -95,28 +96,29 @@ function getElevationAboveBFE(input: RateCalcInput): number {
 
 function getARateIndex(elevAboveBFE: number): number {
   // 4+ = 0, 3+ = 1, 2+ = 2, 1+ = 3, 0 = 4, -1 = 5, Below -1 = 6
-  if (elevAboveBFE >= 4) return 0;
-  if (elevAboveBFE >= 3) return 1;
-  if (elevAboveBFE >= 2) return 2;
-  if (elevAboveBFE >= 1) return 3;
-  if (elevAboveBFE >= 0) return 4;
-  if (elevAboveBFE >= -1) return 5;
-  return 6; // below -1
+  // logic rounds up to next foot if tenths is .8 or higher
+  if (elevAboveBFE >= 3.8) return 0;
+  if (elevAboveBFE >= 2.8) return 1;
+  if (elevAboveBFE >= 1.8) return 2;
+  if (elevAboveBFE >= 0.8) return 3;
+  if (elevAboveBFE >= -0.2) return 4;
+  if (elevAboveBFE >= -1.2) return 5;
+  return 6; // below -1.2
 }
 
 function getBCXRateIndex(elevAboveBFE: number): number {
   // 10+ & up = 0, 9+ = 1, ... 0 = 10
-  if (elevAboveBFE >= 10) return 0;
-  if (elevAboveBFE >= 9) return 1;
-  if (elevAboveBFE >= 8) return 2;
-  if (elevAboveBFE >= 7) return 3;
-  if (elevAboveBFE >= 6) return 4;
-  if (elevAboveBFE >= 5) return 5;
-  if (elevAboveBFE >= 4) return 6;
-  if (elevAboveBFE >= 3) return 7;
-  if (elevAboveBFE >= 2) return 8;
-  if (elevAboveBFE >= 1) return 9;
-  return 10; // 0 or below
+  if (elevAboveBFE >= 9.8) return 0;
+  if (elevAboveBFE >= 8.8) return 1;
+  if (elevAboveBFE >= 7.8) return 2;
+  if (elevAboveBFE >= 6.8) return 3;
+  if (elevAboveBFE >= 5.8) return 4;
+  if (elevAboveBFE >= 4.8) return 5;
+  if (elevAboveBFE >= 3.8) return 6;
+  if (elevAboveBFE >= 2.8) return 7;
+  if (elevAboveBFE >= 1.8) return 8;
+  if (elevAboveBFE >= 0.8) return 9;
+  return 10; // below 0.8
 }
 
 export function calculateBaseRatePremium(input: RateCalcInput): {
@@ -125,19 +127,30 @@ export function calculateBaseRatePremium(input: RateCalcInput): {
   discounts: { primary: boolean; deductible: number };
   minimumApplied: boolean;
   details: string;
+  rceAdderApplied?: boolean;
 } {
   const table = getRateTable(input.floodZone);
   const elevAboveBFE = getElevationAboveBFE(input);
   let baseRatePercent = 0;
   let details = "";
+  let rceAdderApplied = false;
   if (table === "A Zones") {
     const row = getFoundationRow(input.foundationType, input.isProperlyVented);
     baseRatePercent = A_ZONE_RATES[row][getARateIndex(elevAboveBFE)];
-    details = `A Zones: ${row}, Elevation: ${elevAboveBFE} ft, Rate: ${baseRatePercent}%`;
+    details = `A Zones: ${row}, Elevation Difference: ${elevAboveBFE} ft, Rate: ${baseRatePercent}%`;
   } else {
     const row = input.foundationType === "unfinished" || input.foundationType === "finished" ? "Basement" : "All other foundations";
     baseRatePercent = BCX_ZONE_RATES[row][getBCXRateIndex(elevAboveBFE)];
-    details = `B, C & X Zones: ${row}, Elevation: ${elevAboveBFE} ft, Rate: ${baseRatePercent}%`;
+    details = `B, C & X Zones: ${row}, Elevation Difference: ${elevAboveBFE} ft, Rate: ${baseRatePercent}%`;
+  }
+  // RCE Adder
+  if (input.replacementCost > 0) {
+    const rce = input.buildingCoverage / input.replacementCost;
+    if (rce < 0.5) {
+      baseRatePercent = +(baseRatePercent * 1.25).toFixed(4);
+      rceAdderApplied = true;
+      details += `\nRCE < 50%: 25% adder applied to base rate.`;
+    }
   }
   // Calculate base premium
   const basePremium = ((input.buildingCoverage + input.contentsCoverage) * baseRatePercent) / 100;
@@ -177,5 +190,6 @@ export function calculateBaseRatePremium(input: RateCalcInput): {
     discounts: { primary, deductible: deductibleDiscount },
     minimumApplied,
     details,
+    rceAdderApplied,
   };
 } 

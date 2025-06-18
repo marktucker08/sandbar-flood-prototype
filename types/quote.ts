@@ -7,6 +7,17 @@ export const BuildingType = [
   { value: "hotel", label: "Hotel" }
 ]
 
+export const FoundationType = [
+  { value: "crawlspace", label: "Crawlspace" },
+  { value: "slab", label: "Slab at Grade" },
+  { value: "raised", label: "Raised Slab on Fill" },
+  { value: "unfinished", label: "Unfinished Basement" },
+  { value: "finished", label: "Finished Basement" },
+  { value: "pilings-enclosure", label: "Elevated on Pilings with Enclosure" },
+  { value: "pilings-no-enclosure", label: "Elevated on Pilings with No Enclosure" },
+  { value: "full-wall", label: "Elevated on Full Foundation Wall" }
+]
+
 export interface QuoteFormData {
   buildingType?: typeof BuildingType[number]["value"]; 
   // Location Verification
@@ -45,6 +56,8 @@ export interface QuoteFormData {
   occupancyType?: string;
   condoType?: string;
   commercialOccupancy?: string;
+  numberOfResidentialUnits?: string;
+  numberOfCommercialUnits?: string;
 
   // Flood Data
   baseFloodElevation?: string; // BFE
@@ -54,7 +67,7 @@ export interface QuoteFormData {
   correctedFloodZone?: string; // Corrected Flood Zone
 
   // Foundation Info
-  foundationType?: string;
+  foundationType?: typeof FoundationType[number]["value"];
   isFoundationVented?: boolean;
 
   // Elevation Certificate
