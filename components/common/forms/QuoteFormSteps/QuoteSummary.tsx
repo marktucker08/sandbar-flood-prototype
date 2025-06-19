@@ -87,15 +87,17 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
   };
 
   const rateResult = calculateBaseRatePremium(rateInput);
+  const totalPremium = rateResult.buildingPremium + rateResult.contentsPremium;
 
   const handleSubmit = async () => {
     // Use the calculated premium
-    const premium = rateResult.premium;
     const quoteData = {
       quoteId: `Q-${Date.now()}`,
       propertyAddress: `${formData?.streetAddress}, ${formData?.city}, ${formData?.state} ${formData?.zipCode}`,
       coverageAmount: Number(formData?.buildingCoverage) + Number(formData?.contentsCoverage),
-      premium,
+      premium: totalPremium,
+      buildingPremium: rateResult.buildingPremium,
+      contentsPremium: rateResult.contentsPremium,
       deductible: Number(formData?.deductible),
       effectiveDate: formData?.effectiveDate || new Date().toISOString().split('T')[0],
       expirationDate: new Date(new Date(formData?.effectiveDate || new Date()).setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
@@ -120,7 +122,7 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
     };
 
     updateFormData?.({
-      premium: premium.toString(),
+      premium: totalPremium.toString(),
     });
 
     setQuoteData(quoteData);
@@ -149,13 +151,28 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
       onStepClick={onStepClick}
     >
       <div className="max-w-4xl mx-auto">
-        {/* Estimated Premium Section - Prominent and at the top */}
-        <div className="bg-blue-50 border border-blue-200 rounded-xl shadow-md p-8 mb-8 flex flex-col items-center justify-center">
-          <h2 className="text-xl font-bold text-blue-900 mb-2">Estimated Premium</h2>
-          <p className="text-3xl font-extrabold text-blue-700 mb-1">{formatCurrency(rateResult.premium)}</p>
-          <div className="text-sm text-blue-800 mb-1">{rateResult.details}</div>
+        {/* Estimated Premium Section */}
+        <div className="bg-blue-50 border border-blue-200 rounded-xl shadow-md p-8 mb-8">
+          <div className="text-center">
+            <h2 className="text-xl font-bold text-blue-900 mb-2">Total Estimated Premium</h2>
+            <p className="text-3xl font-extrabold text-blue-700 mb-4">{formatCurrency(totalPremium)}</p>
+          </div>
+          <div className="grid md:grid-cols-2 gap-4">
+            {/* Building Premium */}
+            <div className="bg-white p-4 rounded-lg border">
+              <h3 className="text-lg font-semibold text-gray-800">Building Premium</h3>
+              <p className="text-2xl font-bold text-gray-900 my-2">{formatCurrency(rateResult.buildingPremium)}</p>
+              <div className="text-xs text-gray-600 whitespace-pre-wrap">{rateResult.buildingDetails}</div>
+            </div>
+            {/* Contents Premium */}
+            <div className="bg-white p-4 rounded-lg border">
+              <h3 className="text-lg font-semibold text-gray-800">Contents Premium</h3>
+              <p className="text-2xl font-bold text-gray-900 my-2">{formatCurrency(rateResult.contentsPremium)}</p>
+              <div className="text-xs text-gray-600 whitespace-pre-wrap">{rateResult.contentsDetails}</div>
+            </div>
+          </div>
           {rateResult.minimumApplied && (
-            <div className="text-xs text-blue-600 mt-1">Minimum premium applied for A zone.</div>
+            <div className="text-xs text-blue-600 mt-4 text-center">Minimum premium for A zone applied and distributed proportionally.</div>
           )}
         </div>
         <div className="bg-white rounded-xl shadow-sm p-8">

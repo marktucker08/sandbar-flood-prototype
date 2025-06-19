@@ -122,75 +122,178 @@ function getBCXRateIndex(elevAboveBFE: number): number {
   return 10; // below 0.8
 }
 
-export function calculateBaseRatePremium(input: RateCalcInput): {
-  premium: number;
-  baseRatePercent: number;
-  discounts: { primary: boolean; deductible: number };
+export interface RateCalcOutput {
+  buildingPremium: number;
+  contentsPremium: number;
+  buildingBaseRate: number;
+  contentsBaseRate: number;
+  discounts: {
+    primary: boolean;
+    deductible: number;
+    buildingCoverageLimit: number;
+  };
   minimumApplied: boolean;
-  details: string;
+  buildingDetails: string;
+  contentsDetails: string;
   rceAdderApplied?: boolean;
-} {
+}
+
+export function calculateBaseRatePremium(input: RateCalcInput): RateCalcOutput {
   const table = getRateTable(input.floodZone);
   const elevAboveBFE = getElevationAboveBFE(input);
-  let baseRatePercent = 0;
-  let details = "";
+  let initialBaseRate = 0;
+  let buildingDetails = "";
+  let contentsDetails = "";
   let rceAdderApplied = false;
+  
+  // Get initial base rate
   if (table === "A Zones") {
     const row = getFoundationRow(input.foundationType, input.isProperlyVented);
-    baseRatePercent = A_ZONE_RATES[row][getARateIndex(elevAboveBFE)];
-    details = `A Zones: ${row}, Elevation Difference: ${elevAboveBFE} ft, Rate: ${baseRatePercent}%`;
+    initialBaseRate = A_ZONE_RATES[row][getARateIndex(elevAboveBFE)];
+    const zoneDetails = `${table}: ${row}, Elevation Difference: ${elevAboveBFE} ft, Initial Rate: ${initialBaseRate}%`;
+    buildingDetails = zoneDetails;
+    contentsDetails = zoneDetails;
   } else {
     const row = input.foundationType === "unfinished" || input.foundationType === "finished" ? "Basement" : "All other foundations";
-    baseRatePercent = BCX_ZONE_RATES[row][getBCXRateIndex(elevAboveBFE)];
-    details = `B, C & X Zones: ${row}, Elevation Difference: ${elevAboveBFE} ft, Rate: ${baseRatePercent}%`;
+    initialBaseRate = BCX_ZONE_RATES[row][getBCXRateIndex(elevAboveBFE)];
+    const zoneDetails = `${table}: ${row}, Elevation Difference: ${elevAboveBFE} ft, Initial Rate: ${initialBaseRate}%`;
+    buildingDetails = zoneDetails;
+    contentsDetails = zoneDetails;
   }
-  // RCE Adder
+
+  // Calculate shared adjustments (apply to both building and contents)
+  let sharedAdjustment = 0;
+  const sharedAdjustmentDetails: string[] = [];
+
+  // Primary residence discount
+  let primary = false;
+  if (input.occupancyType.toLowerCase() === "primary") {
+    sharedAdjustment -= 0.075; // -7.5%
+    primary = true;
+    sharedAdjustmentDetails.push("Primary residence: -7.5% to base rate");
+  }
+
+  // Deductible discount
+  let deductibleDiscount = 0;
+  const isAVZone = input.floodZone.toUpperCase().startsWith('A') || input.floodZone.toUpperCase().startsWith('V');
+  
+  if (isAVZone) {
+    // A and V zone deductible discounts
+    if (input.deductible >= 2500 && input.deductible < 5000) {
+      deductibleDiscount = 0.03;
+      sharedAdjustment -= 0.03; // -3%
+      sharedAdjustmentDetails.push(`Deductible $${input.deductible} (A/V Zone): -3% to base rate`);
+    } else if (input.deductible >= 5000 && input.deductible < 10000) {
+      deductibleDiscount = 0.075;
+      sharedAdjustment -= 0.075; // -7.5%
+      sharedAdjustmentDetails.push(`Deductible $${input.deductible} (A/V Zone): -7.5% to base rate`);
+    } else if (input.deductible >= 10000) {
+      deductibleDiscount = 0.15;
+      sharedAdjustment -= 0.15; // -15%
+      sharedAdjustmentDetails.push(`Deductible $${input.deductible} (A/V Zone): -15% to base rate`);
+    }
+  } else {
+    // B, C, and X zone deductible discounts
+    if (input.deductible >= 5000) {
+      deductibleDiscount = 0.10;
+      sharedAdjustment -= 0.10; // -10%
+      sharedAdjustmentDetails.push(`Deductible $${input.deductible} (B/C/X Zone): -10% to base rate`);
+    }
+  }
+
+  // Calculate building-specific adjustments
+  let buildingAdjustment = sharedAdjustment;
+  const buildingAdjustmentDetails = [...sharedAdjustmentDetails];
+
+  // Building Coverage limits discount
+  let buildingCoverageLimitDiscount = 0;
+  if (input.buildingCoverage > 500000) {
+    buildingCoverageLimitDiscount = 0.12; // -12%
+    buildingAdjustment -= 0.12;
+    buildingAdjustmentDetails.push("Building coverage above $500,000: -12% to base rate");
+  } else if (input.buildingCoverage >= 300000) {
+    buildingCoverageLimitDiscount = 0.075; // -7.5%
+    buildingAdjustment -= 0.075;
+    buildingAdjustmentDetails.push("Building coverage $300,000-$500,000: -7.5% to base rate");
+  }
+
+  // RCE Adder (building only)
   if (input.replacementCost > 0) {
     const rce = input.buildingCoverage / input.replacementCost;
     if (rce < 0.5) {
-      baseRatePercent = +(baseRatePercent * 1.25).toFixed(4);
+      buildingAdjustment += 0.25; // +25%
       rceAdderApplied = true;
-      details += `\nRCE < 50%: 25% adder applied to base rate.`;
+      buildingAdjustmentDetails.push("RCE < 50%: +25% to base rate");
     }
   }
-  // Calculate base premium
-  const basePremium = ((input.buildingCoverage + input.contentsCoverage) * baseRatePercent) / 100;
-  // Discounts
-  let discount = 0;
-  let primary = false;
-  const discountDetails: string[] = [];
-  if (input.occupancyType.toLowerCase() === "primary") {
-    discount += 0.075;
-    primary = true;
-    discountDetails.push("Primary residence: -7.5% off");
+
+  // Apply adjustments to get initial adjusted rates
+  const adjustedBuildingRate = initialBaseRate * (1 + buildingAdjustment);
+  const adjustedContentsRate = initialBaseRate * (1 + sharedAdjustment);
+
+  // Add adjustment details to both summaries
+  buildingDetails += `\nInitial base rate: ${initialBaseRate}%`;
+  contentsDetails += `\nInitial base rate: ${initialBaseRate}%`;
+
+  if (buildingAdjustmentDetails.length > 0) {
+    buildingDetails += `\nRate adjustments: ${buildingAdjustmentDetails.join(", ")}`;
+    buildingDetails += `\nNet rate adjustment: ${(buildingAdjustment * 100).toFixed(1)}%`;
+    buildingDetails += `\nAdjusted building rate: ${adjustedBuildingRate.toFixed(4)}%`;
   }
-  let deductibleDiscount = 0;
-  if (input.deductible >= 2500 && input.deductible < 5000) {
-    deductibleDiscount = 0.03;
-    discountDetails.push(`Deductible $${input.deductible}: -3% off`);
-  } else if (input.deductible >= 5000 && input.deductible < 10000) {
-    deductibleDiscount = 0.075;
-    discountDetails.push(`Deductible $${input.deductible}: -7.5% off`);
-  } else if (input.deductible >= 10000) {
-    deductibleDiscount = 0.15;
-    discountDetails.push(`Deductible $${input.deductible}: -15% off`);
+
+  if (sharedAdjustmentDetails.length > 0) {
+    contentsDetails += `\nRate adjustments: ${sharedAdjustmentDetails.join(", ")}`;
+    contentsDetails += `\nNet rate adjustment: ${(sharedAdjustment * 100).toFixed(1)}%`;
+    contentsDetails += `\nAdjusted contents rate: ${adjustedContentsRate.toFixed(4)}%`;
   }
-  discount += deductibleDiscount;
-  let premium = basePremium * (1 - discount);
+
+  // Apply minimum adjusted base rate of 0.11%
+  const MINIMUM_ADJUSTED_BASE_RATE = 0.11;
+  let finalBuildingRate = adjustedBuildingRate;
+  let finalContentsRate = adjustedContentsRate;
+
+  if (adjustedBuildingRate < MINIMUM_ADJUSTED_BASE_RATE) {
+    finalBuildingRate = MINIMUM_ADJUSTED_BASE_RATE;
+    buildingDetails += `\nMinimum adjusted base rate of ${MINIMUM_ADJUSTED_BASE_RATE}% applied`;
+  }
+
+  if (adjustedContentsRate < MINIMUM_ADJUSTED_BASE_RATE) {
+    finalContentsRate = MINIMUM_ADJUSTED_BASE_RATE;
+    contentsDetails += `\nMinimum adjusted base rate of ${MINIMUM_ADJUSTED_BASE_RATE}% applied`;
+  }
+
+  // Calculate separate premiums
+  let buildingPremium = (input.buildingCoverage * finalBuildingRate) / 100;
+  let contentsPremium = (input.contentsCoverage * finalContentsRate) / 100;
+  
+  // Apply minimum premium if needed (A Zones only)
   let minimumApplied = false;
-  if (table === "A Zones" && premium < 450) {
-    premium = 450;
-    minimumApplied = true;
+  if (table === "A Zones") {
+    const totalPremium = buildingPremium + contentsPremium;
+    if (totalPremium < 450) {
+      // Distribute the minimum premium proportionally between building and contents
+      const ratio = buildingPremium / totalPremium;
+      buildingPremium = 450 * ratio;
+      contentsPremium = 450 * (1 - ratio);
+      minimumApplied = true;
+      buildingDetails += "\nMinimum premium of $450 applied for A Zones (proportionally distributed)";
+      contentsDetails += "\nMinimum premium of $450 applied for A Zones (proportionally distributed)";
+    }
   }
-  if (discountDetails.length > 0) {
-    details += `\nDiscounts applied: ${discountDetails.join(", ")}. Total discount: -${(discount * 100).toFixed(1)}%`;
-  }
+
   return {
-    premium: Math.round(premium),
-    baseRatePercent,
-    discounts: { primary, deductible: deductibleDiscount },
+    buildingPremium: Math.round(buildingPremium),
+    contentsPremium: Math.round(contentsPremium),
+    buildingBaseRate: +finalBuildingRate.toFixed(4),
+    contentsBaseRate: +finalContentsRate.toFixed(4),
+    discounts: {
+      primary,
+      deductible: deductibleDiscount,
+      buildingCoverageLimit: buildingCoverageLimitDiscount
+    },
     minimumApplied,
-    details,
+    buildingDetails,
+    contentsDetails,
     rceAdderApplied,
   };
 } 
