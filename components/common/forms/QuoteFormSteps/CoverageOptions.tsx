@@ -36,8 +36,8 @@ const lossOfUseOptions = Array.from({ length: 11 }, (_, i) => ({
 const coverageSchema = z.object({
   buildingReplacementCost: z.string().min(1, "Building replacement cost is required"),
   contentsReplacementCost: z.string().min(1, "Contents replacement cost is required"),
-  buildingCoverage: z.string().min(1, "Building coverage is required"),
-  contentsCoverage: z.string().min(1, "Contents coverage is required"),
+  buildingCoverage: z.string().min(1, "Building coverage is required").max(1000000, "Maximum building coverage is $1,000,000"),
+  contentsCoverage: z.string().min(1, "Contents coverage is required").max(250000, "Maximum contents coverage is $250,000"),
   lossOfUseCoverage: z.string().optional(),
   deductible: z.enum(["1000", "1500", "2000", "2500", "5000", "10000", "25000", "50000"], {
     required_error: "Deductible is required",
