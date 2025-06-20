@@ -183,7 +183,7 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
                 };
                 updateFormData({
                   streetAddress: (getComponent('street_number') + " " + getComponent('route')) || "",
-                  city: getComponent('locality'),
+                  city: getComponent('locality') || getComponent('sublocality'),
                   state: getComponent('administrative_area_level_1'),
                   zipCode: getComponent('postal_code'),
                   latLng: { lat, lng },
@@ -234,11 +234,24 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
               const { placePrediction } = event as { placePrediction: any }; // eslint-disable-line @typescript-eslint/no-explicit-any
               const place = placePrediction.toPlace();
               await place.fetchFields({ fields: ['displayName', 'formattedAddress', 'addressComponents', 'location', 'viewport'] });
+              console.log('Autocomplete Place Details:', place);
+              
+              const getComponent = (type: string, useShortName = false) => {
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                const component = place.addressComponents?.find((c: any) => c.types.includes(type));
+                if (!component) return "";
+                return useShortName ? (component.shortText || component.longText) : (component.longText || component.shortText);
+              };
+
+              const streetNumber = getComponent('street_number');
+              const route = getComponent('route');
+              const streetAddress = `${streetNumber} ${route}`.trim();
+
               updateFormData({
-                streetAddress: place.displayName || "",
-                city: place.addressComponents[2].longText || "",
-                state: place.addressComponents[4].shortText || "",
-                zipCode: place.addressComponents[6].shortText || "",
+                streetAddress: streetAddress || place.displayName || "",
+                city: getComponent('locality') || getComponent('sublocality'),
+                state: getComponent('administrative_area_level_1', true),
+                zipCode: getComponent('postal_code'),
                 latLng: place.location,
                 formattedAddress: place.formattedAddress || "",
               });
