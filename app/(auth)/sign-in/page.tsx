@@ -5,13 +5,14 @@ import { FormInput } from "@/components/common/ui/form";
 import PasswordInput from "@/components/common/forms/PasswordInput";
 import { Button } from "@/components/common/ui/button";
 import Image from "next/image";
-import { signIn } from "next-auth/react";
+import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { toast } from "react-hot-toast";
 
 export default function SignInPage() {
   const router = useRouter();
   const [isLoading, setIsLoading] = React.useState(false);
+  const supabase = createClient();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -22,14 +23,13 @@ export default function SignInPage() {
     const password = formData.get("password") as string;
 
     try {
-      const result = await signIn("credentials", {
+      const { error } = await supabase.auth.signInWithPassword({
         email,
         password,
-        redirect: false,
       });
 
-      if (result?.error) {
-        toast.error("Invalid email or password");
+      if (error) {
+        toast.error(error.message);
         return;
       }
 
