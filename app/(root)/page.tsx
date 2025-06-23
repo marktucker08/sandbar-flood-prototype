@@ -1,23 +1,44 @@
 'use client';
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import QuickActionsSection from "@/components/features/quotes/QuickActionsSection";
 import DashboardSection from "@/components/common/layout/DashboardSection";
 import SearchBar from "@/components/common/ui/SearchBar";
-import { useSession } from "next-auth/react";
-import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
+import { useRouter } from "next/navigation";
 
 export default function HomePage() {
-  const { data: session } = useSession();
+  const router = useRouter();
+  const supabase = createClient();
+  const [loading, setLoading] = useState(true);
 
-  if (!session) {
-    redirect('/sign-in');
-  }
+  useEffect(() => {
+    const checkUser = async () => {
+      const {
+        data: { session },
+      } = await supabase.auth.getSession();
+      if (session) {
+        setLoading(false);
+      } else {
+        router.push("/sign-in");
+      }
+    };
+
+    checkUser();
+  }, [router, supabase]);
 
   const handleSearch = (searchTerm: string) => {
     // Implement search functionality
     console.log('Searching for:', searchTerm);
   };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <div>Loading...</div>
+      </div>
+    );
+  }
 
   return (
     

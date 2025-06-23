@@ -2,13 +2,30 @@
 
 import Image from 'next/image'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import DropdownMenu from '@/components/common/layout/DropdownMenu';
-import { useSession, signOut } from 'next-auth/react'
 import { UserCircle, Settings } from 'lucide-react'
+import { createClient } from '@/lib/supabase/client';
+import { type User } from '@supabase/supabase-js';
+import { useRouter } from 'next/navigation';
 
 const Navbar = () => {
-  const { data: session } = useSession();
+  const supabase = createClient();
+  const router = useRouter();
+  const [user, setUser] = useState<User | null>(null);
+
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user ?? null)
+    })
+    return () => subscription.unsubscribe()
+  }, [supabase]);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.push('/sign-in');
+  };
+
   const manageItems = [
     { label: 'My Clients', href: '/manage/clients/my' },
     { label: 'My Quotes', href: '/manage/quotes/my' },
@@ -18,7 +35,7 @@ const Navbar = () => {
 
   const userMenuItems = [
     { label: 'Profile', href: '/profile' },
-    { label: 'Sign out', href: '#', onClick: () => signOut({ callbackUrl: '/sign-in' }) },
+    { label: 'Sign out', href: '#', onClick: handleSignOut },
   ];
 
   return (
@@ -29,7 +46,7 @@ const Navbar = () => {
             </Link>
 
             <div className='flex items-center gap-5'>
-                {session ? (
+                {user ? (
                     <>
                         <ul className="flex items-center gap-10 self-start justify-start pr-10 whitespace-nowrap">
                            
@@ -58,7 +75,7 @@ const Navbar = () => {
                         <div className="flex items-center gap-1.5">
                             <UserCircle className="w-5 h-5 text-gray-700" />
                             <DropdownMenu 
-                                label={session.user?.email || ''} 
+                                label={user.email || ''} 
                                 items={userMenuItems} 
                             />
                         </div>

@@ -3,7 +3,6 @@ import { Work_Sans } from "next/font/google";
 import "@/styles/globals.css";
 import { QuoteProvider } from "@/context/QuoteContext";
 import localFont from "next/font/local";
-import { Providers } from "@/components/providers/AuthProviders";
 
 const workSans = Work_Sans({ 
   subsets: ["latin"], 
@@ -30,11 +29,9 @@ export default function RootLayout({
   return (
     <html lang="en" className={`${workSans.variable} ${arSans.variable}`}>
       <body>
-        <Providers>
-          <QuoteProvider>
-            {children}
-          </QuoteProvider>
-        </Providers>
+        <QuoteProvider>
+          {children}
+        </QuoteProvider>
       </body>
     </html>
   );

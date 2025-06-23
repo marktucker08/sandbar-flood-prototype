@@ -15,6 +15,34 @@
       "when": 1750448806790,
       "tag": "0001_long_queen_noir",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1750449715513,
+      "tag": "0002_premium_chimera",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1750449736426,
+      "tag": "0003_odd_shiver_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1750449757263,
+      "tag": "0004_loud_freak",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1750450672271,
+      "tag": "0005_flawless_morlocks",
+      "breakpoints": true
     }
   ]
 }

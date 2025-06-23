@@ -2,13 +2,13 @@ import {
   timestamp,
   pgTable,
   text,
-  primaryKey,
   integer,
   uuid,
   pgEnum,
   boolean,
+  date,
+  decimal,
 } from "drizzle-orm/pg-core";
-import type { AdapterAccount } from "@auth/core/adapters";
 
 export const userRole = pgEnum("user_role", [
   "agent",
@@ -26,50 +26,6 @@ export const users = pgTable("users", {
   role: userRole("role").default("agent"),
   agencyId: uuid("agency_id").references(() => agencies.id),
 });
-
-export const accounts = pgTable(
-  "accounts",
-  {
-    userId: uuid("userId")
-      .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
-    type: text("type").$type<AdapterAccount["type"]>().notNull(),
-    provider: text("provider").notNull(),
-    providerAccountId: text("providerAccountId").notNull(),
-    refresh_token: text("refresh_token"),
-    access_token: text("access_token"),
-    expires_at: integer("expires_at"),
-    token_type: text("token_type"),
-    scope: text("scope"),
-    id_token: text("id_token"),
-    session_state: text("session_state"),
-  },
-  (account) => ({
-    compoundKey: primaryKey({
-      columns: [account.provider, account.providerAccountId],
-    }),
-  })
-);
-
-export const sessions = pgTable("sessions", {
-  sessionToken: text("sessionToken").notNull().primaryKey(),
-  userId: uuid("userId")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-  expires: timestamp("expires", { mode: "date" }).notNull(),
-});
-
-export const verificationTokens = pgTable(
-  "verificationTokens",
-  {
-    identifier: text("identifier").notNull(),
-    token: text("token").notNull(),
-    expires: timestamp("expires", { mode: "date" }).notNull(),
-  },
-  (vt) => ({
-    compoundKey: primaryKey({ columns: [vt.identifier, vt.token] }),
-  })
-);
 
 export const agencies = pgTable("agencies", {
   id: uuid("id").notNull().primaryKey().defaultRandom(),
@@ -166,4 +122,93 @@ export const properties = pgTable("properties", {
   numberOfSteps: integer("number_of_steps"),
   constructionType: constructionTypeEnum("construction_type"),
   constructionDocs: text("construction_docs"),
+});
+
+export const quoteStatusEnum = pgEnum("quote_status", [
+  "PENDING",
+  "APPROVED",
+  "REJECTED",
+]);
+export const waitingPeriodEnum = pgEnum("waiting_period", ["STANDARD", "LOAN"]);
+
+export const quotes = pgTable("quotes", {
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
+  propertyId: uuid("property_id").references(() => properties.id),
+  userId: uuid("user_id").references(() => users.id),
+  status: quoteStatusEnum("status").default("PENDING"),
+  coverageAmount: decimal("coverage_amount", { precision: 10, scale: 2 }),
+  premium: decimal("premium", { precision: 10, scale: 2 }),
+  effectiveDate: date("effective_date"),
+  expirationDate: date("expiration_date"),
+  waitingPeriodType: waitingPeriodEnum("waiting_period_type"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const policyStatusEnum = pgEnum("policy_status", [
+  "ACTIVE",
+  "CANCELLED",
+  "EXPIRED",
+]);
+
+export const policies = pgTable("policies", {
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
+  quoteId: uuid("quote_id").references(() => quotes.id),
+  policyNumber: text("policy_number"),
+  status: policyStatusEnum("status").default("ACTIVE"),
+  effectiveDate: date("effective_date"),
+  expirationDate: date("expiration_date"),
+  createdAt: timestamp("created_at").defaultNow(),
+  updatedAt: timestamp("updated_at").defaultNow(),
+});
+
+export const coverage = pgTable("coverage", {
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
+  quoteId: uuid("quote_id").references(() => quotes.id),
+  buildingReplacementCost: decimal("building_replacement_cost", {
+    precision: 10,
+    scale: 2,
+  }),
+  contentsReplacementCost: decimal("contents_replacement_cost", {
+    precision: 10,
+    scale: 2,
+  }),
+  buildingCoverage: decimal("building_coverage", { precision: 10, scale: 2 }),
+  contentsCoverage: decimal("contents_coverage", { precision: 10, scale: 2 }),
+  lossOfUseCoverage: decimal("loss_of_use_coverage", {
+    precision: 10,
+    scale: 2,
+  }),
+  deductible: decimal("deductible", { precision: 10, scale: 2 }),
+});
+
+export const documentTypeEnum = pgEnum("document_type", [
+  "CONSTRUCTION",
+  "ELEVATION",
+  "OTHER",
+]);
+
+export const documents = pgTable("documents", {
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
+  propertyId: uuid("property_id").references(() => properties.id),
+  documentType: documentTypeEnum("document_type"),
+  filePath: text("file_path"),
+  uploadedAt: timestamp("uploaded_at").defaultNow(),
+  uploadedBy: uuid("uploaded_by").references(() => users.id),
+});
+
+export const baseRates = pgTable("base_rates", {
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
+  zoneType: text("zone_type"),
+  foundationType: text("foundation_type"),
+  elevationDiff: text("elevation_diff"),
+  rate: decimal("rate", { precision: 5, scale: 3 }),
+});
+
+export const rateAdjustment = pgTable("rate_adjustment", {
+  id: uuid("id").notNull().primaryKey().defaultRandom(),
+  baseRatesId: uuid("base_rates_id").references(() => baseRates.id),
+  zipCode: text("zip_code"),
+  factorName: text("factor_name"),
+  factorValue: decimal("factor_value", { precision: 10, scale: 4 }),
 }); 
