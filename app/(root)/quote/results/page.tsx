@@ -1,17 +1,67 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useQuote } from '@/context/QuoteContext';
+import { useSearchParams } from 'next/navigation';
+
+interface QuoteData {
+  quote: {
+    id: string;
+    status: string;
+    coverageAmount: number;
+    premium: number;
+    effectiveDate: string;
+    expirationDate: string;
+  };
+  property: {
+    address: string;
+    city: string;
+    state: string;
+    zipCode: string;
+  } | null;
+  coverage: {
+    deductible: number;
+  } | null;
+}
 
 const QuoteResultsPage = () => {
-  const { quoteData } = useQuote();
+  const searchParams = useSearchParams();
+  const quoteId = searchParams.get('quoteId');
+  const [data, setData] = useState<QuoteData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
-  if (!quoteData) {
+  useEffect(() => {
+    if (!quoteId) {
+      setLoading(false);
+      setError('No quote ID provided.');
+      return;
+    }
+    setLoading(true);
+    fetch(`/api/quotes/${quoteId}`)
+      .then(res => res.json())
+      .then(res => {
+        if (res.error) {
+          setError(res.error);
+        } else {
+          setData(res);
+        }
+        setLoading(false);
+      })
+      .catch(() => {
+        setError('Failed to fetch quote.');
+        setLoading(false);
+      });
+  }, [quoteId]);
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  }
+  if (error || !data) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center p-4">
         <div className="text-center">
-          <h1 className="text-2xl font-semibold text-gray-900 mb-2">No Quote Found</h1>
+          <h1 className="text-2xl font-semibold text-gray-900 mb-2">{error || 'No Quote Found'}</h1>
           <p className="text-gray-600">Please start a new quote request</p>
           <Link
             href="/quote/new"
@@ -23,7 +73,7 @@ const QuoteResultsPage = () => {
       </div>
     );
   }
-
+  const { quote, property, coverage } = data;
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-4">
       <div className="max-w-3xl mx-auto">
@@ -46,31 +96,31 @@ const QuoteResultsPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-gray-50 rounded-lg p-4">
                 <h3 className="text-sm font-medium text-gray-500 mb-1">Quote ID</h3>
-                <p className="text-lg font-semibold text-gray-900">{quoteData.quoteId}</p>
+                <p className="text-lg font-semibold text-gray-900">{quote.id}</p>
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
                 <h3 className="text-sm font-medium text-gray-500 mb-1">Status</h3>
-                <p className="text-lg font-semibold text-gray-900">{quoteData.status}</p>
+                <p className="text-lg font-semibold text-gray-900">{quote.status}</p>
               </div>
             </div>
 
             <div className="bg-gray-50 rounded-lg p-4">
               <h3 className="text-sm font-medium text-gray-500 mb-1">Property Address</h3>
-              <p className="text-lg font-semibold text-gray-900">{quoteData.propertyAddress}</p>
+              <p className="text-lg font-semibold text-gray-900">{property?.address}, {property?.city}, {property?.state} {property?.zipCode}</p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-gray-50 rounded-lg p-4">
                 <h3 className="text-sm font-medium text-gray-500 mb-1">Coverage Amount</h3>
-                <p className="text-lg font-semibold text-gray-900">${quoteData.coverageAmount.toLocaleString()}</p>
+                <p className="text-lg font-semibold text-gray-900">${quote.coverageAmount ? Number(quote.coverageAmount).toLocaleString() : 'N/A'}</p>
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
                 <h3 className="text-sm font-medium text-gray-500 mb-1">Premium</h3>
-                <p className="text-lg font-semibold text-gray-900">${quoteData.premium.toLocaleString()}</p>
+                <p className="text-lg font-semibold text-gray-900">${quote.premium ? Number(quote.premium).toLocaleString() : 'N/A'}</p>
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
                 <h3 className="text-sm font-medium text-gray-500 mb-1">Deductible</h3>
-                <p className="text-lg font-semibold text-gray-900">${quoteData.deductible.toLocaleString()}</p>
+                <p className="text-lg font-semibold text-gray-900">${coverage?.deductible ? Number(coverage.deductible).toLocaleString() : 'N/A'}</p>
               </div>
             </div>
 
@@ -78,20 +128,20 @@ const QuoteResultsPage = () => {
               <div className="bg-gray-50 rounded-lg p-4">
                 <h3 className="text-sm font-medium text-gray-500 mb-1">Effective Date</h3>
                 <p className="text-lg font-semibold text-gray-900">
-                  {new Date(quoteData.effectiveDate).toLocaleDateString()}
+                  {quote.effectiveDate ? new Date(quote.effectiveDate).toLocaleDateString() : 'N/A'}
                 </p>
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
                 <h3 className="text-sm font-medium text-gray-500 mb-1">Expiration Date</h3>
                 <p className="text-lg font-semibold text-gray-900">
-                  {new Date(quoteData.expirationDate).toLocaleDateString()}
+                  {quote.expirationDate ? new Date(quote.expirationDate).toLocaleDateString() : 'N/A'}
                 </p>
               </div>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4 mt-8">
               <Link
-                href={`/quote/${quoteData.quoteId}`}
+                href={`/quote/${quote.id}`}
                 className="flex-1 bg-amber-600 text-white px-6 py-3 rounded-lg text-center font-medium hover:bg-amber-700 transition-colors"
               >
                 View Full Quote Details

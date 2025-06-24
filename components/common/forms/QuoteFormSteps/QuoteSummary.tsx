@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/common/ui/button";
 import { Pencil } from "lucide-react";
 import { calculateBaseRatePremium, RateCalcInput } from "@/lib/rateCalc";
+import { createClient } from "@/lib/supabase/client";
 
 interface QuoteSummaryProps {
   onBack: () => void;
@@ -32,7 +33,7 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
   onStepClick,
 }) => {
   const router = useRouter();
-  const { setQuoteData, clearQuoteData } = useQuote();
+  const { clearQuoteData } = useQuote();
 
   const formatDate = (dateString?: string) => {
     if (!dateString) return "";
@@ -90,43 +91,103 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
   const totalPremium = rateResult.buildingPremium + rateResult.contentsPremium;
 
   const handleSubmit = async () => {
-    // Use the calculated premium
-    const quoteData = {
-      quoteId: `Q-${Date.now()}`,
-      propertyAddress: `${formData?.streetAddress}, ${formData?.city}, ${formData?.state} ${formData?.zipCode}`,
-      coverageAmount: Number(formData?.buildingCoverage) + Number(formData?.contentsCoverage),
-      premium: totalPremium,
-      buildingPremium: rateResult.buildingPremium,
-      contentsPremium: rateResult.contentsPremium,
-      deductible: Number(formData?.deductible),
-      effectiveDate: formData?.effectiveDate || new Date().toISOString().split('T')[0],
-      expirationDate: new Date(new Date(formData?.effectiveDate || new Date()).setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
-      status: 'Pending Review',
-      riskFactor: 0, // required by QuoteDetails, not used
-      buildingCoverage: Number(formData?.buildingCoverage),
-      contentsCoverage: Number(formData?.contentsCoverage),
-      lossOfUseCoverage: Number(formData?.lossOfUseCoverage),
-      buildingReplacementCost: Number(formData?.buildingReplacementCost),
-      contentsReplacementCost: Number(formData?.contentsReplacementCost),
-      yearBuilt: formData?.yearBuilt || '',
-      squareFootage: formData?.squareFootage || '',
-      numberOfStories: formData?.numberOfStories || '',
-      numberOfFamilies: formData?.numberOfFamilies || '',
-      occupancyType: formData?.occupancyType || '',
-      commercialOccupancy: formData?.commercialOccupancy || '',
-      foundationType: formData?.foundationType || '',
-      constructionType: formData?.constructionType || '',
-      floodZone: formData?.floodZone || '',
-      condoType: formData?.condoType || '',
-      numberOfUnits: formData?.numberOfUnits || '',
+    const supabase = createClient();
+    // Get userId from Supabase session
+    const { data: { session } } = await supabase.auth.getSession();
+    const userId = session?.user?.id;
+    if (!userId) {
+      alert('You must be logged in to submit a quote.');
+      return;
+    }
+    // Build the payload for the API
+    const payload = {
+      insuredClient: {
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        phoneNumber: formData.phoneNumber,
+        insuredType: formData.insuredType?.toUpperCase() === 'BUSINESS' ? 'BUSINESS' : 'INDIVIDUAL',
+        businessName: formData.businessName,
+        entityType: formData.entityType,
+        additionalInsuredName: formData.additionalInsured,
+        address: formData.streetAddress || '',
+        addressLine2: formData.unitAptSuite,
+        city: formData.city || '',
+        state: formData.state || '',
+        zipCode: formData.zipCode || '',
+      },
+      property: {
+        address: formData.streetAddress || '',
+        addressLine2: formData.unitAptSuite,
+        city: formData.city || '',
+        state: formData.state || '',
+        zipCode: formData.zipCode || '',
+        latitude: formData.latLng?.lat ? String(formData.latLng.lat) : undefined,
+        longitude: formData.latLng?.lng ? String(formData.latLng.lng) : undefined,
+        floodZone: formData.floodZone,
+        floodZoneVerified: formData.floodZoneVerified,
+        correctedFloodZone: formData.correctedFloodZone,
+        bfe: formData.baseFloodElevation ? Number(formData.baseFloodElevation) : undefined,
+        propertyElevation: formData.propertyElevation ? Number(formData.propertyElevation) : undefined,
+        buildingType: formData.buildingType || '',
+        yearBuilt: formData.yearBuilt ? Number(formData.yearBuilt) : undefined,
+        squareFootage: formData.squareFootage ? Number(formData.squareFootage) : undefined,
+        numberOfFloors: formData.numberOfStories ? Number(formData.numberOfStories) : undefined,
+        occupancyType: formData.occupancyType,
+        numberOfStories: formData.numberOfStories ? Number(formData.numberOfStories) : undefined,
+        numberOfFamilies: formData.numberOfFamilies ? Number(formData.numberOfFamilies) : undefined,
+        numberOfUnits: formData.numberOfUnits ? Number(formData.numberOfUnits) : undefined,
+        condoType: formData.condoType,
+        commercialOccupancy: formData.commercialOccupancy,
+        numberOfResidentialUnits: formData.numberOfResidentialUnits ? Number(formData.numberOfResidentialUnits) : undefined,
+        numberOfCommercialUnits: formData.numberOfCommercialUnits ? Number(formData.numberOfCommercialUnits) : undefined,
+        foundationType: formData.foundationType,
+        isProperlyVented: formData.isFoundationVented,
+        certificateElevation: formData.certificateElevation,
+        numberOfSteps: formData.stepsToFrontDoor ? Number(formData.stepsToFrontDoor) : undefined,
+        constructionType: formData.constructionType,
+      },
+      quote: {
+        userId,
+        status: 'PENDING',
+        coverageAmount: Number(formData.buildingCoverage || 0) + Number(formData.contentsCoverage || 0),
+        premium: totalPremium,
+        effectiveDate: formData.effectiveDate || new Date().toISOString().split('T')[0],
+        expirationDate: new Date(new Date(formData.effectiveDate || new Date()).setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+        waitingPeriodType: formData.waitingPeriod?.toUpperCase() === 'LOAN' ? 'LOAN' : 'STANDARD',
+      },
+      coverage: {
+        buildingReplacementCost: Number(formData.buildingReplacementCost || 0),
+        contentsReplacementCost: Number(formData.contentsReplacementCost || 0),
+        buildingCoverage: Number(formData.buildingCoverage || 0),
+        contentsCoverage: Number(formData.contentsCoverage || 0),
+        lossOfUseCoverage: formData.lossOfUseCoverage ? Number(formData.lossOfUseCoverage) : undefined,
+        deductible: formData.deductible ? Number(formData.deductible) : 0,
+      },
     };
 
-    updateFormData?.({
-      premium: totalPremium.toString(),
-    });
-
-    setQuoteData(quoteData);
-    router.push("/quote/processing");
+    try {
+      const res = await fetch('/api/quotes', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) {
+        const error = await res.json();
+        alert('Error submitting quote: ' + (error.error || 'Unknown error'));
+        return;
+      }
+      const result = await res.json();
+      updateFormData?.({ premium: totalPremium.toString() });
+      if (result.quoteId) {
+        router.push(`/quote/results?quoteId=${result.quoteId}`);
+      } else {
+        router.push('/quote/results');
+      }
+    } catch (error) {
+      console.error(error);
+      alert('An unexpected error occurred.');
+    }
   };
 
   const handleCancel = () => {
