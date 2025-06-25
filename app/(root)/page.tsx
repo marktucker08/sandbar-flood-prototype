@@ -14,18 +14,23 @@ export default function HomePage() {
 
   useEffect(() => {
     const checkUser = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (session) {
-        setLoading(false);
-      } else {
+      try {
+        const {
+          data: { session },
+        } = await supabase.auth.getSession();
+        if (session) {
+          setLoading(false);
+        } else {
+          router.push("/sign-in");
+        }
+      } catch (error) {
+        console.error('Session check failed:', error);
         router.push("/sign-in");
       }
     };
 
     checkUser();
-  }, [router, supabase]);
+  }, [router, supabase.auth]);
 
   const handleSearch = (searchTerm: string) => {
     // Implement search functionality

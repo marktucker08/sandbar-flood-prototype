@@ -31,7 +31,7 @@ const QuoteDetailsPage = () => {
           <div className="flex justify-between items-center mb-8">
             <div>
               <h1 className="text-2xl font-semibold text-gray-900">Quote Details</h1>
-              <p className="text-gray-600">Quote ID: {quoteData.quoteId}</p>
+              <p className="text-gray-600">Quote ID: {quoteData.userFriendlyQuoteId || quoteData.quoteId}</p>
             </div>
             <div className="flex gap-4">
               <Link

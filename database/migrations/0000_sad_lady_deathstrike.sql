@@ -30,7 +30,7 @@ CREATE TABLE "sessions" (
 CREATE TABLE "users" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text,
-	"email" text NOT NULL,
+	"email" text NOT NULL UNIQUE,
 	"emailVerified" timestamp,
 	"image" text,
 	"role" "user_role" DEFAULT 'agent',

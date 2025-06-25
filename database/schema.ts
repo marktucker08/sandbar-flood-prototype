@@ -143,6 +143,7 @@ export const quotes = pgTable("quotes", {
   waitingPeriodType: waitingPeriodEnum("waiting_period_type"),
   createdAt: timestamp("created_at").defaultNow(),
   updatedAt: timestamp("updated_at").defaultNow(),
+  quoteNumber: integer("quote_number").unique(),
 });
 
 export const policyStatusEnum = pgEnum("policy_status", [

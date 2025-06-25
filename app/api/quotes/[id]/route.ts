@@ -4,24 +4,37 @@ import postgres from "postgres";
 import { eq } from "drizzle-orm";
 import { quotes, properties, insuredClients, coverage as coverageTable } from "@/database/schema";
 
+// Module-level singleton for Postgres client and Drizzle instance
+let drizzleClient: ReturnType<typeof drizzle> | null = null;
+
 function getDrizzleClient() {
-  const connectionString = process.env.DATABASE_URL!;
-  const sql = postgres(connectionString, { max: 1 });
-  return drizzle(sql);
+  if (!drizzleClient) {
+    const connectionString = process.env.DATABASE_URL!;
+    // The 'postgres' package manages its own pool; reuse the same instance
+    const sql = postgres(connectionString, { max: 1 }); // Use a reasonable pool size
+    drizzleClient = drizzle(sql);
+  }
+  return drizzleClient;
 }
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, context: { params: { id: string } }) {
   try {
     const db = getDrizzleClient();
-    const quoteId = params.id;
+    const { id: quoteId } = (await context).params;
     // Fetch the quote
     const quoteRows = await db.select().from(quotes).where(eq(quotes.id, quoteId));
     if (!quoteRows.length) {
       return NextResponse.json({ error: "Quote not found" }, { status: 404 });
     }
     const quote = quoteRows[0];
+    // Add user-friendly quote ID
+    const userFriendlyQuoteId = quote.quoteNumber ? `Q-${quote.quoteNumber}` : null;
+    // Check if propertyId exists before querying properties
+    if (!quote.propertyId) {
+      return NextResponse.json({ error: "Quote is missing property reference" }, { status: 400 });
+    }
     // Fetch related property
-    const propertyRows = await db.select().from(properties).where(eq(properties.id, quote.propertyId!));
+    const propertyRows = await db.select().from(properties).where(eq(properties.id, quote.propertyId));
     const property = propertyRows[0] || null;
     // Fetch related insured client
     let insuredClient = null;
@@ -32,8 +45,9 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     // Fetch related coverage
     const coverageRows = await db.select().from(coverageTable).where(eq(coverageTable.quoteId, quoteId));
     const coverage = coverageRows[0] || null;
-    return NextResponse.json({ quote, property, insuredClient, coverage });
+    return NextResponse.json({ quote: { ...quote, userFriendlyQuoteId }, property, insuredClient, coverage });
   } catch (error) {
+    console.error('Error fetching quote by id:', error);
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 } 

@@ -1,13 +1,13 @@
 CREATE TYPE "public"."document_type" AS ENUM('CONSTRUCTION', 'ELEVATION', 'OTHER');--> statement-breakpoint
 CREATE TABLE "coverage" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"quote_id" uuid,
-	"building_replacement_cost" numeric(10, 2),
-	"contents_replacement_cost" numeric(10, 2),
-	"building_coverage" numeric(10, 2),
-	"contents_coverage" numeric(10, 2),
-	"loss_of_use_coverage" numeric(10, 2),
-	"deductible" numeric(10, 2)
+	"quote_id" uuid NOT NULL,
+	"building_replacement_cost" numeric(10, 2) CHECK (building_replacement_cost >= 0),
+	"contents_replacement_cost" numeric(10, 2) CHECK (contents_replacement_cost >= 0),
+	"building_coverage" numeric(10, 2) CHECK (building_coverage >= 0),
+	"contents_coverage" numeric(10, 2) CHECK (contents_coverage >= 0),
+	"loss_of_use_coverage" numeric(10, 2) CHECK (loss_of_use_coverage >= 0),
+	"deductible" numeric(10, 2) CHECK (deductible >= 0)
 );
 --> statement-breakpoint
 CREATE TABLE "documents" (

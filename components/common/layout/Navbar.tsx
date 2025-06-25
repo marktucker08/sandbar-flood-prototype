@@ -22,8 +22,16 @@ const Navbar = () => {
   }, [supabase]);
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    router.push('/sign-in');
+    try {
+      const { error } = await supabase.auth.signOut();
+      if (error) {
+        console.error('Sign out error:', error);
+        // Optionally show toast notification
+      }
+      router.push('/sign-in');
+    } catch (error) {
+      console.error('Unexpected sign out error:', error);
+    }
   };
 
   const manageItems = [

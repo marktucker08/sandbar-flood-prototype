@@ -202,8 +202,8 @@ export async function POST(req: NextRequest) {
       numberOfUnits: property.numberOfUnits !== undefined ? property.numberOfUnits : null,
       numberOfResidentialUnits: property.numberOfResidentialUnits !== undefined ? property.numberOfResidentialUnits : null,
       numberOfCommercialUnits: property.numberOfCommercialUnits !== undefined ? property.numberOfCommercialUnits : null,
-      bfe: property.bfe !== undefined ? property.bfe : null,
-      propertyElevation: property.propertyElevation !== undefined ? property.propertyElevation : null,
+      bfe: property.bfe !== undefined && property.bfe !== null ? String(property.bfe) : null,
+      propertyElevation: property.propertyElevation !== undefined && property.propertyElevation !== null ? String(property.propertyElevation) : null,
       numberOfSteps: property.numberOfSteps !== undefined ? property.numberOfSteps : null,
     };
     const [propertyInserted] = await db
@@ -222,8 +222,9 @@ export async function POST(req: NextRequest) {
     const [quoteInserted] = await db
       .insert(quotes)
       .values(quoteInsert)
-      .returning({ id: quotes.id });
+      .returning({ id: quotes.id, quoteNumber: quotes.quoteNumber });
     const quoteId = quoteInserted.id;
+    const quoteNumber = quoteInserted.quoteNumber;
 
     // 4. Insert coverage (with quoteId)
     const coverageInsert = {
@@ -246,11 +247,33 @@ export async function POST(req: NextRequest) {
       clientId,
       propertyId,
       quoteId,
+      quoteNumber,
       coverageId,
       message: "Quote created successfully."
     }, { status: 201 });
   } catch (error) {
-    console.error(error);
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 });
+    console.error('Quote creation error:', error);
+
+    if (error instanceof z.ZodError) {
+      return NextResponse.json(
+        { error: "Validation error", details: error.errors },
+        { status: 400 }
+      );
+    }
+
+    if (error instanceof Error && error.message.includes('duplicate key')) {
+      return NextResponse.json(
+        { error: "Duplicate quote detected" },
+        { status: 409 }
+      );
+    }
+
+    return NextResponse.json(
+      {
+        error: "Failed to create quote",
+        message: error instanceof Error ? error.message : "Unknown error"
+      },
+      { status: 500 }
+    );
   }
 } 

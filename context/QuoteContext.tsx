@@ -25,6 +25,7 @@ interface QuoteDetails {
   foundationType: string;
   constructionType: string;
   floodZone: string;
+  userFriendlyQuoteId?: string;
 }
 
 interface QuoteContextType {

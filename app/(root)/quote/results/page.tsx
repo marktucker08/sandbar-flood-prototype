@@ -12,6 +12,7 @@ interface QuoteData {
     premium: number;
     effectiveDate: string;
     expirationDate: string;
+    userFriendlyQuoteId?: string;
   };
   property: {
     address: string;
@@ -37,21 +38,34 @@ const QuoteResultsPage = () => {
       setError('No quote ID provided.');
       return;
     }
+    const abortController = new AbortController();
     setLoading(true);
-    fetch(`/api/quotes/${quoteId}`)
-      .then(res => res.json())
-      .then(res => {
-        if (res.error) {
-          setError(res.error);
+    fetch(`/api/quotes/${quoteId}`, {
+      signal: abortController.signal,
+      headers: {
+        'Content-Type': 'application/json',
+        // Add authentication headers if needed
+      }
+    })
+      .then(async res => {
+        if (!res.ok) {
+          throw new Error(`HTTP error! status: ${res.status}`);
+        }
+        const data = await res.json();
+        if (data.error) {
+          setError(data.error);
         } else {
-          setData(res);
+          setData(data);
         }
         setLoading(false);
       })
-      .catch(() => {
-        setError('Failed to fetch quote.');
-        setLoading(false);
+      .catch((err) => {
+        if (err.name !== 'AbortError') {
+          setError(err.message || 'Failed to fetch quote.');
+          setLoading(false);
+        }
       });
+    return () => abortController.abort();
   }, [quoteId]);
 
   if (loading) {
@@ -95,8 +109,8 @@ const QuoteResultsPage = () => {
           <div className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="text-sm font-medium text-gray-500 mb-1">Quote ID</h3>
-                <p className="text-lg font-semibold text-gray-900">{quote.id}</p>
+                <h3 className="text-sm font-medium text-gray-500 mb-1">Quote Number</h3>
+                <p className="text-lg font-semibold text-gray-900">{quote.userFriendlyQuoteId || quote.id}</p>
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
                 <h3 className="text-sm font-medium text-gray-500 mb-1">Status</h3>
