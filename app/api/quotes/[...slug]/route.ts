@@ -5,9 +5,9 @@ import { eq } from "drizzle-orm";
 import { quotes, properties, insuredClients, coverage as coverageTable } from "@/database/schema";
 
 function getDrizzleClient() {
-  const connectionString = process.env.DATABASE_URL;
+  const connectionString = process.env.POSTGRES_URL;
   if (!connectionString) {
-    throw new Error('DATABASE_URL environment variable is not set');
+    throw new Error('POSTGRES_URL environment variable is not set');
   }
   const sql = postgres(connectionString, { max: 10 });
   return drizzle(sql);

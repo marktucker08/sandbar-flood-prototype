@@ -83,7 +83,7 @@ const payloadSchema = z.object({
 });
 
 function getDrizzleClient() {
-  const connectionString = process.env.DATABASE_URL!;
+  const connectionString = process.env.POSTGRES_URL!;
   const sql = postgres(connectionString, { max: 1 });
   return drizzle(sql);
 }

@@ -74,7 +74,7 @@ yarn install
 3. Set up environment variables:
 Create a `.env` file in the root directory with the following variables:
 ```env
-DATABASE_URL=your_database_url
+POSTGRES_URL=your_POSTGRES_URL
 NEXTAUTH_SECRET=your_auth_secret
 NEXTAUTH_URL=http://localhost:3000
 # Add other required environment variables
