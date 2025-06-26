@@ -22,6 +22,10 @@ interface QuoteData {
   } | null;
   coverage: {
     deductible: number;
+    buildingCoverage?: number;
+    contentsCoverage?: number;
+    buildingPremium?: number;
+    contentsPremium?: number;
   } | null;
 }
 
@@ -87,7 +91,7 @@ const QuoteResultsPage = () => {
       </div>
     );
   }
-  const { quote, property, coverage } = data;
+  const { quote, property } = data;
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white p-4">
       <div className="max-w-3xl mx-auto">
@@ -125,16 +129,20 @@ const QuoteResultsPage = () => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="text-sm font-medium text-gray-500 mb-1">Coverage Amount</h3>
-                <p className="text-lg font-semibold text-gray-900">${quote.coverageAmount ? Number(quote.coverageAmount).toLocaleString() : 'N/A'}</p>
+                <h3 className="text-sm font-medium text-gray-500 mb-1">Building Coverage</h3>
+                <p className="text-lg font-semibold text-gray-900">${data.coverage?.buildingCoverage ? Number(data.coverage.buildingCoverage).toLocaleString() : 'N/A'}</p>
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="text-sm font-medium text-gray-500 mb-1">Premium</h3>
-                <p className="text-lg font-semibold text-gray-900">${quote.premium ? Number(quote.premium).toLocaleString() : 'N/A'}</p>
+                <h3 className="text-sm font-medium text-gray-500 mb-1">Contents Coverage</h3>
+                <p className="text-lg font-semibold text-gray-900">${data.coverage?.contentsCoverage ? Number(data.coverage.contentsCoverage).toLocaleString() : 'N/A'}</p>
               </div>
               <div className="bg-gray-50 rounded-lg p-4">
-                <h3 className="text-sm font-medium text-gray-500 mb-1">Deductible</h3>
-                <p className="text-lg font-semibold text-gray-900">${coverage?.deductible ? Number(coverage.deductible).toLocaleString() : 'N/A'}</p>
+                <h3 className="text-sm font-medium text-gray-500 mb-1">Total Premium</h3>
+                <p className="text-lg font-semibold text-gray-900">
+                  {data.coverage?.buildingPremium !== undefined && data.coverage?.contentsPremium !== undefined
+                    ? `$${(Number(data.coverage.buildingPremium) + Number(data.coverage.contentsPremium)).toLocaleString()}`
+                    : quote.premium ? `$${Number(quote.premium).toLocaleString()}` : 'N/A'}
+                </p>
               </div>
             </div>
 

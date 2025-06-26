@@ -248,7 +248,7 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
               const streetAddress = `${streetNumber} ${route}`.trim();
 
               updateFormData({
-                streetAddress: streetAddress || place.displayName || "",
+                streetAddress: streetAddress || "",
                 city: getComponent('locality') || getComponent('sublocality'),
                 state: getComponent('administrative_area_level_1', true),
                 zipCode: getComponent('postal_code'),

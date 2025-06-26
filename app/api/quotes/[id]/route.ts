@@ -17,24 +17,20 @@ function getDrizzleClient() {
   return drizzleClient;
 }
 
-export async function GET(req: NextRequest, context: { params: { id: string } }) {
+export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   try {
     const db = getDrizzleClient();
-    const { id: quoteId } = (await context).params;
+    const quoteId = params.id;
     // Fetch the quote
     const quoteRows = await db.select().from(quotes).where(eq(quotes.id, quoteId));
     if (!quoteRows.length) {
       return NextResponse.json({ error: "Quote not found" }, { status: 404 });
     }
     const quote = quoteRows[0];
-    // Add user-friendly quote ID
+    // Add user-friendly quote ID if available
     const userFriendlyQuoteId = quote.quoteNumber ? `Q-${quote.quoteNumber}` : null;
-    // Check if propertyId exists before querying properties
-    if (!quote.propertyId) {
-      return NextResponse.json({ error: "Quote is missing property reference" }, { status: 400 });
-    }
     // Fetch related property
-    const propertyRows = await db.select().from(properties).where(eq(properties.id, quote.propertyId));
+    const propertyRows = await db.select().from(properties).where(eq(properties.id, quote.propertyId!));
     const property = propertyRows[0] || null;
     // Fetch related insured client
     let insuredClient = null;
