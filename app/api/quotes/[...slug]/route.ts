@@ -1,29 +1,19 @@
-// Moved to app/api/quotes/[...slug]/route.ts
-
 import { NextRequest, NextResponse } from "next/server";
 import { drizzle } from "drizzle-orm/postgres-js";
 import postgres from "postgres";
 import { eq } from "drizzle-orm";
 import { quotes, properties, insuredClients, coverage as coverageTable } from "@/database/schema";
 
-// Module-level singleton for Postgres client and Drizzle instance
-let drizzleClient: ReturnType<typeof drizzle> | null = null;
-
 function getDrizzleClient() {
-  if (!drizzleClient) {
-    const connectionString = process.env.DATABASE_URL!;
-    // The 'postgres' package manages its own pool; reuse the same instance
-    const sql = postgres(connectionString, { max: 1 }); // Use a reasonable pool size
-    drizzleClient = drizzle(sql);
-  }
-  return drizzleClient;
+  const connectionString = process.env.DATABASE_URL!;
+  const sql = postgres(connectionString, { max: 1 });
+  return drizzle(sql);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export async function GET(req: NextRequest, context: { params: { id: string } }) {
+export async function GET(req: NextRequest, context: { params: { slug: string[] } }) {
   try {
     const db = getDrizzleClient();
-    const quoteId = context.params.id;
+    const quoteId = context.params.slug[0];
     // Fetch the quote
     const quoteRows = await db.select().from(quotes).where(eq(quotes.id, quoteId));
     if (!quoteRows.length) {
