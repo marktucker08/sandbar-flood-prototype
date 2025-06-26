@@ -5,12 +5,16 @@ import { eq } from "drizzle-orm";
 import { quotes, properties, insuredClients, coverage as coverageTable } from "@/database/schema";
 
 function getDrizzleClient() {
-  const connectionString = process.env.DATABASE_URL!;
-  const sql = postgres(connectionString, { max: 1 });
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) {
+    throw new Error('DATABASE_URL environment variable is not set');
+  }
+  const sql = postgres(connectionString, { max: 10 });
   return drizzle(sql);
 }
 
-export async function GET(req: NextRequest, context: { params: { slug: string[] } }) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export async function GET(req: NextRequest, context: any) {
   try {
     const db = getDrizzleClient();
     const quoteId = context.params.slug[0];
