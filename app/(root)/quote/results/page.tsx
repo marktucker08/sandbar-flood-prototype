@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 
@@ -29,7 +29,7 @@ interface QuoteData {
   } | null;
 }
 
-const QuoteResultsPage = () => {
+function QuoteResultsContent() {
   const searchParams = useSearchParams();
   const quoteId = searchParams.get('quoteId');
   const [data, setData] = useState<QuoteData | null>(null);
@@ -192,6 +192,12 @@ const QuoteResultsPage = () => {
       </div>
     </div>
   );
-};
+}
+
+const QuoteResultsPage = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <QuoteResultsContent />
+  </Suspense>
+);
 
 export default QuoteResultsPage; 

@@ -1,11 +1,113 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useQuote } from '@/context/QuoteContext';
+import { useParams } from 'next/navigation';
+import { createClient } from '@/lib/supabase/client';
 
 const QuoteDetailsPage = () => {
-  const { quoteData } = useQuote();
+  const { quoteId } = useParams();
+  const supabase = createClient();
+  type QuoteDetails = {
+    quoteId: string;
+    userFriendlyQuoteId?: string;
+    propertyAddress: string;
+    coverageAmount: number;
+    premium: number;
+    deductible: number;
+    effectiveDate: string;
+    expirationDate: string;
+    status: string;
+    riskFactor: number;
+    buildingCoverage: number;
+    contentsCoverage: number;
+    lossOfUseCoverage: number;
+    buildingReplacementCost: number;
+    contentsReplacementCost: number;
+    yearBuilt: string;
+    squareFootage: string;
+    numberOfStories: string;
+    numberOfFamilies: string;
+    occupancyType: string;
+    foundationType: string;
+    constructionType: string;
+    floodZone: string;
+  };
+  const [quoteData, setQuoteData] = useState<QuoteDetails | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchQuote = async () => {
+      setLoading(true);
+      // Fetch quote
+      const { data: quote, error: quoteError } = await supabase
+        .from('quotes')
+        .select('*')
+        .eq('id', quoteId)
+        .single();
+      if (quoteError || !quote) {
+        setQuoteData(null);
+        setLoading(false);
+        return;
+      }
+      // Fetch property
+      let property = null;
+      if (quote.property_id) {
+        const { data: propertyData } = await supabase
+          .from('properties')
+          .select('*')
+          .eq('id', quote.property_id)
+          .single();
+        property = propertyData;
+      }
+      // Fetch coverage
+      let coverage = null;
+      const { data: coverageData } = await supabase
+        .from('coverage')
+        .select('*')
+        .eq('quote_id', quote.id)
+        .single();
+      coverage = coverageData;
+      // Map to expected shape
+      setQuoteData({
+        quoteId: quote.id,
+        userFriendlyQuoteId: quote.quote_number,
+        propertyAddress: property ? `${property.address || ''}, ${property.city || ''}, ${property.state || ''} ${property.zip_code || ''}` : '',
+        coverageAmount: quote.coverage_amount,
+        premium: quote.premium,
+        deductible: coverage?.deductible,
+        effectiveDate: quote.effective_date,
+        expirationDate: quote.expiration_date,
+        status: quote.status,
+        riskFactor: 1, // Placeholder, update if you have this field
+        buildingCoverage: coverage?.building_coverage,
+        contentsCoverage: coverage?.contents_coverage,
+        lossOfUseCoverage: coverage?.loss_of_use_coverage,
+        buildingReplacementCost: coverage?.building_replacement_cost,
+        contentsReplacementCost: coverage?.contents_replacement_cost,
+        yearBuilt: property?.year_built,
+        squareFootage: property?.square_footage,
+        numberOfStories: property?.number_of_stories,
+        numberOfFamilies: property?.number_of_families,
+        occupancyType: property?.occupancy_type,
+        foundationType: property?.foundation_type,
+        constructionType: property?.construction_type,
+        floodZone: property?.flood_zone,
+      });
+      setLoading(false);
+    };
+    if (quoteId) fetchQuote();
+  }, [quoteId, supabase]);
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white flex items-center justify-center p-4">
+        <div className="text-center">
+          <h1 className="text-2xl font-semibold text-gray-900 mb-2">Loading...</h1>
+        </div>
+      </div>
+    );
+  }
 
   if (!quoteData) {
     return (
