@@ -17,10 +17,10 @@ function getDrizzleClient() {
   return drizzleClient;
 }
 
-export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(req: NextRequest, context: any) {
   try {
     const db = getDrizzleClient();
-    const quoteId = params.id;
+    const quoteId = context.params.id;
     // Fetch the quote
     const quoteRows = await db.select().from(quotes).where(eq(quotes.id, quoteId));
     if (!quoteRows.length) {
