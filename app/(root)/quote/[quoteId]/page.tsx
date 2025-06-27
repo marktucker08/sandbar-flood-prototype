@@ -33,7 +33,27 @@ const QuoteDetailsPage = () => {
     constructionType: string;
     floodZone: string;
   };
+  type InsuredClient = {
+    id: string;
+    first_name?: string;
+    last_name?: string;
+    email?: string;
+    phone_number?: string;
+    insured_type: 'INDIVIDUAL' | 'BUSINESS';
+    business_name?: string;
+    entity_type?: string;
+    additional_insured_name?: string;
+    address?: string;
+    address_line_2?: string;
+    city?: string;
+    state?: string;
+    zip_code?: string;
+    created_at?: string;
+    updated_at?: string;
+    created_by?: string;
+  };
   const [quoteData, setQuoteData] = useState<QuoteDetails | null>(null);
+  const [insuredData, setInsuredData] = useState<InsuredClient | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -47,6 +67,7 @@ const QuoteDetailsPage = () => {
         .single();
       if (quoteError || !quote) {
         setQuoteData(null);
+        setInsuredData(null);
         setLoading(false);
         return;
       }
@@ -59,6 +80,19 @@ const QuoteDetailsPage = () => {
           .eq('id', quote.property_id)
           .single();
         property = propertyData;
+        // Fetch insured client
+        if (property?.client_id) {
+          const { data: clientData } = await supabase
+            .from('insured_clients')
+            .select('*')
+            .eq('id', property.client_id)
+            .single();
+          setInsuredData(clientData);
+        } else {
+          setInsuredData(null);
+        }
+      } else {
+        setInsuredData(null);
       }
       // Fetch coverage
       let coverage = null;
@@ -152,6 +186,51 @@ const QuoteDetailsPage = () => {
           </div>
 
           <div className="space-y-8">
+            {/* Insured Details */}
+            {insuredData && (
+              <div className="bg-gray-50 rounded-lg p-6">
+                <h2 className="text-lg font-semibold text-gray-900 mb-4">Insured Details</h2>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 mb-1">Name</h3>
+                    <p className="text-gray-900">
+                      {insuredData.insured_type === 'BUSINESS' && insuredData.business_name
+                        ? insuredData.business_name
+                        : `${insuredData.first_name || ''} ${insuredData.last_name || ''}`}
+                    </p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 mb-1">Email</h3>
+                    <p className="text-gray-900">{insuredData.email}</p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 mb-1">Phone</h3>
+                    <p className="text-gray-900">{insuredData.phone_number}</p>
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-medium text-gray-500 mb-1">Address</h3>
+                    <p className="text-gray-900">
+                      {insuredData.address}
+                      {insuredData.address_line_2 ? `, ${insuredData.address_line_2}` : ''}<br />
+                      {insuredData.city}, {insuredData.state} {insuredData.zip_code}
+                    </p>
+                  </div>
+                  {insuredData.insured_type === 'BUSINESS' && insuredData.entity_type && (
+                    <div>
+                      <h3 className="text-sm font-medium text-gray-500 mb-1">Entity Type</h3>
+                      <p className="text-gray-900">{insuredData.entity_type}</p>
+                    </div>
+                  )}
+                  {insuredData.additional_insured_name && (
+                    <div>
+                      <h3 className="text-sm font-medium text-gray-500 mb-1">Additional Insured</h3>
+                      <p className="text-gray-900">{insuredData.additional_insured_name}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             {/* Property Information */}
             <div className="bg-gray-50 rounded-lg p-6">
               <h2 className="text-lg font-semibold text-gray-900 mb-4">Property Information</h2>
