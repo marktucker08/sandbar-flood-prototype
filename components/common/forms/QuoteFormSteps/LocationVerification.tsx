@@ -96,6 +96,12 @@ function useGoogleMapsLoader(src: string, onReady: () => void, maxRetries = 20, 
   }, [src, onReady, maxRetries, retryDelay]);
 }
 
+// Utility function to check for street number
+function hasStreetNumber(address: string): boolean {
+  // Checks if the address starts with a number (optionally followed by a letter, e.g., "123A")
+  return /^\d+/.test(address.trim());
+}
+
 const LocationVerification: React.FC<LocationVerificationProps> = ({
   onNext,
   onBack,
@@ -321,6 +327,16 @@ const LocationVerification: React.FC<LocationVerificationProps> = ({
         });
         setErrors(newErrors);
       }
+      return;
+    }
+
+    // Additional check for street number
+    if (!hasStreetNumber(formData.streetAddress || "")) {
+      setErrors(prev => ({
+        ...prev,
+        streetAddress: "Street address must include a street number."
+      }));
+      setLoading(false);
       return;
     }
 

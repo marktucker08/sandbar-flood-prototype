@@ -71,8 +71,8 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
   // Helper to determine if properly vented (assume boolean in formData, adjust if needed)
   const isProperlyVented = Boolean(formData.isFoundationVented);
 
-  // Prepare input for rate calculation
-  const rateInput: RateCalcInput = {
+  // Prepare input for rate calculation using useMemo
+  const rateInput: RateCalcInput = React.useMemo(() => ({
     propertyElevation: Number(formData.propertyElevation),
     baseFloodElevation: Number(formData.baseFloodElevation),
     certificateElevation: formData.certificateElevation ? Number(formData.certificateElevation) : undefined,
@@ -85,9 +85,58 @@ const QuoteSummary: React.FC<QuoteSummaryProps> = ({
     buildingCoverage: Number(formData.buildingCoverage) || 0,
     contentsCoverage: Number(formData.contentsCoverage) || 0,
     replacementCost: Number(formData.buildingReplacementCost) || 0,
-  };
+  }), [
+    formData.propertyElevation,
+    formData.baseFloodElevation,
+    formData.certificateElevation,
+    formData.stepsToFrontDoor,
+    formData.foundationType,
+    isProperlyVented,
+    formData.floodZone,
+    formData.occupancyType,
+    formData.deductible,
+    formData.buildingCoverage,
+    formData.contentsCoverage,
+    formData.buildingReplacementCost
+  ]);
 
-  const rateResult = calculateBaseRatePremium(rateInput);
+  const rateInputKey = JSON.stringify(rateInput);
+
+  // --- Async premium calculation logic ---
+  const [rateResult, setRateResult] = React.useState<Awaited<ReturnType<typeof calculateBaseRatePremium>> | null>(null);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState<string | null>(null);
+
+  React.useEffect(() => {
+    let isMounted = true;
+    setLoading(true);
+    setError(null);
+    calculateBaseRatePremium(rateInput)
+      .then(result => {
+        if (isMounted) {
+          setRateResult(result);
+          setLoading(false);
+        }
+      })
+      .catch(() => {
+        if (isMounted) {
+          setError("Could not calculate premium. Please check your inputs.");
+          setRateResult(null);
+          setLoading(false);
+        }
+      });
+    return () => { isMounted = false; };
+  }, [rateInput, rateInputKey]);
+
+  if (loading) {
+    return <div>Calculating premium...</div>;
+  }
+  if (error) {
+    return <div className="text-red-600">{error}</div>;
+  }
+  if (!rateResult) {
+    return <div>No premium result available.</div>;
+  }
   const totalPremium = rateResult.buildingPremium + rateResult.contentsPremium;
 
   const handleSubmit = async () => {
